@@ -1,0 +1,38 @@
+.links{
+    width: 73vw;
+    padding-left:12vw;
+    border: 2px solid red;
+    display: flex;
+    justify-content: space-around;
+}
+.nav-list{
+    border: 2px solid green;
+    display:flex;
+}
+.auth-list{
+    border: 2px solid green;
+    display:flex;
+}
+.nav-list  a{
+    color: white;
+    padding:18px 10px;
+    text-decoration: none;
+}
+.auth-list  a{
+    color: white;
+    padding:18px 10px;
+    text-decoration: none;
+}
+@media screen and (max-width:1024px) {
+   
+    .links{
+        padding-left: 0px;
+        justify-content: flex-start;
+    }
+    .nav-list{
+        flex-direction: column;
+    }
+    .auth-list{
+        flex-direction: column;
+    }
+}
