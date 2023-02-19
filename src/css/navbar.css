@@ -12,6 +12,11 @@
 
 .logo img{
     width:250px;
+    transition: all 300ms ease-out;
+}
+.logo img:hover{
+    transform: scale(1.15);
+    transition: all 300ms ease-in;
 }
 
 @media screen and (max-width:1024px) {

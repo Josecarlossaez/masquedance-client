@@ -39,7 +39,7 @@ const RightNav = ({ open }) => {
         <Link to='/merchandising'>Merchandising</Link>
       </div>
       <div className="auth-list">
-        <Link>Sign Up</Link>
+        <Link to='/signup'>Sign Up</Link>
         <Link>Login</Link>
         <Link>Logout</Link>
       </div>

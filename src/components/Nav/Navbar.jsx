@@ -8,7 +8,7 @@ import '../../css/navbar.css'
 const Nav = styled.nav`
   background-color: rgb(177, 177, 177);
   width: 100%;
-  height: 55px;
+  height: 70px;
   border-bottom: 2px solid #f1f1f1;
   display: flex;
   justify-content: space-between;

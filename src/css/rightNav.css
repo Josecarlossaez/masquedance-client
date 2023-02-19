@@ -15,13 +15,28 @@
 }
 .nav-list  a{
     color: white;
-    padding:18px 10px;
+    padding:18px 20px;
     text-decoration: none;
+    transition: all 300ms ease-out;
 }
 .auth-list  a{
     color: white;
     padding:18px 10px;
     text-decoration: none;
+    transition: all 300ms ease-out;
+
+}
+.nav-list a:hover{
+    background-color: rgba(27,200,173,1);
+    transform: scale(1.15);
+    transition: all 300ms ease-in;
+    font-weight: bold;
+}
+.auth-list a:hover{
+    background-color: rgba(27,200,173,1);
+    transform: scale(1.15);
+    transition: all 300ms ease-in;
+    font-weight: bold;
 }
 @media screen and (max-width:1024px) {
    
