@@ -3,5 +3,5 @@
     width: 100%;
     min-height: 100vh;
     background: rgb(2,0,36);
-    background: linear-gradient(170deg, rgba(2,0,36,1) 33%, rgba(9,118,121,1) 83%, rgba(27,200,173,1) 100%);
+    background: linear-gradient(170deg, rgba(2,0,36,1) 72%, rgba(9,118,121,1) 90%, rgba(105,191,190,1) 100%); 
 }
