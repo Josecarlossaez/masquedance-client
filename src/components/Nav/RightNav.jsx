@@ -30,18 +30,21 @@ const Ul = styled.ul`
   }
 `;
 
-const RightNav = ({ open }) => {
+const RightNav = ( {open, changeStateBurger} ) => {
+  const handleChangeBurger = () =>{
+    changeStateBurger()
+  }
   return (
     <Ul open={open} className='links'>
       <div className="nav-list">
-        <Link to='/'  onClick={() => !open}>Home</Link>
+        <Link to='/'  onClick={handleChangeBurger}>Home</Link>
         <Link to='/about'>About Us</Link>
         <Link to='/records'>+QDance Records</Link>
         <Link to='/sesiones'>Sesiones</Link>
         <Link to='/merchandising'>Merchandising</Link>
       </div>
       <div className="auth-list">
-        <Link to='/signup'>Sign Up</Link>
+        <Link to='/signup' onClick={handleChangeBurger}>Sign Up</Link>
         <Link>Login</Link>
         <Link>Logout</Link>
       </div>

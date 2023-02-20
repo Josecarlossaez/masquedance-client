@@ -38,6 +38,9 @@ const StyledBurger = styled.div`
 
 const Burger = () => {
   const [open, setOpen] = useState(false)
+  const changeStateBurger = () =>{
+    setOpen(!open)
+  }
   
   return (
     <>
@@ -46,7 +49,7 @@ const Burger = () => {
         <div />
         <div />
       </StyledBurger>
-      <RightNav open={open}/>
+      <RightNav open={open} changeStateBurger={changeStateBurger}/>
     </>
   )
 }

@@ -51,4 +51,16 @@
     .auth-list{
         flex-direction: column;
     }
+    .nav-list a:hover{
+         background-color: none;
+         transform: none;
+         transition: none;
+         font-weight: none;
+    }
+    .auth-list a:hover{
+         background-color: none;
+         transform: none;
+         transition: none;
+         font-weight: none;
+    }
 }
