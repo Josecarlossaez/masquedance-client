@@ -6,7 +6,6 @@
   .form-container {
     display: flex;
     flex-direction: column;
-  
     width: 100%;
     align-items: center;
   }
@@ -14,10 +13,11 @@
   .form-container form {
     padding-top: 80px;
     width: 30%;
-    margin: 0 auto;
-    display: grid;
+    margin: 10px, auto;
+    /* display: grid;
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 16px; */
+    
   }
   
   .form-container form h3 {
@@ -37,7 +37,9 @@
   .input-container {
     position: relative;
     display: flex;
+    justify-content:right;
     flex-direction: column;
+    margin:10px 0px 10px 0px;
   }
   
   .input-container:focus-within label {
@@ -50,7 +52,7 @@
   }
   
   .input-container label {
-    position: absolute;
+    position:absolute;
     pointer-events: none;
     transform: translate(0, 23px) scale(1);
     transform-origin: top left;
@@ -79,4 +81,11 @@
   
   .input-container input:focus {
     box-shadow: none;
+  }
+
+  @media screen and (max-width:1024px) {
+    .form-container form {
+      width:70%;
+      
+    }
   }

@@ -41,6 +41,7 @@
 @media screen and (max-width:1024px) {
    
     .links{
+        
         padding-left: 0px;
         justify-content: flex-start;
     }

@@ -12,9 +12,10 @@ const Ul = styled.ul`
     padding: 18px 10px;
   }
   @media (max-width: 1024px) {
+    z-index:+1;
     flex-flow: column nowrap;
     background-color: #0d2538;
-    position: fixed;
+    position:fixed;
     transform: ${({ open }) => (open ? "translateX(0)" : "translateX(100%)")};
     top: 0;
     right: 0;
@@ -22,6 +23,7 @@ const Ul = styled.ul`
     width: 300px;
     padding-top: 3.5rem;
     transition: transform 0.3s ease-in-out;
+    opacity:0.9;
     li {
       color: #fff;
     }
@@ -32,7 +34,7 @@ const RightNav = ({ open }) => {
   return (
     <Ul open={open} className='links'>
       <div className="nav-list">
-        <Link to='/'>Home</Link>
+        <Link to='/'  onClick={() => !open}>Home</Link>
         <Link to='/about'>About Us</Link>
         <Link to='/records'>+QDance Records</Link>
         <Link to='/sesiones'>Sesiones</Link>

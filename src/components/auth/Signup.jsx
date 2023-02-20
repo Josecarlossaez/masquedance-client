@@ -81,7 +81,7 @@ function Signup() {
           <button
             type="submit"
             onClick={handleSignup}
-           className="general-btn-blue"
+           className="general-btn"
           >
             Register
           </button>
