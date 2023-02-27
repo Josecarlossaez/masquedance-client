@@ -1,8 +1,12 @@
 // RightNav
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import "../../css/rightNav.css";
+
+// Context
+import { AuthContext } from "../../context/auth.context.js";
+import { useContext } from "react"
 
 const Ul = styled.ul`
   list-style: none;
@@ -31,9 +35,16 @@ const Ul = styled.ul`
 `;
 
 const RightNav = ( {open, changeStateBurger} ) => {
+  const navigate = useNavigate();
+  const {authenticateUser, isLoggedIn} = useContext(AuthContext)
   const handleChangeBurger = () =>{
     changeStateBurger()
   }
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    authenticateUser();
+    navigate("/home");
+  };
   return (
     <Ul open={open} className='links'>
       <div className="nav-list">
@@ -45,8 +56,8 @@ const RightNav = ( {open, changeStateBurger} ) => {
       </div>
       <div className="auth-list">
         <Link to='/signup' onClick={handleChangeBurger}>Sign Up</Link>
-        <Link>Login</Link>
-        <Link>Logout</Link>
+        <Link to='/login' onClick={handleChangeBurger}>Login</Link>
+        <Link to='/' onClick={ handleLogout }>Logout</Link>
       </div>
     </Ul>
   );
