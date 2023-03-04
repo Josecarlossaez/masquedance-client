@@ -6,6 +6,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // Services
 import { createProductService } from "../../services/product.services"
+import { uploadPictureService } from "../../services/upload.services.js";
+
 
 // Utilities
 import Select from 'react-select';
@@ -38,6 +40,8 @@ function CreateProduct() {
    const [sizeInput, setSize] = useState("");
    const [descriptionInput, setDescription] = useState("");
    const [colorInput, setColorInput] = useState("")
+  const [pictureURL, setPictureUrl] = useState("");
+
  
  // errorMessages from BE
    const [errorMessage, setErrorMessage] = useState("");
@@ -47,7 +51,28 @@ function CreateProduct() {
    const handlePasswordChange = (e) => setDescription(e.target.value);
    const handleSizeChange = (e) => setSize(e.value);
    const handleColorChange = (e) => setColorInput(e.value);
-   console.log("colorInput",colorInput)
+    // Cloudinary is Loading
+  const [isLoadingPicture, setIsLoadingPicture] = useState(false);
+
+   const handlePictureChange = async (e) => {
+    // Cloudinary picture is Loading On
+    setIsLoadingPicture(true);
+
+    // upload the picture to cloudinary and receive the string for show the pic in the form
+    const sendObj = new FormData();
+    sendObj.append("picture", e.target.files[0]);
+
+    try {
+      const response = await uploadPictureService(sendObj);
+
+      setPictureUrl(response.data.picture);
+      // Cloudinary picture is Loading Off
+      setIsLoadingPicture(false);
+    } catch (error) {
+      navigate("/error");
+    }
+  };
+   
 
  
  // Send the input values to BE
@@ -59,7 +84,8 @@ function CreateProduct() {
        price: priceInput,
        description: descriptionInput,
        size: sizeInput,
-       color: colorInput
+       color: colorInput,
+       picture: pictureURL,
      
      };
  
@@ -139,7 +165,23 @@ function CreateProduct() {
           </div>
           </div>
 
-         
+          <div className="uploader-pic">
+            <input onChange={handlePictureChange} type="file" name="picture" />
+            <label htmlFor="picture">Team Picture</label>
+          </div>
+          {isLoadingPicture === true && <p>...loading picture</p>}
+          {/* Show the upload picture in this form */}
+          {pictureURL !== "" ? (
+            <img
+              src={pictureURL}
+              alt="yourPic"
+              width={200}
+              className="uploader-img"
+            />
+          ) : (
+            <p> [ No Picture Selected ]</p>
+          )}
+        
 
           <button
             type="submit"
