@@ -53,6 +53,7 @@ const RightNav = ( {open, changeStateBurger} ) => {
         <Link to='/records'>+QDance Records</Link>
         <Link to='/sesiones'>Sesiones</Link>
         <Link to='/merchandising'>Merchandising</Link>
+        <Link to='/admin'>Admin</Link>
       </div>
       <div className="auth-list">
         <Link to='/signup' onClick={handleChangeBurger}>Sign Up</Link>
