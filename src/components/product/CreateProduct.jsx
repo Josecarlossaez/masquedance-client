@@ -6,13 +6,38 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // Services
 import { createProductService } from "../../services/product.services"
+
+// Utilities
+import Select from 'react-select';
+
+const sizeOptions = [
+  {value: 'S', label: 'S'},
+  {value: 'M', label: 'M'},
+  {value: 'L', label: 'L'},
+  {value: 'XL', label: 'XL'},
+  {value: 'XXL', label: 'XXL'},
+  
+]
+
+const colorOptions = [
+  {value: 'amarillo', label: 'amarillo'},
+  {value: 'azul', label: 'azul'},
+  {value: 'blanco', label: 'blanco'},
+  {value: 'negro', label: 'negro'},
+  {value: 'verde', label: 'verde'},
+  
+]
+
+
 function CreateProduct() {
   const navigate = useNavigate();
 
   // input values
    const [nameInput, setUsername] = useState("");
    const [priceInput, setPrice] = useState("");
+   const [sizeInput, setSize] = useState("");
    const [descriptionInput, setDescription] = useState("");
+   const [colorInput, setColorInput] = useState("")
  
  // errorMessages from BE
    const [errorMessage, setErrorMessage] = useState("");
@@ -20,21 +45,27 @@ function CreateProduct() {
    const handleNameChange = (e) => setUsername(e.target.value);
    const handlePriceChange = (e) => setPrice(e.target.value);
    const handlePasswordChange = (e) => setDescription(e.target.value);
+   const handleSizeChange = (e) => setSize(e.value);
+   const handleColorChange = (e) => setColorInput(e.value);
+   console.log("colorInput",colorInput)
+
  
  // Send the input values to BE
-   const handleSignup = async (e) => {
+   const handleCreateProduct = async (e) => {
      e.preventDefault();
  
      const newProduct = {
        name: nameInput,
        price: priceInput,
-       description: descriptionInput
+       description: descriptionInput,
+       size: sizeInput,
+       color: colorInput
      
      };
  
      try {
        await createProductService(newProduct);
-       navigate("/login");
+       navigate("/");
      } catch (error) {
        if (
          (error.response && error.response.status === 406) ||
@@ -68,22 +99,54 @@ function CreateProduct() {
           <div className="input-container">
             <input
               value={descriptionInput}
-              type="password"
               onChange={handlePasswordChange}
             />
             <label className={descriptionInput && "filled"} htmlFor="password">
               Description
             </label>
+          <div className="input-container">
+            <div className="select-size">
+            <div className='name-select'>
+              <h4>Talla</h4>
+            </div>
+            <div className='select-input'>
+               <Select 
+              defaultValue={sizeInput}
+              onChange={handleSizeChange}
+              options={sizeOptions}
+            />
+            </div>
+
+            </div>
+           
+          </div>
+
+          <div className="input-container">
+            <div className="select-size">
+            <div className='name-select'>
+              <h4>Color</h4>
+            </div>
+            <div className='select-input'>
+               <Select 
+              defaultValue={colorInput}
+              onChange={handleColorChange}
+              options={colorOptions}
+            />
+            </div>
+
+            </div>
+           
+          </div>
           </div>
 
          
 
           <button
             type="submit"
-            onClick={handleSignup}
+            onClick={handleCreateProduct}
            className="general-btn"
           >
-            Register
+            Crear Producto
           </button>
           {errorMessage !== "" && (
             <p className="error-message"> * {errorMessage}</p>

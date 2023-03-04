@@ -36,7 +36,7 @@ const Ul = styled.ul`
 
 const RightNav = ( {open, changeStateBurger} ) => {
   const navigate = useNavigate();
-  const {authenticateUser, isLoggedIn} = useContext(AuthContext)
+  const {authenticateUser, isLoggedIn, user} = useContext(AuthContext)
   const handleChangeBurger = () =>{
     changeStateBurger()
   }
@@ -53,12 +53,14 @@ const RightNav = ( {open, changeStateBurger} ) => {
         <Link to='/records'>+QDance Records</Link>
         <Link to='/sesiones'>Sesiones</Link>
         <Link to='/merchandising'>Merchandising</Link>
-        <Link to='/admin'>Admin</Link>
+        {user?.user.role === "admin" && <Link to='/admin'>Admin</Link>}
+        
       </div>
       <div className="auth-list">
         <Link to='/signup' onClick={handleChangeBurger}>Sign Up</Link>
         <Link to='/login' onClick={handleChangeBurger}>Login</Link>
-        <Link to='/' onClick={ handleLogout }>Logout</Link>
+        {isLoggedIn && <Link to='/' onClick={ handleLogout }>Logout</Link>}
+        
       </div>
     </Ul>
   );

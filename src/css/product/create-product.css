@@ -89,3 +89,18 @@
       
     }
   }
+
+  /* -------------  Select Size --------------*/
+.select-size{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.select-input{
+  width: 80%;
+
+}
+
+.name-select{
+  margin:20px;
+}
