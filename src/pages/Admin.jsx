@@ -14,8 +14,9 @@ import { useMediaQuery } from "react-responsive";
 // Components
 import CreateProduct from "../components/product/CreateProduct";
 import CreateTrack from "../components/track/CreateTrack";
+import CreateDj from "../components/dj/CreateDj";
 // Axios Services
-import {createProductService} from '../services/product.services'
+import {createProductService} from '../services/product.services';
 
 
 
@@ -26,6 +27,7 @@ function Admin() {
     //  States to components
     const [createProduct, setCreateProduct] = useState(false)
     const [createTrack, setCreateTrack] = useState(false)
+    const [createDj, setCreateDj] = useState(false)
      
     // Toogle components
     const handleCreateProduct = () =>{
@@ -37,6 +39,11 @@ function Admin() {
       setCreateProduct(false)
       setCreateTrack(true)
     } 
+    const handleCreateDj = () =>{
+      setCreateProduct(false)
+      setCreateTrack(false)
+      setCreateDj(true)
+   }
 
   return (
     <div>
@@ -50,7 +57,7 @@ function Admin() {
         </HashLink>
 
         <HashLink smooth to="#profile-components">
-          <button className="hash-button">Crear DJ</button>
+          <button onClick={handleCreateDj} className="hash-button">Crear DJ</button>
         </HashLink>
 
         <HashLink smooth to="#profile-components">
@@ -66,6 +73,7 @@ function Admin() {
         {/* Create Product component */}
        {createProduct && <CreateProduct/>}
        {createTrack && <CreateTrack/>}
+       {createDj && <CreateDj/>}
       </div>
 
     </div>

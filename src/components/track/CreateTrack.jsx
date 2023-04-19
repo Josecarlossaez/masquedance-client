@@ -11,16 +11,18 @@ import { useNavigate } from "react-router-dom";
 // Utilities
 import Select from 'react-select'
 
-const djOptions = [
-    {value: 'dj Duchi', label: 'dj Duchi'},
-    {value: 'dj Alfre', label: 'dj Alfre'},
-    {value: 'dj Mio', label: 'dj Mio'},
-    
-    
-  ]
+
 
 function CreateTrack() {
     const navigate = useNavigate();
+
+    const djOptions = [
+      {value: 'dj Duchi', label: 'dj Duchi'},
+      {value: 'dj Alfre', label: 'dj Alfre'},
+      {value: 'dj Mio', label: 'dj Mio'},
+      
+      
+    ]
 
   // input values
    const [titleInput, setTitle] = useState("");
