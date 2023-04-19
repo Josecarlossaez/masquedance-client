@@ -35,7 +35,7 @@ function CreateProduct() {
   const navigate = useNavigate();
 
   // input values
-   const [nameInput, setUsername] = useState("");
+   const [nameInput, setName] = useState("");
    const [priceInput, setPrice] = useState("");
    const [sizeInput, setSize] = useState("");
    const [descriptionInput, setDescription] = useState("");
@@ -45,10 +45,10 @@ function CreateProduct() {
  
  // errorMessages from BE
    const [errorMessage, setErrorMessage] = useState("");
- // Takes user info
-   const handleNameChange = (e) => setUsername(e.target.value);
+ // Takes product info
+   const handleNameChange = (e) => setName(e.target.value);
    const handlePriceChange = (e) => setPrice(e.target.value);
-   const handlePasswordChange = (e) => setDescription(e.target.value);
+   const handleDescriptionChange = (e) => setDescription(e.target.value);
    const handleSizeChange = (e) => setSize(e.value);
    const handleColorChange = (e) => setColorInput(e.value);
     // Cloudinary is Loading
@@ -125,9 +125,9 @@ function CreateProduct() {
           <div className="input-container">
             <input
               value={descriptionInput}
-              onChange={handlePasswordChange}
+              onChange={handleDescriptionChange}
             />
-            <label className={descriptionInput && "filled"} htmlFor="password">
+            <label className={descriptionInput && "filled"} htmlFor="description">
               Description
             </label>
           <div className="input-container">
@@ -167,7 +167,7 @@ function CreateProduct() {
 
           <div className="uploader-pic">
             <input onChange={handlePictureChange} type="file" name="picture" />
-            <label htmlFor="picture">Team Picture</label>
+            <label htmlFor="picture">Product Picture</label>
           </div>
           {isLoadingPicture === true && <p>...loading picture</p>}
           {/* Show the upload picture in this form */}
