@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 // CSS
 import "../../css/product/create-product.css"
 // Services
 import { createTrackService } from "../../services/track.services.js"
 import { uploadPictureService } from "../../services/upload.services"
+import { listDjService } from '../../services/dj.services'
 // React
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -20,8 +21,6 @@ function CreateTrack() {
       {value: 'dj Duchi', label: 'dj Duchi'},
       {value: 'dj Alfre', label: 'dj Alfre'},
       {value: 'dj Mio', label: 'dj Mio'},
-      
-      
     ]
 
   // input values
@@ -29,12 +28,35 @@ function CreateTrack() {
    const [djInput, setDj] = useState("");
   const [audioURL, setAudioUrl] = useState("");
 
+  // Data
+  const [listDj, setListDj] = useState()
+
  
  // errorMessages from BE
    const [errorMessage, setErrorMessage] = useState("");
+       
+    useEffect(() => {
+      getData()
+    }, [])
+    
+    const getData = async () => {
+      try {
+        const responseListDj = await listDjService()
+        console.log("responseListDj", responseListDj)
+          setListDj(responseListDj.data)
+          
+      } catch (error) {
+        navigate("/error")
+      }
+      
+    }
+    
+  
+
+
  // Takes user info
    const handleTitleChange = (e) => setTitle(e.target.value);
-   const handleDjChange = (e) => setDj(e.value);
+   const handleDjChange = async (e) => setDj(e.target.value);
 
 
     // Cloudinary is Loading
@@ -88,6 +110,8 @@ function CreateTrack() {
        }
      }
    };
+
+   
   return (
     <section className="general-container">
     <div className="form-container">
@@ -107,11 +131,13 @@ function CreateTrack() {
             <h4>DJ</h4>
           </div>
           <div className='select-input'>
-             <Select 
-            defaultValue={djInput}
-            onChange={handleDjChange}
-            options={djOptions}
-          />
+          <select onChange={handleDjChange}>
+              {listDj?.map((opt) => (
+                <option key={opt._id} value={opt._id}>
+                  {opt.name}
+                </option>
+              ))};
+            </select>
           </div>
 
           </div>
