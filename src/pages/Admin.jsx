@@ -38,6 +38,8 @@ function Admin() {
     const handleCreateTrack = () =>{
       setCreateProduct(false)
       setCreateTrack(true)
+      setCreateDj(false)
+
     } 
     const handleCreateDj = () =>{
       setCreateProduct(false)

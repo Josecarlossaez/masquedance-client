@@ -26,7 +26,7 @@ function CreateTrack() {
   // input values
    const [titleInput, setTitle] = useState("");
    const [djInput, setDj] = useState("");
-  const [audioURL, setAudioUrl] = useState("");
+  const [audioURL, setAudioUrl] = useState();
 
   // Data
   const [listDj, setListDj] = useState()
@@ -57,29 +57,11 @@ function CreateTrack() {
  // Takes user info
    const handleTitleChange = (e) => setTitle(e.target.value);
    const handleDjChange = async (e) => setDj(e.target.value);
+   const handleAudioChange =  (e) => setAudioUrl(e.target.files[0])
+  
 
+     console.log("audioUrl", audioURL)
 
-    // Cloudinary is Loading
-  const [isLoadingPicture, setIsLoadingPicture] = useState(false);
-
-   const handlePictureChange = async (e) => {
-    // Cloudinary picture is Loading On
-    setIsLoadingPicture(true);
-
-    // upload the picture to cloudinary and receive the string for show the pic in the form
-    const sendObj = new FormData();
-    sendObj.append("picture", e.target.files[0]);
-
-    try {
-      const response = await uploadPictureService(sendObj);
-
-      setAudioUrl(response.data.picture);
-      // Cloudinary picture is Loading Off
-      setIsLoadingPicture(false);
-    } catch (error) {
-      navigate("/error");
-    }
-  };
    
 
  
@@ -146,22 +128,11 @@ function CreateTrack() {
 
       
 
-        <div className="uploader-pic">
-          <input onChange={handlePictureChange} type="file" name="audio" />
+        <div >
+          <input onChange={handleAudioChange} type="file" name="audio" accept= ".mp3, .mpeg .wav" />
           <label htmlFor="audio">Track</label>
         </div>
-        {isLoadingPicture === true && <p>...loading audio</p>}
-        {/* Show the upload picture in this form */}
-        {audioURL !== "" ? (
-          <img
-            src={audioURL}
-            alt="yourPic"
-            width={200}
-            className="uploader-img"
-          />
-        ) : (
-          <p> [ No Picture Selected ]</p>
-        )}
+       
       
 
         <button
