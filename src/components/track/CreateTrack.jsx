@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import "../../css/product/create-product.css"
 // Services
 import { createTrackService } from "../../services/track.services.js"
-import { uploadPictureService } from "../../services/upload.services"
+import { uploadAudioService } from "../../services/upload.services"
 import { listDjService } from '../../services/dj.services'
 // React
 import { useState } from "react";
@@ -17,16 +17,11 @@ import Select from 'react-select'
 function CreateTrack() {
     const navigate = useNavigate();
 
-    const djOptions = [
-      {value: 'dj Duchi', label: 'dj Duchi'},
-      {value: 'dj Alfre', label: 'dj Alfre'},
-      {value: 'dj Mio', label: 'dj Mio'},
-    ]
 
   // input values
    const [titleInput, setTitle] = useState("");
    const [djInput, setDj] = useState("");
-  const [audioURL, setAudioUrl] = useState();
+   const [audioURL, setAudioUrl] = useState();
 
   // Data
   const [listDj, setListDj] = useState()
@@ -57,7 +52,26 @@ function CreateTrack() {
  // Takes user info
    const handleTitleChange = (e) => setTitle(e.target.value);
    const handleDjChange = async (e) => setDj(e.target.value);
-   const handleAudioChange =  (e) => setAudioUrl(e.target.files[0])
+
+   // CLOUDINARY IS LOADING
+   const [isLoadingAudio, setIsLoadingAudio] = useState(false)
+   const handleAudioChange =  async (e) => {
+    // Cloudinary audio is loading on
+     setIsLoadingAudio(true)
+
+     // upload the audio to cloudinary and receive the string for show the pic in the Form
+     const sendObjAudio = new FormData()
+     sendObjAudio.append("audio", e.target.files[0]);
+
+     try {
+       const response = await uploadAudioService(sendObjAudio);
+       setAudioUrl(response.data.audio);
+       // cloudinary audio is loading off
+       setIsLoadingAudio(false)
+     } catch (error) {
+      navigate("/error")
+     }
+   }
   
 
      console.log("audioUrl", audioURL)
@@ -128,10 +142,25 @@ function CreateTrack() {
 
       
 
-        <div >
+        <div className="uploader-pic">
           <input onChange={handleAudioChange} type="file" name="audio" accept= ".mp3, .mpeg .wav" />
           <label htmlFor="audio">Track</label>
         </div>
+          {isLoadingAudio === true && <p>...loading audio</p>}
+          {/* Show the upload picture in this form */}
+          {audioURL !== "" ? (
+            <img
+              src={audioURL}
+              alt="yourPic"
+              width={200}
+              className="uploader-img"
+            />
+          ) : (
+            <p> [ No Audio Selected ]</p>
+          )}
+
+
+        
        
       
 
