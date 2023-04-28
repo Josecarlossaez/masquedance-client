@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import "../../css/product/create-product.css"
 // Services
 import { createTrackService } from "../../services/track.services.js"
-import { uploadAudioService } from "../../services/upload.services"
+import { uploadAudioService, uploadPictureService } from "../../services/upload.services"
 import { listDjService } from '../../services/dj.services'
 // React
 import { useState } from "react";
@@ -22,6 +22,8 @@ function CreateTrack() {
    const [titleInput, setTitle] = useState("");
    const [djInput, setDj] = useState("");
    const [audioURL, setAudioUrl] = useState();
+  const [pictureURL, setPictureUrl] = useState("");
+
 
   // Data
   const [listDj, setListDj] = useState()
@@ -72,6 +74,28 @@ function CreateTrack() {
       navigate("/error")
      }
    }
+
+     // Cloudinary is Loading
+  const [isLoadingPicture, setIsLoadingPicture] = useState(false);
+
+  const handlePictureChange = async (e) => {
+   // Cloudinary picture is Loading On
+   setIsLoadingPicture(true);
+
+   // upload the picture to cloudinary and receive the string for show the pic in the form
+   const sendObj = new FormData();
+   sendObj.append("picture", e.target.files[0]);
+
+   try {
+     const response = await uploadPictureService(sendObj);
+
+     setPictureUrl(response.data.picture);
+     // Cloudinary picture is Loading Off
+     setIsLoadingPicture(false);
+   } catch (error) {
+     navigate("/error");
+   }
+ };
   
 
      console.log("audioUrl", audioURL)
@@ -86,7 +110,7 @@ function CreateTrack() {
      const newTrack = {
        title: titleInput,
        audio: audioURL,
-       
+       picture: pictureURL,
        dj: djInput,
      
      
@@ -158,6 +182,25 @@ function CreateTrack() {
           ) : (
             <p> [ No Audio Selected ]</p>
           )}
+
+
+          <div className="uploader-pic">
+            <input onChange={handlePictureChange} type="file" name="picture" />
+            <label htmlFor="picture">Product Picture</label>
+          </div>
+          {isLoadingPicture === true && <p>...loading picture</p>}
+          {/* Show the upload picture in this form */}
+          {pictureURL !== "" ? (
+            <img
+              src={pictureURL}
+              alt="yourPic"
+              width={200}
+              className="uploader-img"
+            />
+          ) : (
+            <p> [ No Picture Selected ]</p>
+          )}
+        
 
 
         
