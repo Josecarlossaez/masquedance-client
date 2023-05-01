@@ -41,6 +41,7 @@ function CreateProduct() {
    const [descriptionInput, setDescription] = useState("");
    const [colorInput, setColorInput] = useState("")
   const [pictureURL, setPictureUrl] = useState("");
+  const [cantidadInput, setCantidad] = useState("")
 
  
  // errorMessages from BE
@@ -48,6 +49,7 @@ function CreateProduct() {
  // Takes product info
    const handleNameChange = (e) => setName(e.target.value);
    const handlePriceChange = (e) => setPrice(e.target.value);
+   const handleCantidadChange = (e) => setCantidad(e.target.value);
    const handleDescriptionChange = (e) => setDescription(e.target.value);
    const handleSizeChange = (e) => setSize(e.value);
    const handleColorChange = (e) => setColorInput(e.value);
@@ -86,6 +88,7 @@ function CreateProduct() {
        size: sizeInput,
        color: colorInput,
        picture: pictureURL,
+       cantidad: cantidadInput,
      
      };
  
@@ -120,6 +123,12 @@ function CreateProduct() {
             <input value={priceInput} onChange={handlePriceChange} />
             <label className={priceInput && "filled"} htmlFor="price">
               Price
+            </label>
+          </div>
+          <div className="input-container">
+            <input value={cantidadInput} onChange={handleCantidadChange} />
+            <label className={cantidadInput && "filled"} htmlFor="name">
+              Cantidad
             </label>
           </div>
           <div className="input-container">
