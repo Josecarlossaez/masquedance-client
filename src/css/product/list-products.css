@@ -1,0 +1,22 @@
+
+.products-container{
+    border: 2px solid red;
+    width:80%;
+    margin: auto;
+    display:flex;
+    justify-content: center;;
+    /* flex-direction: column; */
+}
+
+.product-box{
+    width: 25%;
+    height: 400px;
+    margin: 10px;
+    border: 2px solid blue;
+    display:flex;
+    
+}
+.image-product{
+
+
+}

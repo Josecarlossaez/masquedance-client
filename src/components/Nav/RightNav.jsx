@@ -52,7 +52,7 @@ const RightNav = ( {open, changeStateBurger} ) => {
         <Link to='/about'>About Us</Link>
         <Link to='/records'>+QDance Records</Link>
         <Link to='/sesiones'>Sesiones</Link>
-        <Link to='/merchandising'>Merchandising</Link>
+        <Link to='/list-products'>Merchandising</Link>
         {user?.user.role === "admin" && <Link to='/admin'>Admin</Link>}
         
       </div>
