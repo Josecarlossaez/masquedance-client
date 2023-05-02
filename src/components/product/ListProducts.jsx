@@ -4,7 +4,7 @@ import "../../css/product/list-products.css"
 
 // React
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 
 // Services
 
@@ -50,16 +50,20 @@ const getData = async () => {
       {
         listProduct.map((eachProduct) => {
             return(
+
+                <Link to={`/product/${eachProduct._id}/details`} className='link-box'>
                 <div className='product-box' key={eachProduct._id}>
-                <div>
-                <img src={eachProduct.picture} alt="picture" className='image-product'/>
+                
+                <div  className='image-product'>
+                <img src={eachProduct.picture} alt="picture"/>
                 </div>
-                <div>
+                <div className='product-text'>
                  <h3>{eachProduct.name}</h3>
-                 <h4>{eachProduct.description}</h4>
+                 {/* <h4>{eachProduct.description}</h4> */}
                  <h4>{eachProduct.price}€</h4>
                 </div>
                 </div>
+                </Link>
             )
         })
       }

@@ -10,6 +10,7 @@ import Admin from './pages/Admin';
 import CreateTrack from './components/track/CreateTrack';
 import CreateDj from './components/dj/CreateDj';
 import ListProducts from './components/product/ListProducts';
+import DetailsProduct from './components/product/DetailsProduct';
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
       <Route path='/admin' element= {<Admin/>}/>
       <Route path='/create-dj' element= {<CreateDj/>}/>
       <Route path='/list-products' element= {<ListProducts/>}/>
+      <Route path='/product/:productId/details' element= {<DetailsProduct/>}/>
+      
+
 
     </Routes>
     
