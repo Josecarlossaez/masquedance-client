@@ -51,8 +51,8 @@ const getData = async () => {
         listProduct.map((eachProduct) => {
             return(
 
-                <Link to={`/product/${eachProduct._id}/details`} className='link-box'>
-                <div className='product-box' key={eachProduct._id}>
+                <Link to={`/product/${eachProduct._id}/details`} className='link-box'key={eachProduct._id}>
+                <div className='product-box' >
                 
                 <div  className='image-product'>
                 <img src={eachProduct.picture} alt="picture"/>

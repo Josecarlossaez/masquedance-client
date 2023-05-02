@@ -1,0 +1,39 @@
+.details-container{
+    border: solid 2px red;
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    height: 400px;
+}
+
+.details-image{
+    border: solid 2px green;
+    width: 30%;
+    margin: 30px;
+}
+.details-info{
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    align-content: center;
+    flex-direction: column;
+}
+.details-sizeList{
+    display: flex;
+    gap:5px;
+}
+.sizes{
+    cursor: pointer;
+    border:solid 2px black;
+    border-radius: 3px;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.sizes h1{
+    font-family: 'Courier New', Courier, monospace;
+}
