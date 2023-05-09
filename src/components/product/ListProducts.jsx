@@ -49,13 +49,13 @@ const getData = async () => {
    <div className='products-container'>
       {
         listProduct.map((eachProduct) => {
+          if(eachProduct.reference === true){
             return(
-
-                <Link to={`/product/${eachProduct._id}/details`} className='link-box'key={eachProduct._id}>
+              <Link to={`/product/${eachProduct._id}/details`} className='link-box'key={eachProduct._id}>
                 <div className='product-box' >
                 
                 <div  className='image-product'>
-                <img src={eachProduct.picture} alt="picture"/>
+                <img src={eachProduct.picture} alt="pict"/>
                 </div>
                 <div className='product-text'>
                  <h3>{eachProduct.name}</h3>
@@ -65,6 +65,8 @@ const getData = async () => {
                 </div>
                 </Link>
             )
+          }
+          
         })
       }
 

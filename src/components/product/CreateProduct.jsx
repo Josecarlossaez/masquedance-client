@@ -29,6 +29,11 @@ const colorOptions = [
   {value: 'verde', label: 'verde'},
   
 ]
+const referenceOptions = [
+  {value: 'true', label: 'true'},
+  {value: 'false', label: 'false'},
+
+]
 
 
 function CreateProduct() {
@@ -57,6 +62,7 @@ function CreateProduct() {
   const handleCantidadChange = (e) => setCantidad(e.target.value);
 
   const handleColorChange = (e) => setColorInput(e.value);
+  const handleReferenceChange = (e) => setReference(e.value);
   
 
     // Cloudinary is Loading
@@ -145,7 +151,7 @@ function CreateProduct() {
           </div>
           <div className="input-container">
             <input
-              value={descriptionInput}
+              value={cantidadInput}
               onChange={handleCantidadChange}
             />
             
@@ -180,6 +186,22 @@ function CreateProduct() {
               defaultValue={colorInput}
               onChange={handleColorChange}
               options={colorOptions}
+            />
+            </div>
+
+            </div>
+           
+          </div>
+          <div className="input-container">
+            <div className="select-size">
+            <div className='name-select'>
+              <h4>Referencia</h4>
+            </div>
+            <div className='select-input'>
+               <Select 
+              defaultValue={referenceInput}
+              onChange={handleReferenceChange}
+              options={referenceOptions}
             />
             </div>
 
