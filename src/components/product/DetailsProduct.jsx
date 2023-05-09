@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { useNavigate, useParams, Link } from "react-router-dom";
 // Services
-import { detailsProductService } from '../../services/product.services';
+import { detailsProductService, listProductService } from '../../services/product.services';
 
 function DetailsProduct() {
 
@@ -15,8 +15,19 @@ function DetailsProduct() {
  // States
  const [productDetails, setProductDetails] = useState()
  const [isFetching, setIsFetching ] = useState(true)
+ const [listProduct, setListProduct] = useState()
+
+ // States to check the sizes availables of this product
+const [sizeS, setSizeS] = useState(false)
+const [sizeM, setSizeM] = useState(false)
+const [sizeL, setSizeL] = useState(false)
+const [sizeXL, setSizeXL] = useState(false)
+const [sizeXXL, setSizeXXL] = useState(false)
+ // States to add object to Cart
  const [cantidad, setCantidad] = useState(1)
-  console.log("productDetails",productDetails);
+ const [sizeSelected, setSizeSelected] = useState()
+
+
  useEffect(() => {
     getData();
   }, []);
@@ -24,21 +35,32 @@ function DetailsProduct() {
   const getData = async () => {
     try {
       const details = await detailsProductService(productId);
+      const responseListProduct = await listProductService()
 
       setProductDetails(details.data);
+      setListProduct(responseListProduct.data)
+
       setIsFetching(false);
     } catch (error) {
       navigate("/error");
     }
   };
+  console.log("lisProduct", listProduct);
 
    // Select quantity
   const handleCantidad = (e) => setCantidad(e.target.value);
-   
+//   const handleSizeSelected = (e) = setSizeSelected(e.target.value)  
 
-  if (isFetching === true) {
-    return <h3>...Loading</h3>;
-  }
+// Function to check availables Sizes in the same product.
+  const filteredListProduct = listProduct?.filter(product => product.name === productDetails.name)
+ 
+
+
+   
+ if(isFetching === true){
+  return <p>LOading...</p>
+ }
+
   
 
   return (
@@ -48,7 +70,7 @@ function DetailsProduct() {
       </div>
       <div className='details-container'>
       <div className='details-image'>
-        <img src={productDetails.picture} alt="" />
+        <img src={productDetails?.picture} alt="" />
       </div>
       <div className='details-data'>
          <div className='details-info'>
