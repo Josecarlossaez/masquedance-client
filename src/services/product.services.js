@@ -14,7 +14,7 @@ const createProductService = (newProduct) => {
 };
 
 const updateProductService = (productId, productUpdate) => {
-    return service.patch(`/product/${productId}/update`)
+    return service.patch(`/product/${productId}/update`, productUpdate)
 };
 
 const deleteProductService = (productId) => {
