@@ -12,8 +12,8 @@ const createDjService = (newDj) => {
     return service.post("/dj/create", newDj)
 }
 
-const updateDjService = (djId) => {
-    return service.patch(`/dj/${djId}/update`)
+const updateDjService = (djId, djUpdate) => {
+    return service.patch(`/dj/${djId}/update`, djUpdate)
 }
 
 const deleteDjService = (djId) => {

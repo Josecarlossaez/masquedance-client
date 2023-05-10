@@ -11,6 +11,8 @@ import CreateTrack from './components/track/CreateTrack';
 import CreateDj from './components/dj/CreateDj';
 import ListProducts from './components/product/ListProducts';
 import DetailsProduct from './components/product/DetailsProduct';
+import Colections from './pages/Colections';
+import ColectionDetails from './components/Colection/ColectionDetails';
 
 function App() {
   return (
@@ -24,8 +26,8 @@ function App() {
       <Route path='/create-track' element= {<CreateTrack/>}/>
       <Route path='/admin' element= {<Admin/>}/>
       <Route path='/create-dj' element= {<CreateDj/>}/>
-      <Route path='/list-products' element= {<ListProducts/>}/>
-      <Route path='/product/:productId/details' element= {<DetailsProduct/>}/>
+      <Route path='/list-colections' element= {<Colections/>}/>
+      <Route path='/colection/:colectionId/details' element= {<ColectionDetails/>}/>
       
 
 
