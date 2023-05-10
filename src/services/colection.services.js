@@ -8,7 +8,7 @@ const detailsColectionService = (colectionId) => {
     return service.get(`colection/${colectionId}/details`)
 }
 
-const createColection = (newColection) => {
+const createColectionService = (newColection) => {
     return service.post("/colection/create", newColection)
 }
 
@@ -23,7 +23,7 @@ const deleteColection = (colectionId) => {
 export{
     listColectionService,
     detailsColectionService,
-    createColection,
+    createColectionService,
     updateColectionService,
     deleteColection
 }

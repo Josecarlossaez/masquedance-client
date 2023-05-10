@@ -17,6 +17,7 @@ import CreateTrack from "../components/track/CreateTrack";
 import CreateDj from "../components/dj/CreateDj";
 // Axios Services
 import {createProductService} from '../services/product.services';
+import CreateColection from "../components/Colection/CreateColection";
 
 
 
@@ -28,30 +29,47 @@ function Admin() {
     const [createProduct, setCreateProduct] = useState(false)
     const [createTrack, setCreateTrack] = useState(false)
     const [createDj, setCreateDj] = useState(false)
+    const [createColection, setCreateColection] = useState(false)
      
     // Toogle components
     const handleCreateProduct = () =>{
-        setCreateProduct(true)
-        setCreateTrack(false)
+      setCreateProduct(true)
+      setCreateTrack(false)
+      setCreateColection(false)
+
      }
     
     const handleCreateTrack = () =>{
       setCreateProduct(false)
       setCreateTrack(true)
       setCreateDj(false)
+      setCreateColection(false)
+
 
     } 
     const handleCreateDj = () =>{
       setCreateProduct(false)
       setCreateTrack(false)
       setCreateDj(true)
+      setCreateColection(false)
+
    }
+    const handleCreateColection = () =>{
+      setCreateProduct(false)
+      setCreateTrack(false)
+      setCreateDj(false)
+      setCreateColection(true)
+ }
+
 
   return (
     <div>
       <div className="button-container">
         <HashLink smooth to="#admin-components">
           <button onClick={handleCreateProduct} className="hash-button">Crear Producto</button>
+        </HashLink>
+        <HashLink smooth to="#admin-components">
+          <button onClick={handleCreateColection} className="hash-button">Crear Colección</button>
         </HashLink>
 
         <HashLink smooth to="#profile-components">
@@ -74,6 +92,7 @@ function Admin() {
       <div   id={activeHashlink &&'admin-components'}>
         {/* Create Product component */}
        {createProduct && <CreateProduct/>}
+       {createColection && <CreateColection/>}
        {createTrack && <CreateTrack/>}
        {createDj && <CreateDj/>}
       </div>

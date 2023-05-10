@@ -9,8 +9,6 @@ import { listDjService } from '../../services/dj.services'
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Utilities
-import Select from 'react-select'
 
 
 
@@ -51,7 +49,7 @@ function CreateTrack() {
   
 
 
- // Takes user info
+ // Takes track info
    const handleTitleChange = (e) => setTitle(e.target.value);
    const handleDjChange = async (e) => setDj(e.target.value);
 
