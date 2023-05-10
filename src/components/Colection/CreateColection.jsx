@@ -89,8 +89,8 @@ const handleSizeChange = (e) => setPriceInput(e.target.value)
         </div>
         <div className="input-container">
           <input value={priceInput} onChange={handleSizeChange} />
-          <label className={priceInput && "filled"} htmlFor="name">
-            Name
+          <label className={priceInput && "filled"} htmlFor="price">
+            Price
           </label>
         </div>
 

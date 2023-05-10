@@ -18,6 +18,7 @@ import CreateDj from "../components/dj/CreateDj";
 // Axios Services
 import {createProductService} from '../services/product.services';
 import CreateColection from "../components/Colection/CreateColection";
+import ListProducts from "../components/product/ListProducts";
 
 
 
@@ -30,6 +31,7 @@ function Admin() {
     const [createTrack, setCreateTrack] = useState(false)
     const [createDj, setCreateDj] = useState(false)
     const [createColection, setCreateColection] = useState(false)
+    const [listProduct, setlistProduct] = useState(false)
      
     // Toogle components
     const handleCreateProduct = () =>{
@@ -60,14 +62,26 @@ function Admin() {
       setCreateDj(false)
       setCreateColection(true)
  }
+    const handleListProduct = () => {
+      setlistProduct(true)
+      setCreateProduct(false)
+      setCreateTrack(false)
+      setCreateDj(false)
+      setCreateColection(false)
+    }
 
 
   return (
     <div>
       <div className="button-container">
         <HashLink smooth to="#admin-components">
+          <button onClick={handleListProduct} className="hash-button">Productos</button>
+        </HashLink>
+
+        <HashLink smooth to="#admin-components">
           <button onClick={handleCreateProduct} className="hash-button">Crear Producto</button>
         </HashLink>
+
         <HashLink smooth to="#admin-components">
           <button onClick={handleCreateColection} className="hash-button">Crear Colección</button>
         </HashLink>
@@ -91,6 +105,7 @@ function Admin() {
       </div>
       <div   id={activeHashlink &&'admin-components'}>
         {/* Create Product component */}
+       {listProduct && <ListProducts/>}
        {createProduct && <CreateProduct/>}
        {createColection && <CreateColection/>}
        {createTrack && <CreateTrack/>}

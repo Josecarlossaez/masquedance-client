@@ -52,15 +52,14 @@ if(isFetching === true) {
     
     <div>
 
-      <h1>list product</h1>
+      <h1>MERCHANDISING</h1>
     </div>
    <div className='products-container'>
       {
         listColection.map((eachColection) => {
           
             return(
-              <div>
-              <div>
+              
                 <Link to={`/colection/${eachColection._id}/details`} className='link-box'key={eachColection._id}>
                 <div className='product-box' >
                 
@@ -74,25 +73,7 @@ if(isFetching === true) {
                 </div>
                 </div>
                 </Link>
-              </div>
-              <div>
-              <div className='select-input'>
-              <div className='select-input'>
-          <select onChange={handleProductChange}>
-              {listProduct?.map((opt) => (
-                <option key={opt._id} value={opt._id}>
-                  {opt.name}
-                </option>
-              ))};
-            </select>
-          </div>
-            </div>
-              <div>
-                 <button>Add Product to colection</button> 
-              </div>
               
-              </div>
-              </div>
             )
           
           

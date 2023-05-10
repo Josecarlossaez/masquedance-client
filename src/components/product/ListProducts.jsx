@@ -51,7 +51,9 @@ const getData = async () => {
         listProduct.map((eachProduct) => {
           if(eachProduct.reference === true){
             return(
-              <Link to={`/product/${eachProduct._id}/details`} className='link-box'key={eachProduct._id}>
+              <div key={eachProduct._id}>
+                <div >
+                  <Link to={`/product/${eachProduct._id}/details`} className='link-box'>
                 <div className='product-box' >
                 
                 <div  className='image-product'>
@@ -64,6 +66,20 @@ const getData = async () => {
                 </div>
                 </div>
                 </Link>
+                </div>
+               
+                {/* <div className='select-input'>
+          <select onChange={handleProductChange}>
+              {listProduct?.map((opt) => (
+                <option key={opt._id} value={opt._id}>
+                  {opt.name}
+                </option>
+              ))};
+            </select>
+          </div> */}
+                
+              </div>
+              
             )
           }
           
