@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 
 import { useNavigate, useParams, Link } from "react-router-dom";
 // Services
-import { detailsProductService, listProductService } from '../../services/product.services';
+import { detailsProductService } from '../../services/product.services';
+import { addProductToColectionService, listColectionService } from "../../services/colection.services.js";
 
 function DetailsProduct() {
 
@@ -13,46 +14,63 @@ function DetailsProduct() {
 
 
  // States
- const [productDetails, setProductDetails] = useState()
- const [isFetching, setIsFetching ] = useState(true)
- const [listProduct, setListProduct] = useState()
+ const [errorMessage, setErrorMessage] = useState("");
 
- // States to check the sizes availables of this product
-const [sizeS, setSizeS] = useState(false)
-const [sizeM, setSizeM] = useState(false)
-const [sizeL, setSizeL] = useState(false)
-const [sizeXL, setSizeXL] = useState(false)
-const [sizeXXL, setSizeXXL] = useState(false)
- // States to add object to Cart
- const [cantidad, setCantidad] = useState(1)
- const [sizeSelected, setSizeSelected] = useState()
+ const [productDetails, setProductDetails] = useState()
+ const [listColection, setListColection] = useState()
+ const [isFetching, setIsFetching ] = useState(true)
+ const [colectionId, setColectionId] = useState()
+ 
+console.log("errorMessage",errorMessage);
+
+
 
 
  useEffect(() => {
     getData();
   }, []);
   // Get the product Details data from API
+
   const getData = async () => {
     try {
       const details = await detailsProductService(productId);
-      const responseListProduct = await listProductService()
+      const response = await listColectionService()
 
       setProductDetails(details.data);
-      setListProduct(responseListProduct.data)
-
+      setListColection(response.data)
       setIsFetching(false);
     } catch (error) {
       navigate("/error");
     }
   };
-  console.log("lisProduct", listProduct);
 
-   // Select quantity
-  const handleCantidad = (e) => setCantidad(e.target.value);
-//   const handleSizeSelected = (e) = setSizeSelected(e.target.value)  
+// Choose Colection
+const handleColectionChange = (e) => setColectionId(e.target.value)
+ 
+// Call Service
 
-// Function to check availables Sizes in the same product.
-  const filteredListProduct = listProduct?.filter(product => product.name === productDetails.name)
+const handleAddToColection = async (e) => {
+  e.preventDefault()
+ const productId2 = {productId: productId}
+ 
+
+ try {
+  await addProductToColectionService(colectionId, productId2)
+  navigate("/")
+ } catch (error) {
+  if (
+    (error.response && error.response.status === 406) ||
+    (error.response && error.response.status === 400)
+  ) {
+    setErrorMessage(error.response.data.errorMessage);
+    console.log("error", error.response.data.errorMessage);
+  } else {
+    navigate("/error");
+  }
+ }
+
+
+}
  
 
 
@@ -78,74 +96,7 @@ const [sizeXXL, setSizeXXL] = useState(false)
          <h3>Precio: {productDetails.price}€</h3>
          <h3>Descripción del artículo: {productDetails.description}</h3>
          </div>
-         <div className='details-sizeList'>
-             { productDetails.cantidadSizeS === 0 ?(
-             <button
-             className='sizes' disabled >
-                <h1>S</h1>
-             </button>
-             ):(
-                <button
-             className='sizes' >
-                <h1>S</h1>
-             </button>
-
-             )
-             }
-             { productDetails.cantidadSizeS === 0 ?(
-             <button
-             className='sizes' disabled >
-                <h1>M</h1>
-             </button>
-             ):(
-                <button
-             className='sizes' >
-                <h1>M</h1>
-             </button>
-
-             )
-             }
-             { productDetails.cantidadSizeS === 0 ?(
-             <button
-             className='sizes' disabled >
-                <h1>L</h1>
-             </button>
-             ):(
-                <button
-             className='sizes' >
-                <h1>L</h1>
-             </button>
-
-             )
-             }
-             { productDetails.cantidadSizeS === 0 ?(
-             <button
-             className='sizes' disabled >
-                <h1>XL</h1>
-             </button>
-             ):(
-                <button
-             className='sizes' >
-                <h1>XL</h1>
-             </button>
-
-             )
-             }
-             { productDetails.cantidadSizeS === 0 ?(
-             <button
-             className='sizes' disabled >
-                <h1>XXL</h1>
-             </button>
-             ):(
-                <button
-             className='sizes' >
-                <h1>XXL</h1>
-             </button>
-
-             )
-             }
-         </div>
-         <div>
+         {/* <div>
       <label htmlFor="quantity">Cantidad:</label>
       <select name="quantity" value={cantidad} onChange={handleCantidad}>
         {Array.from({ length:30 }, (_, index) => (
@@ -154,11 +105,27 @@ const [sizeXXL, setSizeXXL] = useState(false)
           </option>
         ))}
       </select>
-    </div>
+
+    </div> */}
+    <div className="select-option">
+            <label htmlFor="Choose Colection">Elige la colección</label>
+
+            <select onChange={handleColectionChange}>
+            <option value="">nada seleccionado</option>
+              {listColection.map((opt) => (
+                <option key={opt._id} value={opt._id}>
+                  {opt.name}
+                </option>
+              ))}
+            </select>
+          </div>
          <div>
-            <button className='general-btn'>
-                Añadir al carrito
+            <button type="sumbit" onClick={handleAddToColection} className='general-btn'>
+                Añadir a colección
             </button>
+            {errorMessage !== "" && (
+            <p className="error-message"> * {errorMessage}</p>
+          )}
          </div>
       </div>
 

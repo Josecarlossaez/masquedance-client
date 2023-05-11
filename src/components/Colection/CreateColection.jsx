@@ -62,7 +62,7 @@ const handleSizeChange = (e) => setPriceInput(e.target.value)
    }
     try {
         await createColectionService(newColection);
-        navigate("/admin")
+        navigate("/list-colections")
     } catch (error) {
         if (
             (error.response && error.response.status === 406) ||

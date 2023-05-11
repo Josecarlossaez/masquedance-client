@@ -28,6 +28,7 @@ function App() {
       <Route path='/create-dj' element= {<CreateDj/>}/>
       <Route path='/list-colections' element= {<Colections/>}/>
       <Route path='/colection/:colectionId/details' element= {<ColectionDetails/>}/>
+      <Route path='/product/:productId/details' element= {<DetailsProduct/>}/>
       
 
 

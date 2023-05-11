@@ -9,6 +9,8 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 // Services
 
 import { listProductService } from '../../services/product.services';
+import {listColectionService} from "../../services/colection.services"
+
 
 function ListProducts() {
   const navigate = useNavigate();
@@ -16,8 +18,8 @@ function ListProducts() {
 // States
 const [isFetching, setIsFetching] = useState(true);
 const [listProduct, setListProduct] = useState()
+const [listColection, setListColection] = useState()
 
-console.log("listproduct", listProduct);
 
 useEffect(() => {
     getData()
@@ -27,12 +29,17 @@ const getData = async () => {
     // Bring Products data
     try {
         const response = await listProductService();
+        const responseColection = await listColectionService()
         setListProduct(response.data)
-    setIsFetching(false)
+        setListColection(responseColection.data)
+        setIsFetching(false)
   } catch (error) {
     navigate("/error")
   }
   }
+
+   
+
   
   if(isFetching === true) {
     return <p>...loading</p>
@@ -51,9 +58,11 @@ const getData = async () => {
         listProduct.map((eachProduct) => {
           if(eachProduct.reference === true){
             return(
-              <div key={eachProduct._id}>
-                <div >
-                  <Link to={`/product/${eachProduct._id}/details`} className='link-box'>
+                 <Link to={`/product/${eachProduct._id}/details`} key={eachProduct._id}>
+              <div >
+                
+
+               
                 <div className='product-box' >
                 
                 <div  className='image-product'>
@@ -63,14 +72,12 @@ const getData = async () => {
                  <h3>{eachProduct.name}</h3>
                  {/* <h4>{eachProduct.description}</h4> */}
                  <h4>{eachProduct.price}€</h4>
+                 <h4>Talla {eachProduct.size}</h4>
                 </div>
                 </div>
-                </Link>
-                </div>
-               
                 {/* <div className='select-input'>
-          <select onChange={handleProductChange}>
-              {listProduct?.map((opt) => (
+          <select onChange={handleColectionChange}>
+              {listColection?.map((opt) => (
                 <option key={opt._id} value={opt._id}>
                   {opt.name}
                 </option>
@@ -79,7 +86,7 @@ const getData = async () => {
           </div> */}
                 
               </div>
-              
+                </Link>
             )
           }
           
