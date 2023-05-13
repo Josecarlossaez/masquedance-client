@@ -16,6 +16,7 @@ function ColectionDetails() {
   const [isFetching, setIsFetching] = useState(true);
 
   const [colectionDetails, setColectionDetails] = useState();
+  const [className, setClassName] = useState("sizes")
 
   // States to check the sizes availables of this product
   
@@ -48,7 +49,10 @@ function ColectionDetails() {
 
   const tallas = colectionDetails?.products.filter((each) => each.size === sizeSelected)
 
-
+const handleClick = (handleClick) => {
+  
+  setClassName("sizes-selected")
+}
   if (isFetching === true) {
     return <p>LOading...</p>;
   }
@@ -67,18 +71,27 @@ function ColectionDetails() {
             <h3>Talla: {tallas[0].size}</h3>
             <h3>Precio: {tallas[0].price}€</h3>
             <h3>Descripción del artículo: {tallas[0].description}</h3>
+            {tallas[0].cantidad < 10 && <p style={{color: "red"}}> Ultimas unidades</p>}
           </div>
           <div className="details-sizeList">
           <h2>Seleccione Talla:</h2>
+          <div className="sizes-container">
           {colectionDetails?.products.map((eachP) => (
-            <div key={eachP._id}>
-               <button className="sizes" onClick={() => setSizeSelected(eachP.size)}>
+            <div  key={eachP._id}>
+            {sizeSelected === eachP.size ? (
+              <button    className="sizes-selected" onClick={() =>setSizeSelected(eachP.size) } >
               <h1>{eachP.size}</h1>
             </button>
+            ):(
+              <button    className="sizes"  onClick={() =>setSizeSelected(eachP.size) } >
+              <h1>{eachP.size}</h1>
+            </button>
+            )}
+               
             </div>
              
           ))}
-           
+           </div>
           </div>
           <div>
             <label htmlFor="quantity">Cantidad:</label>
