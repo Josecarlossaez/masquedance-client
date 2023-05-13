@@ -29,6 +29,8 @@ function App() {
       <Route path='/list-colections' element= {<Colections/>}/>
       <Route path='/colection/:colectionId/details' element= {<ColectionDetails/>}/>
       <Route path='/product/:productId/details' element= {<DetailsProduct/>}/>
+      <Route path="/list-products" element={<ListProducts/>}/>
+      
       
 
 

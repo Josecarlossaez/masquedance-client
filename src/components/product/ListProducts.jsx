@@ -56,7 +56,7 @@ const getData = async () => {
    <div className='products-container'>
       {
         listProduct.map((eachProduct) => {
-          if(eachProduct.reference === true){
+          
             return(
                  <Link to={`/product/${eachProduct._id}/details`} key={eachProduct._id}>
               <div >
@@ -88,7 +88,7 @@ const getData = async () => {
               </div>
                 </Link>
             )
-          }
+          
           
         })
       }

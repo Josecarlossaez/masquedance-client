@@ -1,4 +1,6 @@
 import React from 'react'
+import { Routes, Route } from 'react-router';
+
 import "../../css/product/details-product.css"
 import { useEffect, useState } from 'react';
 
@@ -6,6 +8,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 // Services
 import { detailsProductService } from '../../services/product.services';
 import { addProductToColectionService, listColectionService } from "../../services/colection.services.js";
+import ListProducts from './ListProducts';
 
 function DetailsProduct() {
 
@@ -15,11 +18,13 @@ function DetailsProduct() {
 
  // States
  const [errorMessage, setErrorMessage] = useState("");
+ const [okMessage, setOkMessage] = useState("")
 
  const [productDetails, setProductDetails] = useState()
  const [listColection, setListColection] = useState()
  const [isFetching, setIsFetching ] = useState(true)
  const [colectionId, setColectionId] = useState()
+ const [listProduct, setListProduct] = useState(false)
  
 console.log("errorMessage",errorMessage);
 
@@ -56,13 +61,18 @@ const handleAddToColection = async (e) => {
 
  try {
   await addProductToColectionService(colectionId, productId2)
-  navigate("/")
+  setOkMessage("Producto añadido correctamente")
+  setTimeout( () =>{
+    navigate("/list-products")
+  }, 4000)
+  
  } catch (error) {
   if (
     (error.response && error.response.status === 406) ||
     (error.response && error.response.status === 400)
   ) {
     setErrorMessage(error.response.data.errorMessage);
+    
     console.log("error", error.response.data.errorMessage);
   } else {
     navigate("/error");
@@ -95,6 +105,7 @@ const handleAddToColection = async (e) => {
          <h3>{productDetails.name}</h3>
          <h3>Precio: {productDetails.price}€</h3>
          <h3>Descripción del artículo: {productDetails.description}</h3>
+         <p>id: {productDetails._id}</p>
          </div>
          {/* <div>
       <label htmlFor="quantity">Cantidad:</label>
@@ -126,9 +137,15 @@ const handleAddToColection = async (e) => {
             {errorMessage !== "" && (
             <p className="error-message"> * {errorMessage}</p>
           )}
+          {
+            okMessage !== "" &&(
+            <p className="ok-message"> * {okMessage}</p>
+
+            )
+          }
          </div>
       </div>
-
+     
       </div>
    </div>
   )
