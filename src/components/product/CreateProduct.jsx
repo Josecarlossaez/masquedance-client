@@ -46,7 +46,7 @@ function CreateProduct() {
    const [descriptionInput, setDescription] = useState("");
    const [colorInput, setColorInput] = useState("")
    const [pictureURL, setPictureUrl] = useState("");
-   const [cantidadInput, setCantidad] = useState("")
+   const [stockInput, setStock] = useState("")
    const [referenceInput, setReference] = useState("")
 
    
@@ -59,7 +59,7 @@ function CreateProduct() {
    const handlePriceChange = (e) => setPrice(e.target.value);
    const handleDescriptionChange = (e) => setDescription(e.target.value);
    const handleSizeChange = (e) => setSize(e.value);
-  const handleCantidadChange = (e) => setCantidad(e.target.value);
+  const handleCantidadChange = (e) => setStock(e.target.value);
 
   const handleColorChange = (e) => setColorInput(e.value);
   const handleReferenceChange = (e) => setReference(e.value);
@@ -101,7 +101,7 @@ function CreateProduct() {
       reference: referenceInput,
       description: descriptionInput,
       color: colorInput,
-      cantidad: cantidadInput,
+      stock: stockInput,
      
      };
  
@@ -151,12 +151,12 @@ function CreateProduct() {
           </div>
           <div className="input-container">
             <input
-              value={cantidadInput}
+              value={stockInput}
               onChange={handleCantidadChange}
             />
             
-            <label className={cantidadInput && "filled"} htmlFor="cantidad">
-              Cantidad
+            <label className={stockInput && "filled"} htmlFor="stcok">
+              Stock
             </label>
           </div>
           <div className="input-container">
