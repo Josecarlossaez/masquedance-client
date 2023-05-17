@@ -1,74 +1,65 @@
-import React from 'react'
+import React from "react";
 // CSS
-import "../../css/product/create-product.css"
+import "../../css/product/create-product.css";
 // React
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // Services
-import { createProductService } from "../../services/product.services"
+import { createProductService } from "../../services/product.services";
 import { uploadPictureService } from "../../services/upload.services.js";
 
-
 // Utilities
-import Select from 'react-select';
+import Select from "react-select";
 
 const sizeOptions = [
-  {value: 'S', label: 'S'},
-  {value: 'M', label: 'M'},
-  {value: 'L', label: 'L'},
-  {value: 'XL', label: 'XL'},
-  {value: 'XXL', label: 'XXL'},
-  
-]
+  { value: "S", label: "S" },
+  { value: "M", label: "M" },
+  { value: "L", label: "L" },
+  { value: "XL", label: "XL" },
+  { value: "XXL", label: "XXL" },
+];
 
 const colorOptions = [
-  {value: 'amarillo', label: 'amarillo'},
-  {value: 'azul', label: 'azul'},
-  {value: 'blanco', label: 'blanco'},
-  {value: 'negro', label: 'negro'},
-  {value: 'verde', label: 'verde'},
-  
-]
+  { value: "amarillo", label: "amarillo" },
+  { value: "azul", label: "azul" },
+  { value: "blanco", label: "blanco" },
+  { value: "negro", label: "negro" },
+  { value: "verde", label: "verde" },
+];
 const referenceOptions = [
-  {value: 'true', label: 'true'},
-  {value: 'false', label: 'false'},
-
-]
-
+  { value: "true", label: "true" },
+  { value: "false", label: "false" },
+];
 
 function CreateProduct() {
   const navigate = useNavigate();
 
   // input values
-   const [nameInput, setName] = useState("");
-   const [priceInput, setPrice] = useState("");
-   const [sizeInput, setSize] = useState("");
-   const [descriptionInput, setDescription] = useState("");
-   const [colorInput, setColorInput] = useState("")
-   const [pictureURL, setPictureUrl] = useState("");
-   const [stockInput, setStock] = useState("")
-   const [referenceInput, setReference] = useState("")
+  const [nameInput, setName] = useState("");
+  const [priceInput, setPrice] = useState("");
+  const [sizeInput, setSize] = useState("");
+  const [descriptionInput, setDescription] = useState("");
+  const [colorInput, setColorInput] = useState("");
+  const [pictureURL, setPictureUrl] = useState("");
+  const [stockInput, setStock] = useState("");
+  const [referenceInput, setReference] = useState("");
 
-   
-
- 
- // errorMessages from BE
-   const [errorMessage, setErrorMessage] = useState("");
- // Takes product info
-   const handleNameChange = (e) => setName(e.target.value);
-   const handlePriceChange = (e) => setPrice(e.target.value);
-   const handleDescriptionChange = (e) => setDescription(e.target.value);
-   const handleSizeChange = (e) => setSize(e.value);
+  // errorMessages from BE
+  const [errorMessage, setErrorMessage] = useState("");
+  // Takes product info
+  const handleNameChange = (e) => setName(e.target.value);
+  const handlePriceChange = (e) => setPrice(e.target.value);
+  const handleDescriptionChange = (e) => setDescription(e.target.value);
+  const handleSizeChange = (e) => setSize(e.value);
   const handleCantidadChange = (e) => setStock(e.target.value);
 
   const handleColorChange = (e) => setColorInput(e.value);
   const handleReferenceChange = (e) => setReference(e.value);
-  
 
-    // Cloudinary is Loading
+  // Cloudinary is Loading
   const [isLoadingPicture, setIsLoadingPicture] = useState(false);
 
-   const handlePictureChange = async (e) => {
+  const handlePictureChange = async (e) => {
     // Cloudinary picture is Loading On
     setIsLoadingPicture(true);
 
@@ -86,44 +77,41 @@ function CreateProduct() {
       navigate("/error");
     }
   };
-   
 
- 
- // Send the input values to BE
-   const handleCreateProduct = async (e) => {
-     e.preventDefault();
- 
-     const newProduct = {
+  // Send the input values to BE
+  const handleCreateProduct = async (e) => {
+    e.preventDefault();
+
+    const newProduct = {
       name: nameInput,
       price: priceInput,
-      picture:pictureURL,
+      picture: pictureURL,
       size: sizeInput,
       reference: referenceInput,
       description: descriptionInput,
       color: colorInput,
       stock: stockInput,
-     
-     };
- 
-     try {
-       await createProductService(newProduct);
-       navigate("/");
-     } catch (error) {
-       if (
-         (error.response && error.response.status === 406) ||
-         (error.response && error.response.status === 400)
-       ) {
-         setErrorMessage(error.response.data.errorMessage);
-       } else {
-         navigate("/error");
-       }
-     }
-   };
+    };
+
+    try {
+      await createProductService(newProduct);
+      navigate("/");
+    } catch (error) {
+      if (
+        (error.response && error.response.status === 406) ||
+        (error.response && error.response.status === 400)
+      ) {
+        setErrorMessage(error.response.data.errorMessage);
+      } else {
+        navigate("/error");
+      }
+    }
+  };
 
   return (
     <section className="general-container">
       <div className="form-container">
-        <form >
+        <form>
           <h3>Crear Producto</h3>
 
           <div className="input-container">
@@ -138,75 +126,55 @@ function CreateProduct() {
               Price
             </label>
           </div>
- 
+
           <div className="input-container">
             <input
               value={descriptionInput}
               onChange={handleDescriptionChange}
             />
-            
-            <label className={descriptionInput && "filled"} htmlFor="description">
+
+            <label
+              className={descriptionInput && "filled"}
+              htmlFor="description"
+            >
               Description
             </label>
           </div>
           <div className="input-container">
-            <input
-              value={stockInput}
-              onChange={handleCantidadChange}
-            />
-            
+            <input value={stockInput} onChange={handleCantidadChange} />
+
             <label className={stockInput && "filled"} htmlFor="stcok">
               Stock
             </label>
           </div>
           <div className="input-container">
             <div className="select-size">
-            <div className='name-select'>
-              <h4>Talla</h4>
+              <div className="name-select">
+                <h4>Talla</h4>
+              </div>
+              <div className="select-input">
+                <Select
+                  defaultValue={sizeInput}
+                  onChange={handleSizeChange}
+                  options={sizeOptions}
+                />
+              </div>
             </div>
-            <div className='select-input'>
-               <Select 
-              defaultValue={sizeInput}
-              onChange={handleSizeChange}
-              options={sizeOptions}
-            />
-            </div>
-
-            </div>
-           
           </div>
 
           <div className="input-container">
             <div className="select-size">
-            <div className='name-select'>
-              <h4>Color</h4>
+              <div className="name-select">
+                <h4>Color</h4>
+              </div>
+              <div className="select-input">
+                <Select
+                  defaultValue={colorInput}
+                  onChange={handleColorChange}
+                  options={colorOptions}
+                />
+              </div>
             </div>
-            <div className='select-input'>
-               <Select 
-              defaultValue={colorInput}
-              onChange={handleColorChange}
-              options={colorOptions}
-            />
-            </div>
-
-            </div>
-           
-          </div>
-          <div className="input-container">
-            <div className="select-size">
-            <div className='name-select'>
-              <h4>Referencia</h4>
-            </div>
-            <div className='select-input'>
-               <Select 
-              defaultValue={referenceInput}
-              onChange={handleReferenceChange}
-              options={referenceOptions}
-            />
-            </div>
-
-            </div>
-           
           </div>
 
           <div className="uploader-pic">
@@ -225,25 +193,21 @@ function CreateProduct() {
           ) : (
             <p> [ No Picture Selected ]</p>
           )}
-        
 
           <button
             type="submit"
             onClick={handleCreateProduct}
-           className="general-btn"
+            className="general-btn"
           >
             Crear Producto
           </button>
           {errorMessage !== "" && (
             <p className="error-message"> * {errorMessage}</p>
           )}
-
         </form>
       </div>
-
-    
     </section>
-  )
+  );
 }
 
-export default CreateProduct
+export default CreateProduct;

@@ -13,6 +13,7 @@ import ListProducts from './components/product/ListProducts';
 import DetailsProduct from './components/product/DetailsProduct';
 import Colections from './pages/Colections';
 import ColectionDetails from './components/Colection/ColectionDetails';
+import EditProduct from './components/product/EditProduct';
 
 function App() {
   return (
@@ -30,6 +31,8 @@ function App() {
       <Route path='/colection/:colectionId/details' element= {<ColectionDetails/>}/>
       <Route path='/product/:productId/details' element= {<DetailsProduct/>}/>
       <Route path="/list-products" element={<ListProducts/>}/>
+      <Route path="/product/:productId/edit" element={<EditProduct/>}/>
+
       
       
 
