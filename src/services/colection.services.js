@@ -23,11 +23,16 @@ const deleteColection = (colectionId) => {
 const addProductToColectionService = (colectionId, productId2) => {
     return service.patch(`colection/${colectionId}/add-product`, productId2)
 }
+
+const removeProductToColectionService = (colectionId, productId2) => {
+    return service.patch(`colection/${colectionId}/remove-product`, productId2)
+}
 export{
     listColectionService,
     detailsColectionService,
     createColectionService,
     updateColectionService,
     deleteColection,
-    addProductToColectionService
+    addProductToColectionService,
+    removeProductToColectionService
 }

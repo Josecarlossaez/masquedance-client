@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from "react-router-dom";
 // Services
 import { detailsProductService } from '../../services/product.services';
-import { addProductToColectionService, listColectionService } from "../../services/colection.services.js";
+import { addProductToColectionService, listColectionService, removeProductToColectionService } from "../../services/colection.services.js";
 import ListProducts from './ListProducts';
 
 function DetailsProduct() {
@@ -24,17 +24,33 @@ function DetailsProduct() {
  const [listColection, setListColection] = useState()
  const [isFetching, setIsFetching ] = useState(true)
  const [colectionId, setColectionId] = useState()
- const [listProduct, setListProduct] = useState(false)
+ const [productInColection, setProductInColection] = useState()
+ const [productInColectionId, setProductInColectionId] = useState()
+ const [shouldRefreshPage, setShouldRefreshPage] = useState(false);
+
+ console.log("productInColection",productInColection);
  
-console.log("errorMessage",errorMessage);
-
-
-
 
  useEffect(() => {
-    getData();
+    getData()
+    
   }, []);
+
+  useEffect(() => {
+    if (listColection) {
+      searchProductInColection();
+    }
+  }, [listColection])
   // Get the product Details data from API
+  useEffect(() => {
+    if (shouldRefreshPage) {
+      getData();
+      setShouldRefreshPage(false);
+      searchProductInColection();
+
+    }
+  }, [shouldRefreshPage]);
+
 
   const getData = async () => {
     try {
@@ -48,6 +64,22 @@ console.log("errorMessage",errorMessage);
       navigate("/error");
     }
   };
+  const searchProductInColection = () => {
+    console.log("listColection",listColection);
+    setIsFetching(true)
+    listColection?.forEach((each) =>{
+           each.products.forEach((p) => {
+             if(p === productId){
+              console.log("p",p);
+              console.log("each.name", each._id);
+              setProductInColection(p);
+              setProductInColectionId(each._id)
+            }
+            
+          })
+          setIsFetching(false)
+      })
+  }
 
 // Choose Colection
 const handleColectionChange = (e) => setColectionId(e.target.value)
@@ -58,12 +90,13 @@ const handleAddToColection = async (e) => {
   e.preventDefault()
  const productId2 = {productId: productId}
  
-
  try {
   await addProductToColectionService(colectionId, productId2)
   setOkMessage("Producto añadido correctamente")
   setTimeout( () =>{
-    navigate("/list-products")
+    setShouldRefreshPage(true)
+  setOkMessage("")
+    
   }, 4000)
   
  } catch (error) {
@@ -82,7 +115,23 @@ const handleAddToColection = async (e) => {
 
 }
  
+const handleRemoveToColection = async () =>{
+  const colectionId = productInColectionId
+  const productId2 = {productId: productId}
+  try {
+    await removeProductToColectionService(colectionId, productId2)
+    setOkMessage("Producto eliminado correctamente")
+    setTimeout( () =>{
+    navigate("/list-products")
 
+    }, 4000)
+
+  } catch (error) {
+    navigate("/error")
+  }
+  
+
+}
 
    
  if(isFetching === true){
@@ -118,6 +167,7 @@ const handleAddToColection = async (e) => {
       </select>
 
     </div> */}
+    {!productInColection && 
     <div className="select-option">
             <label htmlFor="Choose Colection">Elige la colección</label>
 
@@ -130,7 +180,11 @@ const handleAddToColection = async (e) => {
               ))}
             </select>
           </div>
-         <div>
+    }
+    
+          
+         {!productInColection ? (
+          <div>
             <button type="sumbit" onClick={handleAddToColection} className='general-btn'>
                 Añadir a colección
             </button>
@@ -144,6 +198,23 @@ const handleAddToColection = async (e) => {
             )
           }
          </div>
+         ):(
+          <div>
+            <button type="sumbit" onClick={handleRemoveToColection} className='general-btn'>
+                Eliminar de la colección
+            </button>
+            {errorMessage !== "" && (
+            <p className="error-message"> * {errorMessage}</p>
+          )}
+          {
+            okMessage !== "" &&(
+            <p className="ok-message"> * {okMessage}</p>
+
+            )
+          }
+         </div>
+         )}
+         
       </div>
      
       </div>

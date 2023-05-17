@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 // Services
 import { detailsColectionService } from "../../services/colection.services";
-import { ClimbingBoxLoader } from "react-spinners";
+import { addProductToCartService } from "../../services/user.services";
 
 function ColectionDetails() {
   const { colectionId } = useParams();
@@ -16,7 +16,8 @@ function ColectionDetails() {
   const [isFetching, setIsFetching] = useState(true);
 
   const [colectionDetails, setColectionDetails] = useState();
-  const [className, setClassName] = useState("sizes")
+  const [productId, setProductId] = useState()
+
 
   // States to check the sizes availables of this product
   
@@ -25,13 +26,16 @@ function ColectionDetails() {
   const [sizeSelected, setSizeSelected] = useState("S");
   useEffect(() => {
     getData();
+    
   }, []);
   // Get the product Details data from API
   const getData = async () => {
+   
     try {
       const details = await detailsColectionService(colectionId);
 
       setColectionDetails(details.data);
+      setProductId(details.data.products.filter((eachP) => eachP.size === sizeSelected)[0]._id)
 
 
       setIsFetching(false);
@@ -49,9 +53,25 @@ function ColectionDetails() {
 
   const tallas = colectionDetails?.products.filter((each) => each.size === sizeSelected)
 
-const handleClick = (handleClick) => {
+const handleClick = (size) => {
+ 
+  setSizeSelected(size)
   
-  setClassName("sizes-selected")
+  
+  
+  setProductId(colectionDetails?.products.filter((eachP) => eachP.size === sizeSelected)[0]._id) 
+}
+console.log("productId", productId);
+const handleAddProductToCart = async () => {
+   
+  try {
+    await addProductToCartService(productId)
+    navigate("/")
+
+  } catch (error) {
+    navigate(error)
+  }
+
 }
   if (isFetching === true) {
     return <p>LOading...</p>;
@@ -67,11 +87,11 @@ const handleClick = (handleClick) => {
         </div>
         <div className="details-data">
           <div className="details-info">
-            <h3>{tallas[0].name}</h3>
-            <h3>Talla: {tallas[0].size}</h3>
-            <h3>Precio: {tallas[0].price}€</h3>
-            <h3>Descripción del artículo: {tallas[0].description}</h3>
-            {tallas[0].cantidad < 10 && <p style={{color: "red"}}> Ultimas unidades</p>}
+            <h3>{tallas[0]?.name}</h3>
+            <h3>Talla: {tallas[0]?.size}</h3>
+            <h3>Precio: {tallas[0]?.price}€</h3>
+            <h3>Descripción del artículo: {tallas[0]?.description}</h3>
+            {tallas[0]?.cantidad < 10 && <p style={{color: "red"}}> Ultimas unidades</p>}
           </div>
           <div className="details-sizeList">
           <h2>Seleccione Talla:</h2>
@@ -79,11 +99,11 @@ const handleClick = (handleClick) => {
           {colectionDetails?.products.map((eachP) => (
             <div  key={eachP._id}>
             {sizeSelected === eachP.size ? (
-              <button    className="sizes-selected" onClick={() =>setSizeSelected(eachP.size) } >
+              <button    className="sizes-selected" onClick={ () => handleClick(eachP.size)} >
               <h1>{eachP.size}</h1>
             </button>
             ):(
-              <button    className="sizes"  onClick={() =>setSizeSelected(eachP.size) } >
+              <button    className="sizes"  onClick={ () => handleClick(eachP.size)} >
               <h1>{eachP.size}</h1>
             </button>
             )}
@@ -104,7 +124,7 @@ const handleClick = (handleClick) => {
             </select>
           </div>
           <div>
-            <button className="general-btn">Añadir al carrito</button>
+            <button onClick={handleAddProductToCart} className="general-btn">Añadir al carrito</button>
           </div>
         </div>
       </div>
