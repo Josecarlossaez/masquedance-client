@@ -138,6 +138,8 @@ function DetailsProduct() {
             <h3>{productDetails.name}</h3>
             <h3>Precio: {productDetails.price}€</h3>
             <h3>Descripción del artículo: {productDetails.description}</h3>
+            <h3>Talla: {productDetails.size}</h3>
+            <h3>Stock: {productDetails.stock}</h3>
             <p>id: {productDetails._id}</p>
           </div>
           {/* <div>
