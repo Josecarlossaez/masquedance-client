@@ -15,6 +15,7 @@ import Colections from './pages/Colections';
 import ColectionDetails from './components/Colection/ColectionDetails';
 import EditProduct from './components/product/EditProduct';
 import ColectionEdit from './components/Colection/ColectionEdit';
+import Cart from './pages/Cart';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
       <Route path="/list-products" element={<ListProducts/>}/>
       <Route path="/product/:productId/edit" element={<EditProduct/>}/>
       <Route path="/colection/:colectionId/edit" element={<ColectionEdit/>}/>
+      <Route path="/cart" element={<Cart/>}/>
 
       
       
