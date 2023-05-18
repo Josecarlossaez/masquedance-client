@@ -20,12 +20,11 @@ function Colections() {
   // Extract User info
   
   const { user } = useContext(AuthContext)
-  console.log("user", user);
+  
   // States
   const [isFetching, setIsFetching] = useState(true);
   const [listColection, setListColection] = useState();
-  const [listProduct, setListProduct] = useState();
-  const [productToAdd, setProductToAdd] = useState();
+  
 
   useEffect(() => {
     getData();
@@ -36,7 +35,7 @@ function Colections() {
     try {
       const response = await listColectionService();
       const responseProducts = await listProductService();
-      setListProduct(responseProducts.data);
+     
       setListColection(response.data);
       setIsFetching(false);
     } catch (error) {
@@ -44,7 +43,7 @@ function Colections() {
     }
   };
 
-  const handleProductChange = async (e) => setProductToAdd(e.target.value);
+ 
   if (isFetching === true) {
     return <p>...loading</p>;
   }
@@ -57,11 +56,11 @@ function Colections() {
       <div className="products-container">
         {listColection.map((eachColection) => {
           return (
-            <div>
+            <div  key={eachColection._id}>
               <Link
                 to={`/colection/${eachColection._id}/details`}
-                className="link-box"
-                key={eachColection._id}
+                
+               
               >
                 <div className="product-box">
                   <div className="image-product">
@@ -74,8 +73,8 @@ function Colections() {
                   </div>
                 </div>
               </Link>
-              {user.user.role === "admin" &&
-              <Link to={`/colection/${eachColection._id}/edit`}>
+              {user?.user.role === "admin" &&
+              <Link className="link-box" to={`/colection/${eachColection._id}/edit`}>
                 <button className="general-btn"> Editar Colección</button>
               </Link>
               }

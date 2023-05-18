@@ -5,7 +5,7 @@ import { uploadPictureService } from "../../services/upload.services";
 import { AuthContext } from "../../context/auth.context";
 
 function ColectionEdit() {
-  const { colectionId } = useParams;
+  const { colectionId } = useParams();
   const navigate = useNavigate();
 
   
@@ -28,15 +28,20 @@ function ColectionEdit() {
 
     // COLECTION DATA
   const getData = async () => {
-    const response = await detailsColectionService(colectionId);
+    try {
+        const response = await detailsColectionService(colectionId);
     setDetails(response.data);
-    setIsFetching(false);
-    const { name, price, picture } =
-      response.data;
+   
+    const { name, price, picture } = response.data;
     setName(name);
     setPrice(price);
     setPictureUrl(picture);
-  };
+    setIsFetching(false);
+} catch (error) {
+    navigate("/")
+}
+};
+    
 
   // TAKES NEW COLECTION INFO
   const handleNameChange = (e) => setName(e.target.value);
@@ -101,7 +106,7 @@ function ColectionEdit() {
     <section className="general-container">
     <div className="form-container">
       <form>
-        <h3>Actualizar Producto</h3>
+        <h3>Actualizar Colección</h3>
         {/*  */}
         <div className="input-container">
           <label className={nameInput && "filled"} htmlFor="Name">
@@ -160,7 +165,10 @@ function ColectionEdit() {
         </button>
         {errorMessage !== "" && (
           <p className="error-message"> * {errorMessage}</p>
+          
         )}
+        {okMessage !== "" && <p className="ok-message"> * {okMessage}</p>}
+
       </form>
     </div>
   </section>
