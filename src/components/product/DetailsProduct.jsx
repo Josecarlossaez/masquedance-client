@@ -11,6 +11,7 @@ import {
   listColectionService,
   removeProductToColectionService,
 } from "../../services/colection.services.js";
+import { deleteProductService } from "../../services/product.services";
 
 function DetailsProduct() {
   const { productId } = useParams();
@@ -84,6 +85,12 @@ function DetailsProduct() {
   const handleAddToColection = async (e) => {
     e.preventDefault();
     const productId2 = { productId: productId };
+    if(colectionId === undefined){
+      setErrorMessage("Tienes que seleccionar una colección")
+      return setTimeout(()=> {
+       setErrorMessage("")
+      },4000)
+    }
 
     try {
       await addProductToColectionService(colectionId, productId2);
@@ -91,7 +98,7 @@ function DetailsProduct() {
       setTimeout(() => {
         setShouldRefreshPage(true);
         setOkMessage("");
-      }, 4000);
+      }, 2000);
     } catch (error) {
       if (
         (error.response && error.response.status === 406) ||
@@ -106,19 +113,35 @@ function DetailsProduct() {
     }
   };
 
+  // REMOVE PRODUCT TO COLECTION
   const handleRemoveToColection = async () => {
     const colectionId = productInColectionId;
     const productId2 = { productId: productId };
     try {
       await removeProductToColectionService(colectionId, productId2);
-      setOkMessage("Producto eliminado correctamente");
+      setOkMessage("Producto eliminado de la colección correctamente");
       setTimeout(() => {
         navigate("/list-products");
-      }, 4000);
+      }, 2000);
     } catch (error) {
       navigate("/error");
     }
   };
+
+  // REMOVE PRODUCT 
+  const handleRemoveProduct = async () => {
+    
+    try {
+      await deleteProductService(productId)
+      setOkMessage("Producto Borrado Correctamente")
+      setTimeout(() => {
+         navigate("/list-products")
+      },2000)
+
+    } catch (error) {
+      navigate("/error")
+    }
+   } 
 
   if (isFetching === true) {
     return <p>LOading...</p>;
@@ -204,6 +227,21 @@ function DetailsProduct() {
             </button>
               </Link>
           </div>
+          {/*  */}
+          {!productInColection &&
+          <div>
+           <button
+                type="sumbit"
+                onClick={handleRemoveProduct}
+                className="general-btn"
+              >
+                Eliminar Producto
+              </button>
+              
+            </div>
+          }
+             
+          {/*  */}
         </div>
       </div>
     </div>

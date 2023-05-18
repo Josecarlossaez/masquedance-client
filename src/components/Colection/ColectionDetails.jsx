@@ -35,7 +35,7 @@ function ColectionDetails() {
       const details = await detailsColectionService(colectionId);
 
       setColectionDetails(details.data);
-      setProductId(details.data.products.filter((eachP) => eachP.size === sizeSelected)[0]._id)
+      // setProductId(details.data.products.filter((eachP) => eachP.size === sizeSelected)[0]._id)
 
 
       setIsFetching(false);
@@ -76,12 +76,16 @@ const handleAddProductToCart = async () => {
   if (isFetching === true) {
     return <p>LOading...</p>;
   }
+ 
   return (
     <div>
       <div>
-        <h1>Product Details</h1>
+        <h1>Colection Details</h1>
       </div>
-      <div className="details-container">
+      {colectionDetails.products.length === 0 ? (
+        <h1>Todavía no tienes productos que mostrar</h1>
+      ) : (
+        <div className="details-container">
         <div className="details-image">
           <img src={colectionDetails?.picture} alt="" />
         </div>
@@ -128,6 +132,8 @@ const handleAddProductToCart = async () => {
           </div>
         </div>
       </div>
+      )} 
+      
     </div>
   );
 }

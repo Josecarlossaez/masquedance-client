@@ -93,7 +93,7 @@ function EditProduct() {
   };
 
   // Send the input values to BE
-  const handleCreateProduct = async (e) => {
+  const handleUpdateProduct = async (e) => {
     e.preventDefault();
 
     const productUpdate = {
@@ -226,7 +226,7 @@ function EditProduct() {
 
           <button
             type="submit"
-            onClick={handleCreateProduct}
+            onClick={handleUpdateProduct}
             className="general-btn"
           >
             Actualizar Producto
