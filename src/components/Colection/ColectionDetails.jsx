@@ -6,14 +6,20 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 // Services
 import { detailsColectionService } from "../../services/colection.services";
 import { addProductToCartService } from "../../services/user.services";
+// Context
+import { AuthContext } from "../../context/auth.context.js";
+import { useContext } from "react"
 
 function ColectionDetails() {
   const { colectionId } = useParams();
+  const { isLoggedIn } = useContext(AuthContext)
+
   const navigate = useNavigate();
 
   // States
 
   const [isFetching, setIsFetching] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("")
 
   const [colectionDetails, setColectionDetails] = useState();
   const [productId, setProductId] = useState();
@@ -60,6 +66,9 @@ function ColectionDetails() {
   };
 
   const handleAddProductToCart = async () => {
+    if(!isLoggedIn){
+      setErrorMessage("tienes que estar registrado para poder añadir productos al carrito")
+    }
     try {
       await addProductToCartService(productId);
       navigate("/cart");
@@ -137,6 +146,9 @@ function ColectionDetails() {
               <button onClick={handleAddProductToCart} className="general-btn">
                 Añadir al carrito
               </button>
+              {errorMessage !== "" && (
+            <p className="error-message"> * {errorMessage}</p>
+          )}
             </div>
           </div>
         </div>

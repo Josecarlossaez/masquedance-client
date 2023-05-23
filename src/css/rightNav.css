@@ -14,25 +14,44 @@
     display:flex;
 }
 .nav-list  a{
-    color: white;
+    color: #69bfbe;
     padding:18px 20px;
     text-decoration: none;
     transition: all 300ms ease-out;
 }
 .auth-list  a{
-    color: white;
+    color: #69bfbe;
     padding:18px 10px;
     text-decoration: none;
     transition: all 300ms ease-out;
+}
+.cart-icon{
+    display: flex;
+    align-items: center;
+}
+.cart-icon a img{
+    padding:0px;
+    width: 40px;
+    transition: all 300ms ease-out;
 
+    
+}
+.cart-icon a img:hover{
+  
+   transform: scale(1.3);
+   transition: all 300ms ease-in;
 }
 .nav-list a:hover{
+    border-radius: 5px;
+    color:white;
     background-color: rgba(27,200,173,1);
     transform: scale(1.15);
     transition: all 300ms ease-in;
     font-weight: bold;
 }
 .auth-list a:hover{
+    border-radius: 5px;
+    color:white;
     background-color: rgba(27,200,173,1);
     transform: scale(1.15);
     transition: all 300ms ease-in;
@@ -51,6 +70,9 @@
     .auth-list{
         flex-direction: column;
     }
+    .cart-icon{
+        flex-direction: column;
+    }
     .nav-list a:hover{
          background-color: none;
          transform: none;
@@ -59,6 +81,12 @@
     }
     .auth-list a:hover{
          background-color: none;
+         transform: none;
+         transition: none;
+         font-weight: none;
+    }
+    .cart-icon a:hover img{
+        background-color: none;
          transform: none;
          transition: none;
          font-weight: none;

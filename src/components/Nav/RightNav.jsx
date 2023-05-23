@@ -3,6 +3,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import "../../css/rightNav.css";
+import cartIcon from "../../images/shopping-cart-outline-svgrepo-com.svg"
 
 // Context
 import { AuthContext } from "../../context/auth.context.js";
@@ -52,7 +53,7 @@ const RightNav = ( {open, changeStateBurger} ) => {
         <Link to='/about'>About Us</Link>
         <Link to='/records'>+QDance Records</Link>
         <Link to='/sesiones'>Sesiones</Link>
-        <Link to='/list-colections'>Merchandising</Link>
+        <Link to='/list-colections'  onClick={handleChangeBurger}>Merchandising</Link>
         {user?.user.role === "admin" && <Link to='/admin'>Admin</Link>}
         
       </div>
@@ -60,7 +61,15 @@ const RightNav = ( {open, changeStateBurger} ) => {
         <Link to='/signup' onClick={handleChangeBurger}>Sign Up</Link>
         <Link to='/login' onClick={handleChangeBurger}>Login</Link>
         {isLoggedIn && <Link to='/' onClick={ handleLogout }>Logout</Link>}
+       
         
+      </div>
+      <div className="cart-icon">
+         {isLoggedIn && <Link to='/cart'
+         onClick={ handleChangeBurger }>
+         
+         <img src={cartIcon} alt="cart-icon"/>
+         </Link>}
       </div>
     </Ul>
   );
