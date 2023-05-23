@@ -38,13 +38,13 @@ function Cart() {
     } catch (error) {}
   };
 
-  const handleQuantityChange = (productId, e) => {
-    const { value } = e.target;
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [productId]: parseInt(value),
-    }));
-  };
+  // const handleQuantityChange = (productId, e) => {
+  //   const { value } = e.target;
+  //   setQuantities((prevQuantities) => ({
+  //     ...prevQuantities,
+  //     [productId]: parseInt(value),
+  //   }));
+  // };
   console.log("prevQuantities", quantities);
   const calculateSubtotal = (productId) => {
     const quantity = quantities[productId];
@@ -62,8 +62,14 @@ function Cart() {
     return total;
   };
 // Delete product from cart
-  const handleDeleteProduct = (id) => {
-    console.log("borrnado producto", id);
+  const handleDeleteProduct = async (id) => {
+    console.log("id",id);
+    try {
+      await removeProductFromCartService(id)
+      getData()
+    } catch (error) {
+      navigate("/error")
+    }
 
   }
 // hover into deleteButton
@@ -92,10 +98,11 @@ function Cart() {
               <td>
                 <img src={item.picture} alt="pic" />
               </td>
-              <td>{item.name}</td>
+              <td>{item.name}, talla: {item.size}</td>
               <td>{item.price}</td>
               <td>
-                <div>
+              {/* INICIO ARRAY CANTIDAD */}
+                {/* <div>
                   <label htmlFor="quantity">Cantidad:</label>
                   <select
                     name="quantity"
@@ -107,12 +114,24 @@ function Cart() {
                       </option>
                     ))}
                   </select>
+                </div> */}
+                {/* FIN ARRAY CANTIDAD */}
+                <div className="cart-quantity">
+                  <div>
+                    <button>+</button>
+                  </div>
+                  <div>
+                    Cantidad: 
+                  </div>
+                  <div>
+                    <button>-</button>
+                  </div>
                 </div>
               </td>
               <td>{calculateSubtotal(item._id)} €</td>
               <td>
               
-              <img  onClick={handleDeleteProduct(item._id)}  className="delete-icon" src={deleteIcon} alt="delete-icon" /></td>
+              <img  onClick={() => handleDeleteProduct(item._id)}  className="delete-icon" src={deleteIcon} alt="delete-icon" /></td>
             </tr>
           ))}
         </tbody>

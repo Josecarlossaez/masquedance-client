@@ -32,6 +32,8 @@ function ColectionDetails() {
   useEffect(() => {
     getData();
   }, []);
+
+ 
   // Get the product Details data from API
   const getData = async () => {
     try {
@@ -39,14 +41,16 @@ function ColectionDetails() {
 
       setColectionDetails(details.data);
       // setProductId(details.data.products.filter((eachP) => eachP.size === sizeSelected)[0]._id)
-
+      const productSizeS = details.data.products.find((eachP) => eachP.size === "S");
+      if (productSizeS) {
+        handleClick("S", productSizeS._id);
+      }
+  
       setIsFetching(false);
     } catch (error) {
       navigate("/error");
     }
   };
-
-  console.log("colectionDetails", colectionDetails);
 
   
 
@@ -55,15 +59,17 @@ function ColectionDetails() {
   );
  
 
-  const handleClick = (size) => {
+  const handleClick = (size, id) => {
     setSizeSelected(size);
+    setProductId(id)
 
-    setProductId(
-      colectionDetails?.products.filter(
-        (eachP) => eachP.size === sizeSelected
-      )[0]._id
-    );
+    // setProductId(
+    //   colectionDetails?.products.filter(
+    //     (eachP) => eachP.size === sizeSelected
+    //   )[0]._id
+    // );
   };
+ 
 
   const handleAddProductToCart = async () => {
     if(!isLoggedIn){
@@ -117,7 +123,7 @@ function ColectionDetails() {
                     ) : (
                       <button
                         className="sizes"
-                        onClick={() => handleClick(eachP.size)}
+                        onClick={() => handleClick(eachP.size, eachP._id) }
                       >
                         <h1>{eachP.size}</h1>
                       </button>
