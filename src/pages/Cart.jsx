@@ -2,15 +2,21 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { listCartProductService } from "../services/user.services";
+// Context
+import { useContext } from "react";
+import { AuthContext } from "../context/auth.context";
+
 // CSS
 import "../css/Cart/cart.css";
 // ICONS
-import deleteIcon from "../images/icons8-eliminar-64.png"
+import deleteIcon from "../images/icons8-eliminar-64.png";
 //  SERVICES
 import { removeProductFromCartService } from "../services/user.services";
 
 function Cart() {
   const navigate = useNavigate();
+  const {user} = useContext(AuthContext)
+  console.log(user);
 
   // States
   const [isFetching, setIsFetching] = useState("");
@@ -38,13 +44,12 @@ function Cart() {
     } catch (error) {}
   };
 
-  // const handleQuantityChange = (productId, e) => {
-  //   const { value } = e.target;
-  //   setQuantities((prevQuantities) => ({
-  //     ...prevQuantities,
-  //     [productId]: parseInt(value),
-  //   }));
-  // };
+  const handleQuantityChange = (productId, value) => {
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [productId]: value,
+    }));
+  };
   console.log("prevQuantities", quantities);
   const calculateSubtotal = (productId) => {
     const quantity = quantities[productId];
@@ -57,52 +62,70 @@ function Cart() {
       const subtotal = calculateSubtotal(item._id);
       return accumulator + subtotal;
     }, 0);
-   console.log("quantititels", quantities);
-  
+    console.log("quantititels", quantities);
+
     return total;
   };
-// Delete product from cart
+  // Delete product from cart
   const handleDeleteProduct = async (id) => {
-    console.log("id",id);
+    console.log("id", id);
     try {
-      await removeProductFromCartService(id)
-      getData()
+      await removeProductFromCartService(id);
+      getData();
     } catch (error) {
-      navigate("/error")
+      navigate("/error");
     }
-
-  }
-// hover into deleteButton
-
-
+  };
+  const handleContinuarCompra = () => {
+    const pedido = details.map((item) => {
+      const newItem = { ...item };
+      newItem.cantidad = quantities[item._id];
+      newItem.subtotal = quantities[item._id] * newItem.price;
+      return newItem;
+    });
+  
+    const total = pedido.reduce((accumulator, item) => {
+      const subtotal = item.subtotal || 0; // Si subtotal es undefined, se establece como 0
+      return accumulator + subtotal;
+    }, 0);
+  
+    pedido.total = total;
+    pedido.user = user.user.username;
+    pedido.userMail = user.user.email;
+  
+    console.log("pedido", pedido);
+  };
 
   if (isFetching === true) {
     return <p>LOading...</p>;
   }
+  // TODO 1. Crear componente dirección de envío etc para hacer collapse al continuar compra
   return (
     <div>
-    <div>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Foto</th>
-            <th>Producto</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
-            <th>SubTotal</th>
-          </tr>
-        </thead>
-        <tbody>
-          {details.map((item) => (
-            <tr key={item._id}>
-              <td>
-                <img src={item.picture} alt="pic" />
-              </td>
-              <td>{item.name}, talla: {item.size}</td>
-              <td>{item.price}</td>
-              <td>
-              {/* INICIO ARRAY CANTIDAD */}
-                {/* <div>
+      <div>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Foto</th>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>SubTotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {details.map((item) => (
+              <tr key={item._id}>
+                <td>
+                  <img src={item.picture} alt="pic" />
+                </td>
+                <td>
+                  {item.name}, talla: {item.size}
+                </td>
+                <td>{item.price}</td>
+                <td>
+                  {/* INICIO ARRAY CANTIDAD */}
+                  {/* <div>
                   <label htmlFor="quantity">Cantidad:</label>
                   <select
                     name="quantity"
@@ -115,32 +138,54 @@ function Cart() {
                     ))}
                   </select>
                 </div> */}
-                {/* FIN ARRAY CANTIDAD */}
-                <div className="cart-quantity">
-                  <div>
-                    <button>+</button>
+                  {/* FIN ARRAY CANTIDAD */}
+                  <div className="cart-quantity">
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(
+                          item._id,
+                          quantities[item._id] - 1 < 1
+                            ? 1
+                            : quantities[item._id] - 1
+                        )
+                      }
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      value={quantities[item._id]}
+                      readOnly
+                    />
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(item._id, quantities[item._id] + 1)
+                      }
+                    >
+                      +
+                    </button>
                   </div>
-                  <div>
-                    Cantidad: 
-                  </div>
-                  <div>
-                    <button>-</button>
-                  </div>
-                </div>
-              </td>
-              <td>{calculateSubtotal(item._id)} €</td>
-              <td>
-              
-              <img  onClick={() => handleDeleteProduct(item._id)}  className="delete-icon" src={deleteIcon} alt="delete-icon" /></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      
-
+                </td>
+                <td>{calculateSubtotal(item._id)} €</td>
+                <td>
+                  <img
+                    onClick={() => handleDeleteProduct(item._id)}
+                    className="delete-icon"
+                    src={deleteIcon}
+                    alt="delete-icon"
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       <div>
         <h2>Total: {calculateTotal()} € sin Iva.</h2>
+      </div>
+      <hr />
+      <div>
+        <button onClick={()=> handleContinuarCompra()} className="btn-bought">Continuar Compra</button>
       </div>
     </div>
   );
