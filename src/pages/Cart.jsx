@@ -12,6 +12,7 @@ import "../css/Cart/cart.css";
 import deleteIcon from "../images/icons8-eliminar-64.png";
 //  SERVICES
 import { removeProductFromCartService } from "../services/user.services";
+import { createOrderService } from "../services/order.services";
 
 function Cart() {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ function Cart() {
   const [isFetching, setIsFetching] = useState("");
   const [details, setDetails] = useState([]);
   const [quantities, setQuantities] = useState({});
+  const [okMessage, setOkMessage] = useState("")
 
   useEffect(() => {
     getData();
@@ -76,24 +78,42 @@ function Cart() {
       navigate("/error");
     }
   };
-  const handleContinuarCompra = () => {
-    const pedido = details.map((item) => {
+  const handleContinuarCompra = async () => {
+    const order = details.map((item) => {
       const newItem = { ...item };
       newItem.cantidad = quantities[item._id];
       newItem.subtotal = quantities[item._id] * newItem.price;
       return newItem;
     });
   
-    const total = pedido.reduce((accumulator, item) => {
+    const total = order.reduce((accumulator, item) => {
       const subtotal = item.subtotal || 0; // Si subtotal es undefined, se establece como 0
       return accumulator + subtotal;
     }, 0);
   
-    pedido.total = total;
-    pedido.user = user.user.username;
-    pedido.userMail = user.user.email;
-  
-    console.log("pedido", pedido);
+    order.total = total;
+    order.user = user.user.username;
+    order.userMail = user.user.email;
+
+    console.log("pedido", order);
+    const newOrder = {
+      total: total,
+      username: user.user.username,
+      email: user.user.email,
+      orderCart: order,
+    }
+    // Create Order
+     try {
+      await createOrderService(newOrder)
+      
+      setOkMessage("Rellena los siguientes campos")
+      setTimeout(()=> {
+        setOkMessage("")
+      },2000)
+      
+     } catch (error) {
+      navigate("/error")
+     }
   };
 
   if (isFetching === true) {
@@ -122,7 +142,7 @@ function Cart() {
                 <td>
                   {item.name}, talla: {item.size}
                 </td>
-                <td>{item.price}</td>
+                <td>{item.price} €</td>
                 <td>
                   {/* INICIO ARRAY CANTIDAD */}
                   {/* <div>
@@ -186,6 +206,8 @@ function Cart() {
       <hr />
       <div>
         <button onClick={()=> handleContinuarCompra()} className="btn-bought">Continuar Compra</button>
+        {okMessage !== "" && <p className="ok-message"> * {okMessage}</p>}
+
       </div>
     </div>
   );
