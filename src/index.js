@@ -10,7 +10,7 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   //<React.StrictMode>
-  <PayPalScriptProvider>
+  <PayPalScriptProvider options={{"client-id": process.env.REACT_APP_PAYPAL_CLIENT_ID}}>
     <BrowserRouter>
       <AuthWrapper>
         <App />

@@ -225,7 +225,7 @@ function Cart() {
       </div>
       
       <div className="paypal-button-container">
-        <PaypalCheckoutButton order={order}/>
+        <PaypalCheckoutButton order={order} />
       </div>
     </div>
   );
