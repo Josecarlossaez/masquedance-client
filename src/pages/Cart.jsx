@@ -13,8 +13,12 @@ import deleteIcon from "../images/icons8-eliminar-64.png";
 //  SERVICES
 import { removeProductFromCartService } from "../services/user.services";
 import { createOrderService } from "../services/order.services";
+// COMPONENTS
+import PaypalCheckoutButton from "../components/paypal/PaypalCheckoutButton";
+
 
 function Cart() {
+
   const navigate = useNavigate();
   const {user} = useContext(AuthContext)
   console.log(user);
@@ -43,8 +47,17 @@ function Cart() {
       setDetails(response.data);
       console.log("response", response.data);
       setIsFetching(false);
-    } catch (error) {}
+    } catch (error) {
+      navigate("/error")
+    }
   };
+
+  let order = details.map((item) => {
+    const newItem = { ...item };
+    newItem.cantidad = quantities[item._id];
+    newItem.subtotal = quantities[item._id] * newItem.price;
+    return newItem;
+  })
 
   const handleQuantityChange = (productId, value) => {
     setQuantities((prevQuantities) => ({
@@ -79,12 +92,13 @@ function Cart() {
     }
   };
   const handleContinuarCompra = async () => {
-    const order = details.map((item) => {
+     order = details.map((item) => {
       const newItem = { ...item };
       newItem.cantidad = quantities[item._id];
       newItem.subtotal = quantities[item._id] * newItem.price;
       return newItem;
     });
+    
   
     const total = order.reduce((accumulator, item) => {
       const subtotal = item.subtotal || 0; // Si subtotal es undefined, se establece como 0
@@ -208,6 +222,10 @@ function Cart() {
         <button onClick={()=> handleContinuarCompra()} className="btn-bought">Continuar Compra</button>
         {okMessage !== "" && <p className="ok-message"> * {okMessage}</p>}
 
+      </div>
+      
+      <div className="paypal-button-container">
+        <PaypalCheckoutButton order={order}/>
       </div>
     </div>
   );
