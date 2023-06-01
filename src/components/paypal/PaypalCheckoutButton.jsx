@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -29,26 +29,34 @@ function PaypalCheckoutButton(props) {
   const handleProvinceChange = (e) => setProvinceInput(e.target.value);
   const handleCountryChange = (e) => setCountryInput(e.target.value);
 
+  // Set order to send to backend
+  const [newOrder, setNewOrder] = useState({});
+  const newOrderRef = useRef(newOrder);
+  newOrderRef.current = newOrder;
+
+  useEffect(() => {
+    
+    setNewOrder({
+      ...orderToPaypal,
+      address: addressInput,
+      cp: cpInput,
+      town: townInput,
+      province: provinceInput,
+      country: countryInput,
+      name: nameInput,
+    });
+  }, [addressInput, cpInput, townInput, provinceInput, countryInput, nameInput, orderToPaypal,paidFor])
+  console.log("newOrder", newOrder);
+
+
   const handleApprove = async (orderPaypalId) => {
     // Call Backend function to futfill order
 
     setPaidFor(true);
-    const newOrder = {
-     
-      total:   orderToPaypal.total,
-      email: orderToPaypal.email,
-      name : nameInput,
-      address: addressInput,
-      cp : cpInput,
-      town : townInput,
-      province : provinceInput,
-      country : countryInput,
-      orderCart: orderToPaypal.orderCart
-    }
-  
-    console.log("register Order in DB", newOrder);
+
+  console.log("entrando en la ruta de creación de order",newOrderRef.current)
     try {
-      await createOrderService(newOrder)
+      await createOrderService(newOrderRef.current)
       navigate("/")
       
     } catch (error) {
@@ -153,6 +161,7 @@ function PaypalCheckoutButton(props) {
               return actions.resolve();
             }
           }}
+         
           onApprove={async (data, actions) => {
             const orderPaypal = await actions.order.capture();
             console.log("orderPaypal", orderPaypal);

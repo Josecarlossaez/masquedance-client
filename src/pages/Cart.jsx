@@ -110,10 +110,7 @@ function Cart() {
       return accumulator + subtotal;
     }, 0);
   
-    order.total = total;
-    order.user = user.user.username;
-    order.userMail = user.user.email;
-    setOrderToPaypal(order)
+  
     
     console.log("pedido", order);
     const newOrder = {
@@ -122,14 +119,13 @@ function Cart() {
       email: user.user.email,
       orderCart: order,
     }
-    // Create Order
+    setOrderToPaypal(newOrder)
+    console.log("newOrder", newOrder)
+   // Create Order
     // try {
     //   await createOrderService(newOrder)
       
-    //   setOkMessage("Rellena los siguientes campos")
-    //   setTimeout(()=> {
-    //     setOkMessage("")
-    //   },2000)
+    
       
     // } catch (error) {
     //   navigate("/error")
