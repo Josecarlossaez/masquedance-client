@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { listCartProductService } from "../services/user.services";
+import { HashLink } from "react-router-hash-link";
+
 // Context
 import { useContext } from "react";
 import { AuthContext } from "../context/auth.context";
@@ -28,6 +30,7 @@ function Cart() {
   const [details, setDetails] = useState([]);
   const [quantities, setQuantities] = useState({});
   const [okMessage, setOkMessage] = useState("")
+  const [orderToPaypal, setOrderToPaypal] = useState(null)
 
   useEffect(() => {
     getData();
@@ -52,12 +55,12 @@ function Cart() {
     }
   };
 
-  let order = details.map((item) => {
-    const newItem = { ...item };
-    newItem.cantidad = quantities[item._id];
-    newItem.subtotal = quantities[item._id] * newItem.price;
-    return newItem;
-  })
+  // let order = details.map((item) => {
+  //   const newItem = { ...item };
+  //   newItem.cantidad = quantities[item._id];
+  //   newItem.subtotal = quantities[item._id] * newItem.price;
+  //   return newItem;
+  // })
 
   const handleQuantityChange = (productId, value) => {
     setQuantities((prevQuantities) => ({
@@ -92,11 +95,13 @@ function Cart() {
     }
   };
   const handleContinuarCompra = async () => {
-     order = details.map((item) => {
+     const order = details.map((item) => {
       const newItem = { ...item };
       newItem.cantidad = quantities[item._id];
       newItem.subtotal = quantities[item._id] * newItem.price;
       return newItem;
+     
+     
     });
     
   
@@ -108,7 +113,8 @@ function Cart() {
     order.total = total;
     order.user = user.user.username;
     order.userMail = user.user.email;
-
+    setOrderToPaypal(order)
+    
     console.log("pedido", order);
     const newOrder = {
       total: total,
@@ -117,19 +123,20 @@ function Cart() {
       orderCart: order,
     }
     // Create Order
-     try {
-      await createOrderService(newOrder)
+    // try {
+    //   await createOrderService(newOrder)
       
-      setOkMessage("Rellena los siguientes campos")
-      setTimeout(()=> {
-        setOkMessage("")
-      },2000)
+    //   setOkMessage("Rellena los siguientes campos")
+    //   setTimeout(()=> {
+    //     setOkMessage("")
+    //   },2000)
       
-     } catch (error) {
-      navigate("/error")
-     }
+    // } catch (error) {
+    //   navigate("/error")
+    // }
   };
-
+  
+  
   if (isFetching === true) {
     return <p>LOading...</p>;
   }
@@ -219,14 +226,17 @@ function Cart() {
       </div>
       <hr />
       <div>
+      <HashLink smooth to="#paypal-button-container"> 
         <button onClick={()=> handleContinuarCompra()} className="btn-bought">Continuar Compra</button>
-        {okMessage !== "" && <p className="ok-message"> * {okMessage}</p>}
-
+        {/* {okMessage !== "" && <p className="ok-message"> * {okMessage}</p>} */}
+      </HashLink>
       </div>
+      {orderToPaypal !== null &&
+      <div id="paypal-button-container">
+        <PaypalCheckoutButton orderToPaypal={orderToPaypal} />
+      </div>
+      }
       
-      <div className="paypal-button-container">
-        <PaypalCheckoutButton order={order} />
-      </div>
     </div>
   );
 }

@@ -15,8 +15,6 @@ import { useMediaQuery } from "react-responsive";
 import CreateProduct from "../components/product/CreateProduct";
 import CreateTrack from "../components/track/CreateTrack";
 import CreateDj from "../components/dj/CreateDj";
-// Axios Services
-import {createProductService} from '../services/product.services';
 import CreateColection from "../components/Colection/CreateColection";
 import ListProducts from "../components/product/ListProducts";
 
