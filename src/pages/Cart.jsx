@@ -230,6 +230,7 @@ function Cart() {
       {orderToPaypal !== null &&
       <div id="paypal-button-container">
         <PaypalCheckoutButton orderToPaypal={orderToPaypal} />
+        <button>Credit Card</button>
       </div>
       }
       
