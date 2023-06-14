@@ -3,6 +3,7 @@ import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createOrderService } from "../../services/order.services";
+import "../../css/paypal/paypalCheckoutButton.css"
 
 function PaypalCheckoutButton(props) {
   const navigate = useNavigate()
@@ -74,7 +75,7 @@ function PaypalCheckoutButton(props) {
 
   return (
     <div>
-      <div>
+      <div className="form-data-container">
       <div>
         <h4>Rellene los siguientes campos y seleccione un método de pago</h4>
       </div>
@@ -128,13 +129,14 @@ function PaypalCheckoutButton(props) {
       </div>
 
       <div style={{ position: "relative" }}>
-        <PayPalButtons
+        <PayPalButtons className="paypalButtons"
           style={{
             color: "silver",
             layout: "horizontal",
             height: 48,
             tagline: false,
             shape: "pill",
+            
           }}
           createOrder={(data, actions) => {
             return actions.order.create({

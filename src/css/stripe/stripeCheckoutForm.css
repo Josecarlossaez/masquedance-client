@@ -1,0 +1,11 @@
+.stripe-element{
+    border: 2px solid green;
+    /* width: 100%; */
+    height: 60px;
+    
+    margin: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

@@ -17,6 +17,7 @@ import { removeProductFromCartService } from "../services/user.services";
 import { createOrderService } from "../services/order.services";
 // COMPONENTS
 import PaypalCheckoutButton from "../components/paypal/PaypalCheckoutButton";
+import StripeCheckout from "../components/stripe/StripeCheckout";
 
 
 function Cart() {
@@ -230,7 +231,7 @@ function Cart() {
       {orderToPaypal !== null &&
       <div id="paypal-button-container">
         <PaypalCheckoutButton orderToPaypal={orderToPaypal} />
-        <button>Credit Card</button>
+        <StripeCheckout orderToPaypal={orderToPaypal}/>
       </div>
       }
       
