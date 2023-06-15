@@ -4,6 +4,8 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import "../../css/stripe/stripeCheckoutForm.css";
 import { stripePaymentService } from "../../services/stripe.services";
 import { createOrderService } from "../../services/order.services";
+import { HashLink } from "react-router-hash-link";
+
 
 function StripeCheckoutForm(props) {
     const navigate = useNavigate()
@@ -60,7 +62,7 @@ function StripeCheckoutForm(props) {
   };
   return (
     <form onSubmit={handleSubmit} className="form">
-      <CardElement className="stripe-element" />
+      <CardElement className="stripe-element" id="stripe-element" />
       <button className="buy">Comprar</button>
     </form> 
   );

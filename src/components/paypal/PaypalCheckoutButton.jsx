@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { createOrderService } from "../../services/order.services";
 import "../../css/paypal/paypalCheckoutButton.css";
 import StripeCheckout from "../stripe/StripeCheckout";
+import { HashLink } from "react-router-hash-link";
+
 
 function PaypalCheckoutButton(props) {
   const navigate = useNavigate();
@@ -197,9 +199,12 @@ function PaypalCheckoutButton(props) {
     `}</style>
         </div>
         <div className="credit-card-btn">
-          <button onClick={() => setStripeButtonView(!stripeButtnView)}>
+        <HashLink smooth to="#stripe-element">
+            <button onClick={() => setStripeButtonView(!stripeButtnView)}>
             Credit Card
           </button>
+        </HashLink>
+        
         </div>
         {stripeButtnView && (
           <div>
