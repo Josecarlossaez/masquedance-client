@@ -13,9 +13,9 @@ function PaypalCheckoutButton(props) {
 
   const [paidFor, setPaidFor] = useState(false);
   const [error, setError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("")
 
   // BUTTONS VIEW STATES
-  const [paypalButtonView, setPaypalButtonView] = useState(false);
   const [stripeButtnView, setStripeButtonView] = useState(false);
 
   // FORM STATES
@@ -136,56 +136,60 @@ function PaypalCheckoutButton(props) {
         </div>
         {/*  */}
       </div>
+      {errorMessage !== "" && (
+            <p className="error-message"> * {errorMessage}</p>
+          )}
       <div className="payment-buttons-container">
         <div style={{ position: "relative" }}>
-          <PayPalButtons
-            className="paypalButtons"
-            style={{
-              color: "silver",
-              layout: "horizontal",
-              height: 48,
-              tagline: false,
-              shape: "pill",
-            }}
-            createOrder={(data, actions) => {
-              return actions.order.create({
-                purchase_units: [
-                  {
-                    reference_id: "default",
-                    amount: {
-                      currency_code: "USD",
-                      value: parseFloat(orderToPayment.total).toFixed(2),
-                    },
+        <PayPalButtons className="paypalButtons"
+          style={{
+            color: "silver",
+            layout: "horizontal",
+            height: 48,
+            tagline: false,
+            shape: "pill",
+            
+          }}
+          createOrder={(data, actions) => {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  reference_id: "default",
+                  amount: {
+                    currency_code: "USD",
+                    value: parseFloat(orderToPayment.total).toFixed(2),
                   },
-                ],
-              });
-            }}
-            onClick={(data, actions) => {
-              // validate on button click, client or server side
-              const hasAlreadyBoughtCourse = false;
-              if (hasAlreadyBoughtCourse) {
-                setError(
-                  "You already bought this course. Go to your account to view your list of courses"
-                );
-                return actions.reject();
-              } else {
-                return actions.resolve();
-              }
-            }}
-            onApprove={async (data, actions) => {
-              const orderPaypal = await actions.order.capture();
-              console.log("orderPaypal", orderPaypal);
+                },
+              ],
+            });
+          }}
+          onClick={(data, actions) => {
+            // validate on button click, client or server side
+            const hasAlreadyBoughtCourse = false;
+            if (hasAlreadyBoughtCourse) {
+              setError(
+                "You already bought this course. Go to your account to view your list of courses"
+              );
+              return actions.reject();
+            } else {
+              return actions.resolve();
+            }
+          }}
+         
+          onApprove={async (data, actions) => {
+            const orderPaypal = await actions.order.capture();
+            console.log("orderPaypal", orderPaypal);
 
-              handleApprove(data.orderID);
-            }}
-            onCancel={() => {
-              //Display cancel message, modal or redirect user to cancel page o redirect to cart
-            }}
-            onError={(err) => {
-              setError(err);
-              console.log("Paypal Checkout onError", err);
-            }}
-          />
+            handleApprove(data.orderID);
+          }}
+          onCancel={() => {
+            //Display cancel message, modal or redirect user to cancel page o redirect to cart
+          }}
+          onError={(err) => {
+            setError(err);
+            console.log("Paypal Checkout onError", err);
+          }}
+        />
           <style>{`
       .paypal-buttons .paypal-button-container:not(:first-child) {
         display: none;
@@ -199,7 +203,7 @@ function PaypalCheckoutButton(props) {
         </div>
         {stripeButtnView && (
           <div>
-            <StripeCheckout newOrder={newOrder} />
+            <StripeCheckout newOrder={newOrder} setErrorMessage={setErrorMessage}/>
           </div>
         )}
         <div className="volver-btn">
