@@ -133,7 +133,8 @@ function Cart() {
     // }
   };
   
-  
+  let divDisabled;
+  !orderToPayment ? (divDisabled="table") : (divDisabled="disabled")
   
   if (isFetching === true) {
     return <p>LOading...</p>;
@@ -142,7 +143,7 @@ function Cart() {
   return (
     <div>
       <div>
-        <table className="table">
+        <table className={divDisabled}>
           <thead>
             <tr>
               <th>Foto</th>

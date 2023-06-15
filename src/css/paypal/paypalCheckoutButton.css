@@ -1,18 +1,16 @@
 .payment-buttons-container{
-    border: 2px solid red;
+  
     
 }
 .payment-buttons-container div{
     margin-bottom: 10px;
 }
 .paypalButtons{
-    border: 2px solid red;
+  
     margin: auto;
     z-index:+2 !important;
 }
-.credit-card-btn{
-    border: 2px solid black;
-}
+
 .credit-card-btn button{
     cursor: pointer;
     background-color: black;
@@ -24,13 +22,19 @@
     border-radius: 24px;
 
 }
+.credit-card-btn button:hover{
+    opacity: 0.8;
+}
 .volver-btn button{
     cursor: pointer;
-    background-color: rgb(183, 0, 255);
+    background-color:#69bfbe ;
     width:60%;
     height: 48px;
-    color:#69bfbe;
+    color:rgb(183, 0, 255);
     font-size:30px;
     font-family:Arial, Helvetica, sans-serif;
     border-radius: 24px;
+}
+.volver-btn button:hover{
+    opacity: 0.8;
 }
