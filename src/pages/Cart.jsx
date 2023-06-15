@@ -31,7 +31,7 @@ function Cart() {
   const [details, setDetails] = useState([]);
   const [quantities, setQuantities] = useState({});
   const [okMessage, setOkMessage] = useState("")
-  const [orderToPaypal, setOrderToPaypal] = useState(null)
+  const [orderToPayment, setOrderToPayment] = useState(null)
 
   useEffect(() => {
     getData();
@@ -120,7 +120,7 @@ function Cart() {
       email: user.user.email,
       orderCart: order,
     }
-    setOrderToPaypal(newOrder)
+    setOrderToPayment(newOrder)
     console.log("newOrder", newOrder)
    // Create Order
     // try {
@@ -228,10 +228,10 @@ function Cart() {
         {/* {okMessage !== "" && <p className="ok-message"> * {okMessage}</p>} */}
       </HashLink>
       </div>
-      {orderToPaypal !== null &&
+      {orderToPayment !== null &&
       <div id="paypal-button-container">
-        <PaypalCheckoutButton orderToPaypal={orderToPaypal} />
-        <StripeCheckout orderToPaypal={orderToPaypal}/>
+        <PaypalCheckoutButton orderToPayment={orderToPayment} />
+        <StripeCheckout orderToPayment={orderToPayment}/>
       </div>
       }
       

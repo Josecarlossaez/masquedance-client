@@ -7,8 +7,8 @@ import "../../css/paypal/paypalCheckoutButton.css"
 
 function PaypalCheckoutButton(props) {
   const navigate = useNavigate()
-  const { orderToPaypal } = props;
-  console.log("pedido.prps", orderToPaypal);
+  const { orderToPayment } = props;
+  console.log("pedido.prps", orderToPayment);
 
   const [paidFor, setPaidFor] = useState(false);
   const [error, setError] = useState(null);
@@ -38,7 +38,7 @@ function PaypalCheckoutButton(props) {
   useEffect(() => {
     
     setNewOrder({
-      ...orderToPaypal,
+      ...orderToPayment,
       address: addressInput,
       cp: cpInput,
       town: townInput,
@@ -46,7 +46,7 @@ function PaypalCheckoutButton(props) {
       country: countryInput,
       name: nameInput,
     });
-  }, [addressInput, cpInput, townInput, provinceInput, countryInput, nameInput, orderToPaypal,paidFor])
+  }, [addressInput, cpInput, townInput, provinceInput, countryInput, nameInput, orderToPayment,paidFor])
   console.log("newOrder", newOrder);
 
 
@@ -145,7 +145,7 @@ function PaypalCheckoutButton(props) {
                   reference_id: "default",
                   amount: {
                     currency_code: "USD",
-                    value: parseFloat(orderToPaypal.total).toFixed(2),
+                    value: parseFloat(orderToPayment.total).toFixed(2),
                   },
                 },
               ],
