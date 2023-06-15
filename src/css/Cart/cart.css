@@ -5,6 +5,10 @@ table {
     border-collapse: collapse;
     font-family: Arial, sans-serif;
   }
+  .disabled{
+    opacity: 0.5;
+    pointer-events:none;
+  }
   tr {
     height: 40px;
 

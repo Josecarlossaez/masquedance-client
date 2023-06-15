@@ -4,7 +4,7 @@ import "../../css/stripe/stripeCheckoutForm.css";
 import { stripePaymentService } from "../../services/stripe.services";
 
 function StripeCheckoutForm(props) {
-    console.log("orderToPaypalStripe",props.orderToStripe.orderToPayment);
+    console.log("orderToPayment",props.orderToStripe.orderToPayment);
     const { total , name } = props.orderToStripe.orderToPayment
     const {orderToPayment} = props
     const amount = total * 100;

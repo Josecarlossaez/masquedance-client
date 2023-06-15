@@ -7,47 +7,25 @@ import "../../css/paypal/paypalCheckoutButton.css"
 
 function PaypalCheckoutButton(props) {
   const navigate = useNavigate()
-  const { orderToPayment } = props;
-  console.log("pedido.prps", orderToPayment);
+  const { newOrder } = props;
+  console.log("pedido.prps", newOrder);
 
   const [paidFor, setPaidFor] = useState(false);
   const [error, setError] = useState(null);
  
-
-  // FORM STATES
-  const [nameInput, setNameInput] = useState("");
-  const [addressInput, setAddressInput] = useState("");
-  const [cpInput, setCpInput] = useState("");
-  const [townInput, setTownInput] = useState("");
-  const [provinceInput, setProvinceInput] = useState("");
-  const [countryInput, setCountryInput] = useState("");
-
-  // take user´s address info
-  const handleNameChange = (e) => setNameInput(e.target.value);
-  const handleAddressChange = (e) => setAddressInput(e.target.value);
-  const handleCpChange = (e) => setCpInput(e.target.value);
-  const handleTownChange = (e) => setTownInput(e.target.value);
-  const handleProvinceChange = (e) => setProvinceInput(e.target.value);
-  const handleCountryChange = (e) => setCountryInput(e.target.value);
-
   // Set order to send to backend
-  const [newOrder, setNewOrder] = useState({});
+  
   const newOrderRef = useRef(newOrder);
   newOrderRef.current = newOrder;
+ 
+useEffect(() => {
 
-  useEffect(() => {
-    
-    setNewOrder({
-      ...orderToPayment,
-      address: addressInput,
-      cp: cpInput,
-      town: townInput,
-      province: provinceInput,
-      country: countryInput,
-      name: nameInput,
-    });
-  }, [addressInput, cpInput, townInput, provinceInput, countryInput, nameInput, orderToPayment,paidFor])
-  console.log("newOrder", newOrder);
+}, [paidFor])
+
+
+
+
+
 
 
   const handleApprove = async (orderPaypalId) => {
@@ -76,60 +54,11 @@ function PaypalCheckoutButton(props) {
   return (
     <div>
       <div className="form-data-container">
-      <div>
-        <h4>Rellene los siguientes campos y seleccione un método de pago</h4>
-      </div>
-        {/* FORM DATA TO ORDER */}
-        <div className="input-container">
-          <input value={nameInput} onChange={handleNameChange} />
-          <label className={nameInput && "filled"} htmlFor="name">
-            Nombre y apellidos
-          </label>
-        </div>
-        {/*  */}
-        <div className="input-container">
-          <input value={addressInput} onChange={handleAddressChange} />
-          <label className={addressInput && "filled"} htmlFor="name">
-            Dirección completa
-          </label>
-        </div>
-        {/*  */}
-        <div>
-          <div className="input-container">
-            <input value={townInput} onChange={handleTownChange} />
-            <label className={townInput && "filled"} htmlFor="name">
-              Ciudad
-            </label>
-          </div>
-          {/*  */}
-          <div className="input-container">
-            <input value={cpInput} onChange={handleCpChange} />
-            <label className={cpInput && "filled"} htmlFor="name">
-              Código Postal
-            </label>
-          </div>
-        </div>
-        {/*  */}
-        <div>
-          <div className="input-container">
-            <input value={provinceInput} onChange={handleProvinceChange} />
-            <label className={provinceInput && "filled"} htmlFor="name">
-              Provincia
-            </label>
-          </div>
-          {/*  */}
-          <div className="input-container">
-            <input value={countryInput} onChange={handleCountryChange} />
-            <label className={countryInput && "filled"} htmlFor="name">
-              País
-            </label>
-          </div>
-        </div>
-          {/*  */}
+      
       </div>
 
       <div style={{ position: "relative" }}>
-        <PayPalButtons className="paypalButtons"
+        <PayPalButtons newOrder={newOrder} className="paypalButtons"
           style={{
             color: "silver",
             layout: "horizontal",
@@ -145,9 +74,12 @@ function PaypalCheckoutButton(props) {
                   reference_id: "default",
                   amount: {
                     currency_code: "USD",
-                    value: parseFloat(orderToPayment.total).toFixed(2),
+                    value: parseFloat(newOrderRef.current.total).toFixed(2),
+                    
                   },
                 },
+            console.log("entrando en createOrder.current", newOrderRef.current.total),
+                 
               ],
             });
           }}
@@ -182,7 +114,7 @@ function PaypalCheckoutButton(props) {
       .paypal-buttons .paypal-button-container:not(:first-child) {
         display: none;
       }
-    `}</style>
+     `}</style>
       </div>
     </div>
   );

@@ -16,22 +16,19 @@ import deleteIcon from "../images/icons8-eliminar-64.png";
 import { removeProductFromCartService } from "../services/user.services";
 import { createOrderService } from "../services/order.services";
 // COMPONENTS
-import PaypalCheckoutButton from "../components/paypal/PaypalCheckoutButton";
-import StripeCheckout from "../components/stripe/StripeCheckout";
-
+import PaymentForm from "../components/Cart/PaymentForm";
 
 function Cart() {
-
   const navigate = useNavigate();
-  const {user} = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
   console.log(user);
 
   // States
   const [isFetching, setIsFetching] = useState("");
   const [details, setDetails] = useState([]);
   const [quantities, setQuantities] = useState({});
-  const [okMessage, setOkMessage] = useState("")
-  const [orderToPayment, setOrderToPayment] = useState(null)
+  const [okMessage, setOkMessage] = useState("");
+  const [orderToPayment, setOrderToPayment] = useState(null);
 
   useEffect(() => {
     getData();
@@ -52,7 +49,7 @@ function Cart() {
       console.log("response", response.data);
       setIsFetching(false);
     } catch (error) {
-      navigate("/error")
+      navigate("/error");
     }
   };
 
@@ -96,44 +93,37 @@ function Cart() {
     }
   };
   const handleContinuarCompra = async () => {
-     const order = details.map((item) => {
+    const order = details.map((item) => {
       const newItem = { ...item };
       newItem.cantidad = quantities[item._id];
       newItem.subtotal = quantities[item._id] * newItem.price;
       return newItem;
-     
-     
     });
-    
-  
+
     const total = order.reduce((accumulator, item) => {
       const subtotal = item.subtotal || 0; // Si subtotal es undefined, se establece como 0
       return accumulator + subtotal;
     }, 0);
-  
-  
-    
+
     console.log("pedido", order);
     const newOrder = {
       total: total,
       username: user.user.username,
       email: user.user.email,
       orderCart: order,
-    }
-    setOrderToPayment(newOrder)
-    console.log("newOrder", newOrder)
-   // Create Order
+    };
+    setOrderToPayment(newOrder);
+    console.log("newOrder", newOrder);
+    // Create Order
     // try {
     //   await createOrderService(newOrder)
-      
-    
-      
+
     // } catch (error) {
     //   navigate("/error")
     // }
   };
-  
-  
+  let divDisabled;
+  !orderToPayment ? (divDisabled="table") : (divDisabled="disabled")
   if (isFetching === true) {
     return <p>LOading...</p>;
   }
@@ -141,7 +131,7 @@ function Cart() {
   return (
     <div>
       <div>
-        <table className="table">
+        <table className={divDisabled}>
           <thead>
             <tr>
               <th>Foto</th>
@@ -223,18 +213,21 @@ function Cart() {
       </div>
       <hr />
       <div>
-      <HashLink smooth to="#paypal-button-container"> 
-        <button onClick={()=> handleContinuarCompra()} className="btn-bought">Continuar Compra</button>
-        {/* {okMessage !== "" && <p className="ok-message"> * {okMessage}</p>} */}
-      </HashLink>
+        <HashLink smooth to="#paypal-button-container">
+          <button
+            onClick={() => handleContinuarCompra()}
+            className="btn-bought"
+          >
+            Continuar Compra
+          </button>
+          {/* {okMessage !== "" && <p className="ok-message"> * {okMessage}</p>} */}
+        </HashLink>
       </div>
-      {orderToPayment !== null &&
-      <div id="paypal-button-container">
-        <PaypalCheckoutButton orderToPayment={orderToPayment} />
-        <StripeCheckout orderToPayment={orderToPayment}/>
-      </div>
-      }
-      
+      {orderToPayment !== null && (
+        <div id="paypal-button-container">
+          <PaymentForm orderToPayment={orderToPayment} />
+        </div>
+      )}
     </div>
   );
 }
