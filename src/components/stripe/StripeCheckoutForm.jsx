@@ -1,12 +1,15 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import "../../css/stripe/stripeCheckoutForm.css";
 import { stripePaymentService } from "../../services/stripe.services";
+import { createOrderService } from "../../services/order.services";
 
 function StripeCheckoutForm(props) {
-    console.log("orderToPaypalStripe",props.orderToStripe.orderToPayment);
-    const { total , name } = props.orderToStripe.orderToPayment
-    const {orderToPayment} = props
+    const navigate = useNavigate()
+    
+    const { total , name } = props.newOrder.newOrder
+    const {newOrder} = props.newOrder
     const amount = total * 100;
     
   const stripe = useStripe();
@@ -14,7 +17,6 @@ function StripeCheckoutForm(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card: elements.getElement(CardElement),
@@ -32,11 +34,19 @@ function StripeCheckoutForm(props) {
         }
         
     }
+    try {
+      await createOrderService(newOrder)
+      navigate("/")
+      
+    } catch (error) {
+      console.log(error)
+    }
+
   };
   return (
     <form onSubmit={handleSubmit} className="form">
       <CardElement className="stripe-element" />
-      <button>Comprar</button>
+      <button className="buy">Comprar</button>
     </form> 
   );
 }

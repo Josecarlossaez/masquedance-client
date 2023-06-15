@@ -134,6 +134,7 @@ function Cart() {
   };
   
   
+  
   if (isFetching === true) {
     return <p>LOading...</p>;
   }
@@ -231,7 +232,6 @@ function Cart() {
       {orderToPayment !== null &&
       <div id="paypal-button-container">
         <PaypalCheckoutButton orderToPayment={orderToPayment} />
-        <StripeCheckout orderToPayment={orderToPayment}/>
       </div>
       }
       

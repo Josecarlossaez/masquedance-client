@@ -3,16 +3,20 @@ import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createOrderService } from "../../services/order.services";
-import "../../css/paypal/paypalCheckoutButton.css"
+import "../../css/paypal/paypalCheckoutButton.css";
+import StripeCheckout from "../stripe/StripeCheckout";
 
 function PaypalCheckoutButton(props) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { orderToPayment } = props;
   console.log("pedido.prps", orderToPayment);
 
   const [paidFor, setPaidFor] = useState(false);
   const [error, setError] = useState(null);
- 
+
+  // BUTTONS VIEW STATES
+  const [paypalButtonView, setPaypalButtonView] = useState(false);
+  const [stripeButtnView, setStripeButtonView] = useState(false);
 
   // FORM STATES
   const [nameInput, setNameInput] = useState("");
@@ -36,7 +40,6 @@ function PaypalCheckoutButton(props) {
   newOrderRef.current = newOrder;
 
   useEffect(() => {
-    
     setNewOrder({
       ...orderToPayment,
       address: addressInput,
@@ -46,22 +49,28 @@ function PaypalCheckoutButton(props) {
       country: countryInput,
       name: nameInput,
     });
-  }, [addressInput, cpInput, townInput, provinceInput, countryInput, nameInput, orderToPayment,paidFor])
+  }, [
+    addressInput,
+    cpInput,
+    townInput,
+    provinceInput,
+    countryInput,
+    nameInput,
+    orderToPayment,
+    paidFor,
+  ]);
   console.log("newOrder", newOrder);
-
 
   const handleApprove = async (orderPaypalId) => {
     // Call Backend function to futfill order
 
     setPaidFor(true);
 
-  console.log("entrando en la ruta de creación de order",newOrderRef.current)
     try {
-      await createOrderService(newOrderRef.current)
-      navigate("/")
-      
+      await createOrderService(newOrderRef.current);
+      navigate("/");
     } catch (error) {
-      navigate("/error")
+      navigate("/error");
     }
   };
   if (paidFor) {
@@ -76,9 +85,9 @@ function PaypalCheckoutButton(props) {
   return (
     <div>
       <div className="form-data-container">
-      <div>
-        <h4>Rellene los siguientes campos y seleccione un método de pago</h4>
-      </div>
+        <div>
+          <h4>Rellene los siguientes campos y seleccione un método de pago</h4>
+        </div>
         {/* FORM DATA TO ORDER */}
         <div className="input-container">
           <input value={nameInput} onChange={handleNameChange} />
@@ -125,64 +134,79 @@ function PaypalCheckoutButton(props) {
             </label>
           </div>
         </div>
-          {/*  */}
+        {/*  */}
       </div>
-
-      <div style={{ position: "relative" }}>
-        <PayPalButtons className="paypalButtons"
-          style={{
-            color: "silver",
-            layout: "horizontal",
-            height: 48,
-            tagline: false,
-            shape: "pill",
-            
-          }}
-          createOrder={(data, actions) => {
-            return actions.order.create({
-              purchase_units: [
-                {
-                  reference_id: "default",
-                  amount: {
-                    currency_code: "USD",
-                    value: parseFloat(orderToPayment.total).toFixed(2),
+      <div className="payment-buttons-container">
+        <div style={{ position: "relative" }}>
+          <PayPalButtons
+            className="paypalButtons"
+            style={{
+              color: "silver",
+              layout: "horizontal",
+              height: 48,
+              tagline: false,
+              shape: "pill",
+            }}
+            createOrder={(data, actions) => {
+              return actions.order.create({
+                purchase_units: [
+                  {
+                    reference_id: "default",
+                    amount: {
+                      currency_code: "USD",
+                      value: parseFloat(orderToPayment.total).toFixed(2),
+                    },
                   },
-                },
-              ],
-            });
-          }}
-          onClick={(data, actions) => {
-            // validate on button click, client or server side
-            const hasAlreadyBoughtCourse = false;
-            if (hasAlreadyBoughtCourse) {
-              setError(
-                "You already bought this course. Go to your account to view your list of courses"
-              );
-              return actions.reject();
-            } else {
-              return actions.resolve();
-            }
-          }}
-         
-          onApprove={async (data, actions) => {
-            const orderPaypal = await actions.order.capture();
-            console.log("orderPaypal", orderPaypal);
+                ],
+              });
+            }}
+            onClick={(data, actions) => {
+              // validate on button click, client or server side
+              const hasAlreadyBoughtCourse = false;
+              if (hasAlreadyBoughtCourse) {
+                setError(
+                  "You already bought this course. Go to your account to view your list of courses"
+                );
+                return actions.reject();
+              } else {
+                return actions.resolve();
+              }
+            }}
+            onApprove={async (data, actions) => {
+              const orderPaypal = await actions.order.capture();
+              console.log("orderPaypal", orderPaypal);
 
-            handleApprove(data.orderID);
-          }}
-          onCancel={() => {
-            //Display cancel message, modal or redirect user to cancel page o redirect to cart
-          }}
-          onError={(err) => {
-            setError(err);
-            console.log("Paypal Checkout onError", err);
-          }}
-        />
-        <style>{`
+              handleApprove(data.orderID);
+            }}
+            onCancel={() => {
+              //Display cancel message, modal or redirect user to cancel page o redirect to cart
+            }}
+            onError={(err) => {
+              setError(err);
+              console.log("Paypal Checkout onError", err);
+            }}
+          />
+          <style>{`
       .paypal-buttons .paypal-button-container:not(:first-child) {
         display: none;
       }
     `}</style>
+        </div>
+        <div className="credit-card-btn">
+          <button onClick={() => setStripeButtonView(!stripeButtnView)}>
+            Credit Card
+          </button>
+        </div>
+        {stripeButtnView && (
+          <div>
+            <StripeCheckout newOrder={newOrder} />
+          </div>
+        )}
+        <div className="volver-btn">
+          <a href="/cart">
+            <button>Volver al carrito</button>
+          </a>
+        </div>
       </div>
     </div>
   );

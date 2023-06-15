@@ -9,9 +9,9 @@ const stripePromise = loadStripe("pk_test_51NEqgXHRBFTe2EWnZBsbbAOOYKklZnmtAEgxB
 function StripeCheckout(props) {
   return (
     <div className='stripe-container'>
-         <h1>StripeCheckout</h1>
+         
    <Elements stripe={stripePromise}>
-    <StripeCheckoutForm orderToStripe={props}/>
+    <StripeCheckoutForm newOrder={props}/>
    </Elements>
     </div>
 
