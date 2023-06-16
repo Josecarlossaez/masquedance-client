@@ -7,7 +7,6 @@ import "../../css/paypal/paypalCheckoutButton.css";
 import StripeCheckout from "../stripe/StripeCheckout";
 import { HashLink } from "react-router-hash-link";
 
-
 function PaypalCheckoutButton(props) {
   const navigate = useNavigate();
   const { orderToPayment } = props;
@@ -15,9 +14,10 @@ function PaypalCheckoutButton(props) {
 
   const [paidFor, setPaidFor] = useState(false);
   const [error, setError] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState("");
 
   // BUTTONS VIEW STATES
+  const [paymentButtonsView, setPaymentButtonsView] = useState(false);
   const [stripeButtnView, setStripeButtonView] = useState(false);
 
   // FORM STATES
@@ -62,6 +62,31 @@ function PaypalCheckoutButton(props) {
     paidFor,
   ]);
   console.log("newOrder", newOrder);
+  
+  const handleIrAPagar = () => {
+    console.log("dentro de pagar", newOrder);
+    if (
+      newOrder.address === "" ||
+      newOrder.name === "" ||
+      newOrder.province === "" ||
+      newOrder.town === "" ||
+      newOrder.country === "" ||
+      newOrder.cp === ""
+    ) {
+      setErrorMessage("Debe rellenar todos los campos");
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 1000);
+      return;
+      
+    }
+  
+    setPaymentButtonsView(true);
+  };
+  // Form will be disabled
+  let formDataView;
+  !paymentButtonsView ? (formDataView="table") : (formDataView="disabled")
+  
 
   const handleApprove = async (orderPaypalId) => {
     // Call Backend function to futfill order
@@ -85,10 +110,10 @@ function PaypalCheckoutButton(props) {
   }
 
   return (
-    <div>
-      <div className="form-data-container">
+    <div className="form-data-container">
+      <div className={formDataView}>
         <div>
-          <h4>Rellene los siguientes campos y seleccione un método de pago</h4>
+          <h4>Rellene los siguientes campos </h4>
         </div>
         {/* FORM DATA TO ORDER */}
         <div className="input-container">
@@ -139,76 +164,90 @@ function PaypalCheckoutButton(props) {
         {/*  */}
       </div>
       {errorMessage !== "" && (
-            <p className="error-message"> * {errorMessage}</p>
-          )}
+        <p className="error-message"> * {errorMessage}</p>
+      )}
       <div className="payment-buttons-container">
-        <div style={{ position: "relative" }}>
-        <PayPalButtons className="paypalButtons"
-          style={{
-            color: "silver",
-            layout: "horizontal",
-            height: 48,
-            tagline: false,
-            shape: "pill",
-            
-          }}
-          createOrder={(data, actions) => {
-            return actions.order.create({
-              purchase_units: [
-                {
-                  reference_id: "default",
-                  amount: {
-                    currency_code: "USD",
-                    value: parseFloat(orderToPayment.total).toFixed(2),
-                  },
-                },
-              ],
-            });
-          }}
-          onClick={(data, actions) => {
-            // validate on button click, client or server side
-            const hasAlreadyBoughtCourse = false;
-            if (hasAlreadyBoughtCourse) {
-              setError(
-                "You already bought this course. Go to your account to view your list of courses"
-              );
-              return actions.reject();
-            } else {
-              return actions.resolve();
-            }
-          }}
-         
-          onApprove={async (data, actions) => {
-            const orderPaypal = await actions.order.capture();
-            console.log("orderPaypal", orderPaypal);
+      {!paymentButtonsView &&
+      <div>
+          <button className="select-payment" onClick={handleIrAPagar}>
+            Ir a pagar
+          </button>
+        </div>
+      }
+        
+        {paymentButtonsView && (
+          <div>
+            <div style={{ position: "relative" }}>
+              <PayPalButtons
+                className="paypalButtons"
+                style={{
+                  color: "silver",
+                  layout: "horizontal",
+                  height: 48,
+                  tagline: false,
+                  shape: "pill",
+                }}
+                createOrder={(data, actions) => {
+                  return actions.order.create({
+                    purchase_units: [
+                      {
+                        reference_id: "default",
+                        amount: {
+                          currency_code: "USD",
+                          value: parseFloat(orderToPayment.total).toFixed(2),
+                        },
+                      },
+                    ],
+                  });
+                }}
+                onClick={(data, actions) => {
+                  // validate on button click, client or server side
+                  const hasAlreadyBoughtCourse = false;
+                  if (hasAlreadyBoughtCourse) {
+                    setError(
+                      "You already bought this course. Go to your account to view your list of courses"
+                    );
+                    return actions.reject();
+                  } else {
+                    return actions.resolve();
+                  }
+                }}
+                onApprove={async (data, actions) => {
+                  const orderPaypal = await actions.order.capture();
+                  console.log("orderPaypal", orderPaypal);
 
-            handleApprove(data.orderID);
-          }}
-          onCancel={() => {
-            //Display cancel message, modal or redirect user to cancel page o redirect to cart
-          }}
-          onError={(err) => {
-            setError(err);
-            console.log("Paypal Checkout onError", err);
-          }}
-        />
-          <style>{`
+                  handleApprove(data.orderID);
+                }}
+                onCancel={() => {
+                  //Display cancel message, modal or redirect user to cancel page o redirect to cart
+                }}
+                onError={(err) => {
+                  setError(err);
+                  console.log("Paypal Checkout onError", err);
+                }}
+              />
+              <style>{`
       .paypal-buttons .paypal-button-container:not(:first-child) {
         display: none;
       }
     `}</style>
-        </div>
-        <div className="credit-card-btn">
-        <HashLink smooth to="#stripe-element">
-            <button onClick={() => setStripeButtonView(!stripeButtnView)}>
-            Credit Card
-          </button>
-        </HashLink>
-        
-        </div>
+            </div>
+            <div className="credit-card-btn">
+              <HashLink smooth to="#stripe-element">
+                <button onClick={() => setStripeButtonView(!stripeButtnView)}>
+                  Credit Card
+                </button>
+              </HashLink>
+            </div>
+          </div>
+        )}
+
         {stripeButtnView && (
           <div>
-            <StripeCheckout newOrder={newOrder} setErrorMessage={setErrorMessage}/>
+            <StripeCheckout
+              newOrder={newOrder}
+              setErrorMessage={setErrorMessage}
+            />
           </div>
         )}
         <div className="volver-btn">
