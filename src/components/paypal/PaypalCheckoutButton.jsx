@@ -6,6 +6,7 @@ import { createOrderService } from "../../services/order.services";
 import "../../css/paypal/paypalCheckoutButton.css";
 import StripeCheckout from "../stripe/StripeCheckout";
 import { HashLink } from "react-router-hash-link";
+import ConfirmOrder from "../Cart/ConfirmOrder";
 
 function PaypalCheckoutButton(props) {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ function PaypalCheckoutButton(props) {
   // BUTTONS VIEW STATES
   const [paymentButtonsView, setPaymentButtonsView] = useState(false);
   const [stripeButtnView, setStripeButtonView] = useState(false);
+  const [orderConfirmView, setOrderConfirmView] = useState(false)
 
   // FORM STATES
   const [nameInput, setNameInput] = useState("");
@@ -80,12 +82,12 @@ function PaypalCheckoutButton(props) {
       return;
       
     }
-  
-    setPaymentButtonsView(true);
+    setOrderConfirmView(true)
+    // setPaymentButtonsView(true);
   };
   // Form will be disabled
   let formDataView;
-  !paymentButtonsView ? (formDataView="table") : (formDataView="disabled")
+  !orderConfirmView ? (formDataView="table") : (formDataView="disabled")
   
 
   const handleApprove = async (orderPaypalId) => {
@@ -167,16 +169,23 @@ function PaypalCheckoutButton(props) {
         <p className="error-message"> * {errorMessage}</p>
       )}
       <div className="payment-buttons-container">
-      {!paymentButtonsView &&
+      {(!paymentButtonsView && !orderConfirmView)&&
       <div>
-          <button className="select-payment" onClick={handleIrAPagar}>
-            Ir a pagar
+      <HashLink smooth to="#confirm-order">
+         <button className="select-payment" onClick={handleIrAPagar}>
+            Revisar Pedido
           </button>
+      </HashLink>
+         
         </div>
       }
-        
+      
+      
+        {orderConfirmView &&
+        <ConfirmOrder newOrder={newOrderRef.current} setPaymentButtonsView={setPaymentButtonsView} /> }
         {paymentButtonsView && (
           <div>
+        
             <div style={{ position: "relative" }}>
               <PayPalButtons
                 className="paypalButtons"

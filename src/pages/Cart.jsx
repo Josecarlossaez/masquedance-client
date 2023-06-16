@@ -83,7 +83,7 @@ function Cart() {
     }, 0);
     console.log("quantititels", quantities);
 
-    return total;
+    return total + 7;
   };
   // Delete product from cart
   const handleDeleteProduct = async (id) => {
@@ -106,10 +106,13 @@ function Cart() {
     });
     
   
-    const total = order.reduce((accumulator, item) => {
+    let total = order.reduce((accumulator, item) => {
       const subtotal = item.subtotal || 0; // Si subtotal es undefined, se establece como 0
       return accumulator + subtotal;
     }, 0);
+     
+    // Gastos de envío
+    total = total +7
   
   
     
@@ -221,15 +224,16 @@ function Cart() {
         </table>
       </div>
       <div>
-        <h2>Total: {calculateTotal()} € sin Iva.</h2>
-      </div>
-      <hr />
-      <div>
+        <h2>Total: {calculateTotal()}€</h2> <p>{`( 7€ de gastos de envío)`}.</p>
+       <div>
       <HashLink smooth to="#paypal-button-container"> 
         <button onClick={()=> handleContinuarCompra()} className="btn-bought">Continuar Compra</button>
         {/* {okMessage !== "" && <p className="ok-message"> * {okMessage}</p>} */}
       </HashLink>
       </div>
+      </div>
+      <hr />
+     
       {orderToPayment !== null &&
       <div id="paypal-button-container">
         <PaypalCheckoutButton orderToPayment={orderToPayment} />
