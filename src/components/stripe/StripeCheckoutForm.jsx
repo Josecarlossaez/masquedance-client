@@ -1,24 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import "../../css/stripe/stripeCheckoutForm.css";
 import { stripePaymentService } from "../../services/stripe.services";
+import { createOrderService } from "../../services/order.services";
+import { HashLink } from "react-router-hash-link";
+
 
 function StripeCheckoutForm(props) {
-    console.log("orderToPayment",props.orderToStripe.orderToPayment);
-    const { total , name } = props.orderToStripe.orderToPayment
-    const {orderToPayment} = props
+    const navigate = useNavigate()
+    
+    const { total , name } = props.newOrder.newOrder
+    const {newOrder} = props.newOrder
+    const {setErrorMessage} = props
+
+    console.log("props en StripeCheckoutForm",props);
     const amount = total * 100;
+
+    
     
   const stripe = useStripe();
   const elements = useElements();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+     
+    if(newOrder.address === "" || newOrder.name === "" || newOrder.province === "" || newOrder.town === "" || newOrder.country === "" || newOrder.cp === ""){
+      setErrorMessage("Debe rellenar todos los campos")
+      return
+    }
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card: elements.getElement(CardElement),
     });
+    if(paymentMethod === undefined){
+      setErrorMessage("Introduce los datos de la tarjeta de crédito correctamente")
+      return
+    }
     if(!error){
         const { id } = paymentMethod;
         console.log(id);
@@ -29,14 +47,23 @@ function StripeCheckoutForm(props) {
             elements.getElement(CardElement).clear()
         } catch (error) {
             console.log(error)
+            return
         }
         
     }
+    try {
+      await createOrderService(newOrder)
+      navigate("/")
+      
+    } catch (error) {
+      console.log(error)
+    }
+
   };
   return (
     <form onSubmit={handleSubmit} className="form">
-      <CardElement className="stripe-element" />
-      <button>Comprar</button>
+      <CardElement className="stripe-element" id="stripe-element" />
+      <button className="buy">Comprar</button>
     </form> 
   );
 }

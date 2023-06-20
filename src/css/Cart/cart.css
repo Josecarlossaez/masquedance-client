@@ -104,4 +104,8 @@ table {
     align-items: center;
 
   }
+  .disabled{
+    opacity: 0.5;
+    pointer-events: none;
+  }
  

@@ -16,7 +16,8 @@ import deleteIcon from "../images/icons8-eliminar-64.png";
 import { removeProductFromCartService } from "../services/user.services";
 import { createOrderService } from "../services/order.services";
 // COMPONENTS
-import PaymentForm from "../components/Cart/PaymentForm";
+
+import PaypalCheckoutButton from "../components/paypal/PaypalCheckoutButton";
 
 function Cart() {
   const navigate = useNavigate();
@@ -80,7 +81,7 @@ function Cart() {
     }, 0);
     console.log("quantititels", quantities);
 
-    return total;
+    return total + 7;
   };
   // Delete product from cart
   const handleDeleteProduct = async (id) => {
@@ -99,12 +100,18 @@ function Cart() {
       newItem.subtotal = quantities[item._id] * newItem.price;
       return newItem;
     });
-
-    const total = order.reduce((accumulator, item) => {
+    
+  
+    let total = order.reduce((accumulator, item) => {
       const subtotal = item.subtotal || 0; // Si subtotal es undefined, se establece como 0
       return accumulator + subtotal;
     }, 0);
-
+     
+    // Gastos de envío
+    total = total +7
+  
+  
+    
     console.log("pedido", order);
     const newOrder = {
       total: total,
@@ -122,8 +129,10 @@ function Cart() {
     //   navigate("/error")
     // }
   };
+  
   let divDisabled;
   !orderToPayment ? (divDisabled="table") : (divDisabled="disabled")
+  
   if (isFetching === true) {
     return <p>LOading...</p>;
   }
@@ -209,25 +218,22 @@ function Cart() {
         </table>
       </div>
       <div>
-        <h2>Total: {calculateTotal()} € sin Iva.</h2>
+        <h2>Total: {calculateTotal()}€</h2> <p>{`( 7€ de gastos de envío)`}.</p>
+       <div>
+      <HashLink smooth to="#paypal-button-container"> 
+        <button onClick={()=> handleContinuarCompra()} className="btn-bought">Continuar Compra</button>
+        {/* {okMessage !== "" && <p className="ok-message"> * {okMessage}</p>} */}
+      </HashLink>
+      </div>
       </div>
       <hr />
-      <div>
-        <HashLink smooth to="#paypal-button-container">
-          <button
-            onClick={() => handleContinuarCompra()}
-            className="btn-bought"
-          >
-            Continuar Compra
-          </button>
-          {/* {okMessage !== "" && <p className="ok-message"> * {okMessage}</p>} */}
-        </HashLink>
+     
+      {orderToPayment !== null &&
+      <div id="paypal-button-container">
+        <PaypalCheckoutButton orderToPayment={orderToPayment} />
       </div>
-      {orderToPayment !== null && (
-        <div id="paypal-button-container">
-          <PaymentForm orderToPayment={orderToPayment} />
-        </div>
-      )}
+      }
+      
     </div>
   );
 }

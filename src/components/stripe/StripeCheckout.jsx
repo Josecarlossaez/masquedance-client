@@ -7,11 +7,12 @@ import "../../css/stripe/stripeCheckout.css"
 const stripePromise = loadStripe("pk_test_51NEqgXHRBFTe2EWnZBsbbAOOYKklZnmtAEgxBtfUYVOB4NOA2pREMbM99GugYyTMRFZQqEdwggf2rKuiIiehgdRE00rFZ0ACxf")
 
 function StripeCheckout(props) {
+  const {setErrorMessage} = props
   return (
     <div className='stripe-container'>
-         <h1>StripeCheckout</h1>
+         
    <Elements stripe={stripePromise}>
-    <StripeCheckoutForm orderToStripe={props}/>
+    <StripeCheckoutForm newOrder={props} setErrorMessage={setErrorMessage}/>
    </Elements>
     </div>
 
