@@ -28,8 +28,9 @@ function Cart() {
   const [isFetching, setIsFetching] = useState("");
   const [details, setDetails] = useState([]);
   const [quantities, setQuantities] = useState({});
-  const [okMessage, setOkMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("")
   const [orderToPayment, setOrderToPayment] = useState(null);
+  // const [stockFail, setStockFail] = useState(false)
 
   useEffect(() => {
     getData();
@@ -43,6 +44,9 @@ function Cart() {
 
     setQuantities(initialQuantities);
   }, [details]);
+
+  
+
   const getData = async () => {
     try {
       const response = await listCartProductService();
@@ -94,12 +98,34 @@ function Cart() {
     }
   };
   const handleContinuarCompra = async () => {
+    
     const order = details.map((item) => {
       const newItem = { ...item };
       newItem.cantidad = quantities[item._id];
+      
       newItem.subtotal = quantities[item._id] * newItem.price;
       return newItem;
     });
+   let stockFail = false;
+    order.forEach((each) => {
+      if(each.cantidad > each.stock){
+        setErrorMessage(`Hay un problema con el producto ${each.name} talla:${each.size}, solamente quedan ${each.stock} en stock`)
+        setTimeout(() => {
+          setErrorMessage("")
+        }, 2000);
+        stockFail = true;
+      }
+    })
+    
+    
+    console.log("stockFail", stockFail)
+   if(stockFail === true) {
+
+    return 
+   }
+    
+    console.log("ha pasado el return");
+
     
   
     let total = order.reduce((accumulator, item) => {
@@ -136,7 +162,7 @@ function Cart() {
   if (isFetching === true) {
     return <p>LOading...</p>;
   }
-  // TODO 1. Crear componente dirección de envío etc para hacer collapse al continuar compra
+  
   return (
     <div>
       <div>
@@ -217,6 +243,9 @@ function Cart() {
           </tbody>
         </table>
       </div>
+      {errorMessage !== "" && (
+            <p className="error-message"> * {errorMessage}</p>
+          )}
       <div>
         <h2>Total: {calculateTotal()}€</h2> <p>{`( 7€ de gastos de envío)`}.</p>
        <div>
@@ -233,6 +262,7 @@ function Cart() {
         <PaypalCheckoutButton orderToPayment={orderToPayment} />
       </div>
       }
+     
       
     </div>
   );
