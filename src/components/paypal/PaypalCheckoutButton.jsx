@@ -7,6 +7,7 @@ import "../../css/paypal/paypalCheckoutButton.css";
 import StripeCheckout from "../stripe/StripeCheckout";
 import { HashLink } from "react-router-hash-link";
 import ConfirmOrder from "../Cart/ConfirmOrder";
+import { updateStockProductService } from "../../services/product.services";
 
 function PaypalCheckoutButton(props) {
   const navigate = useNavigate();
@@ -96,7 +97,8 @@ function PaypalCheckoutButton(props) {
     setPaidFor(true);
 
     try {
-      await createOrderService(newOrderRef.current);
+      // await createOrderService(newOrderRef.current);
+      await updateStockProductService(newOrderRef.current);
       navigate("/");
     } catch (error) {
       navigate("/error");

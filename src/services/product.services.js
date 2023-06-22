@@ -21,6 +21,10 @@ const deleteProductService = (productId) => {
     return service.delete(`/product/${productId}/delete`)
 };
 
+const updateStockProductService = (newOrder) => {
+    return service.post("/product/product-stock/update",newOrder )
+} 
+
 
 
 
@@ -29,5 +33,6 @@ export {
     detailsProductService,
     createProductService,
     updateProductService,
-    deleteProductService
+    deleteProductService,
+    updateStockProductService
 }
