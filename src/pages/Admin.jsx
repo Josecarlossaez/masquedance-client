@@ -17,6 +17,7 @@ import CreateTrack from "../components/track/CreateTrack";
 import CreateDj from "../components/dj/CreateDj";
 import CreateColection from "../components/Colection/CreateColection";
 import ListProducts from "../components/product/ListProducts";
+import CreateTwitchLink from "../components/twitchLink/CreateTwitchLink";
 
 
 
@@ -30,12 +31,15 @@ function Admin() {
     const [createDj, setCreateDj] = useState(false)
     const [createColection, setCreateColection] = useState(false)
     const [listProduct, setlistProduct] = useState(false)
+    const [createTwitchLink, setCreateTwitchLink] = useState(false)
      
     // Toogle components
     const handleCreateProduct = () =>{
       setCreateProduct(true)
       setCreateTrack(false)
       setCreateColection(false)
+      setCreateTwitchLink(false)
+
 
      }
     
@@ -44,6 +48,8 @@ function Admin() {
       setCreateTrack(true)
       setCreateDj(false)
       setCreateColection(false)
+      setCreateTwitchLink(false)
+
 
 
     } 
@@ -52,6 +58,8 @@ function Admin() {
       setCreateTrack(false)
       setCreateDj(true)
       setCreateColection(false)
+      setCreateTwitchLink(false)
+
 
    }
     const handleCreateColection = () =>{
@@ -59,9 +67,21 @@ function Admin() {
       setCreateTrack(false)
       setCreateDj(false)
       setCreateColection(true)
+      setCreateTwitchLink(false)
+
  }
     const handleListProduct = () => {
       setlistProduct(true)
+      setCreateProduct(false)
+      setCreateTrack(false)
+      setCreateDj(false)
+      setCreateColection(false)
+      setCreateTwitchLink(false)
+
+    }
+    const handleCreateTwitchLink = () => {
+      setCreateTwitchLink(true)
+      setlistProduct(false)
       setCreateProduct(false)
       setCreateTrack(false)
       setCreateDj(false)
@@ -99,6 +119,10 @@ function Admin() {
         <HashLink smooth to="#profile-components">
           <button className="hash-button">Crear Vídeo</button>
         </HashLink>
+
+        <HashLink smooth to="#profile-components">
+          <button onClick={handleCreateTwitchLink} className="hash-button">Crear TwitchLink</button>
+        </HashLink>
         
       </div>
       <div   id={activeHashlink &&'admin-components'}>
@@ -108,6 +132,7 @@ function Admin() {
        {createColection && <CreateColection/>}
        {createTrack && <CreateTrack/>}
        {createDj && <CreateDj/>}
+       {createTwitchLink && <CreateTwitchLink/>}
       </div>
 
     </div>
