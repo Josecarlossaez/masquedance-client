@@ -1,0 +1,21 @@
+.twitch-link-container{
+    width: 90vw;
+    margin: auto;
+    border:2px solid green;
+    height: 600px;
+}
+.link-twitch-link{
+    border: 2px solid blue;
+    display: block;
+    width: 100%;
+   
+}
+.image-twitch-link{
+    
+}
+
+.twitch-link-container a img{
+  width: 100%;
+   height: 600px;
+    
+}

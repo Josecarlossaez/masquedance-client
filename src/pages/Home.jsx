@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import '../../css/home.css'
+import '../css/home.css'
+import { listTwitchLinkService } from '../services/twitchLink.services';
+import { listProductService } from '../services/product.services';
+import TwitchLink from '../components/twitchLink/TwitchLink';
+import ProductsLink from '../components/product/ProductsLink';
 
 // Services
-import { listTwitchLinkService } from '../../services/twitchLink.services'
-import { listProductService } from '../../services/product.services'
+
 
 function Home() {
 const navigate = useNavigate()
@@ -38,7 +41,13 @@ if(isFetching === true) {
 }
   return (
     <div className='home-container'>
-    <h1>Home</h1>
+    <div className='twitch-link-container'>
+
+     <TwitchLink listTwitchLink={listTwitchLink}/>
+    </div>
+    <div>
+      <ProductsLink listProduct={listProduct}/>
+    </div>
     </div>
   )
 }
