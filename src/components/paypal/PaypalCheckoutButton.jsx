@@ -97,7 +97,7 @@ function PaypalCheckoutButton(props) {
     setPaidFor(true);
 
     try {
-      // await createOrderService(newOrderRef.current);
+       await createOrderService(newOrderRef.current);
       await updateStockProductService(newOrderRef.current);
       navigate("/");
     } catch (error) {
