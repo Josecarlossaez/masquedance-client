@@ -16,6 +16,7 @@ import ColectionDetails from './components/Colection/ColectionDetails';
 import EditProduct from './components/product/EditProduct';
 import ColectionEdit from './components/Colection/ColectionEdit';
 import Cart from './pages/Cart';
+import ListTrack from './components/track/ListTrack';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
       <Route path="/product/:productId/edit" element={<EditProduct/>}/>
       <Route path="/colection/:colectionId/edit" element={<ColectionEdit/>}/>
       <Route path="/cart" element={<Cart/>}/>
+      <Route path="/list-tracks" element={<ListTrack/>}/>
 
       
       

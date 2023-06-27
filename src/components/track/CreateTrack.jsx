@@ -138,8 +138,8 @@ function CreateTrack() {
 
         <div className="input-container">
           <input value={titleInput} onChange={handleTitleChange} />
-          <label className={titleInput && "filled"} htmlFor="name">
-            Name
+          <label className={titleInput && "filled"} htmlFor="title">
+            Title
           </label>
         </div>
    
