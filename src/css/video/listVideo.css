@@ -1,0 +1,9 @@
+.video-container{
+   
+ display: flex;
+ justify-content: center;
+}
+.data-container{
+    border: 2px solid yellow;
+    cursor: pointer;
+}

@@ -6,6 +6,7 @@ import { listTwitchLinkService } from '../services/twitchLink.services';
 import { listProductService } from '../services/product.services';
 import TwitchLink from '../components/twitchLink/TwitchLink';
 import ProductsLink from '../components/product/ProductsLink';
+import ListVideo from '../components/videos/ListVideo';
 
 // Services
 
@@ -47,6 +48,9 @@ if(isFetching === true) {
     </div>
     <div>
       <ProductsLink listProduct={listProduct}/>
+    </div>
+    <div>
+      <ListVideo/>
     </div>
     </div>
   )
