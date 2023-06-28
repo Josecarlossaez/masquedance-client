@@ -35,18 +35,13 @@ function ListTrack() {
     }
   };
 
-  console.log("tracks", tracks)
- const handleClick = () => {
-  console.log("capturando el evento")
- }
-
   if (isFetching === true) {
     return <p>...loading</p>;
   }
 
   return (
     <div className="trackList-container">
-      <Player onClick={handleClick} trackList={tracks} />
+      <Player trackList={tracks} />
       <h1>rodadnd</h1>
     </div>
   );
