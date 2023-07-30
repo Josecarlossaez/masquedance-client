@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import RightNav from './RightNav';
 
 const StyledBurger = styled.div`
+
   width: 2rem;
   height: 2rem;
   position: fixed;
-  top: 15px;
+  top: 20px;
   right: 20px;
   z-index: 999;
   display: none;

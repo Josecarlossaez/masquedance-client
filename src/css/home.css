@@ -1,9 +1,10 @@
 .home-container{
     margin:0px;
+ 
     width: 100%;
     min-height: 100vh;
-    background: rgb(9,118,121);
-    background: linear-gradient(238deg, rgba(9,118,121,1) 6%, rgba(68,67,75,1) 79%, rgba(105,191,190,1) 97%);
+    background: white;
+    /* background: linear-gradient(238deg, rgba(9,118,121,1) 6%, rgba(68,67,75,1) 79%, rgba(105,191,190,1) 97%); */
 }
 .home-container div{
     margin-bottom: 20px;

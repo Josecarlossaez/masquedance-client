@@ -71,7 +71,7 @@ function CreateTwitchLink() {
     <section className="general-container">
     <div className="form-container">
       <form>
-        <h3>Crear Producto</h3>
+        <h3>Crear TwitchLink</h3>
 
         <div className="input-container">
           <input value={linkInput} onChange={handleTwitchLinkChange} />

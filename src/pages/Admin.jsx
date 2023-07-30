@@ -102,7 +102,7 @@ function Admin() {
 
 
   return (
-    <div>
+    <div className="admin">
       <div className="button-container">
         <HashLink smooth to="#admin-components">
           <button onClick={handleListProduct} className="hash-button">Productos</button>

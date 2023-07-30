@@ -1,8 +1,16 @@
+
+
+.admin{
+    margin-top: 25px;
+}
 .button-container{
+    border: solid 2px pink;
+    margin-top: 300px;
     width:90%;
     margin: auto;
     display:flex;
-    justify-content: center;;
+    justify-content: center;
+    flex-flow: wrap;
 
 }
 @media screen and (max-width: 1024px) {

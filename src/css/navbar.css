@@ -1,17 +1,65 @@
+/* div.navbar{
+    border: 5px solid black;
+    background-color: white;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+} */
+
+/* .nav-container{
+    background-color: white;
+    width: 100vw;
+    border: 2px solid red;
+    display: flex;
+    flex-direction: column;
+} */
+.space-logo-user{
+    width: 100%;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+.space-logo-user div{
+    width: 33%
+
+}
+.user{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px
+    
+}
+.user img{
+    width: 3rem;
+}
+.logo-responsive img{
+    display: none;
+    width:250px;
+    transition: all 300ms ease-out;
+}
+.logo-responsive img:hover{
+    transform: scale(1.15);
+    transition: all 300ms ease-in;
+}
+
+
 
 .navbar{
-    background-color: rgb(53, 39, 39);
+    background-color:white;
     height: 100%;
     width: 100%;
     margin: auto;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
    
 }
 
 .logo img{
-    width:250px;
+    width:350px;
     transition: all 300ms ease-out;
 }
 .logo img:hover{
@@ -21,8 +69,39 @@
 
 @media screen and (max-width:1024px) {
     .navbar{
+    }
+    Nav{
+      
+        height: 600px;
+    }
+  
+    .space-logo-user{
+        height: 60px;
+        display: inline;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .space{
+        display: none;
+    }
+    .navbar{
+        height: 0px;
+        /* display: none; */
+
+        /* border: 2px solid red;
         width: 100%;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-between; */
+    }
+    .space-logo-user .logo{
+        width: 50%;
+    }
+    .logo img{
+        width:220px;
+        transition: all 300ms ease-out;
+    }
+    .user img{
+        width: 2rem;
     }
 }

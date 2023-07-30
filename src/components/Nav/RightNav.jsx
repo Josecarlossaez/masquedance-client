@@ -3,7 +3,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import "../../css/rightNav.css";
-import cartIcon from "../../images/shopping-cart-outline-svgrepo-com.svg"
+// import cartIcon from "../../images/shopping-cart-outline-svgrepo-com.svg"
 
 // Context
 import { AuthContext } from "../../context/auth.context.js";
@@ -47,7 +47,9 @@ const RightNav = ( {open, changeStateBurger} ) => {
     navigate("/home");
   };
   return (
+    
     <Ul open={open} className='links'>
+       {/* <div></div> */}
       <div className="nav-list">
         <Link to='/'  onClick={handleChangeBurger}>Home</Link>
         <Link to='/about'>About Us</Link>
@@ -64,13 +66,7 @@ const RightNav = ( {open, changeStateBurger} ) => {
        
         
       </div>
-      <div className="cart-icon">
-         {isLoggedIn && <Link to='/cart'
-         onClick={ handleChangeBurger }>
-         
-         <img src={cartIcon} alt="cart-icon"/>
-         </Link>}
-      </div>
+      
     </Ul>
   );
 };

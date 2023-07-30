@@ -1,17 +1,19 @@
 .links{
-    width: 73vw;
-    padding-left:12vw;
-    border: 2px solid red;
+    width: 100vw;
+    margin:auto;
+    margin-top: 10px;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
 }
 .nav-list{
-    border: 2px solid green;
+    /* border: 2px solid green; */
     display:flex;
 }
 .auth-list{
-    border: 2px solid green;
+    /* width: 33%; */
+    /* border: 2px solid green; */
     display:flex;
+    justify-content: end;
 }
 .nav-list  a{
     color: #69bfbe;
