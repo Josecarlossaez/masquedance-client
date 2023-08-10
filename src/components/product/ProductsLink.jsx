@@ -1,33 +1,38 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 
 // CSS
-import "../../css/product/product-link.css"
+import "../../css/product/product-link.css";
 
 function ProductsLink(props) {
-    const {listProduct} = props
+  const { listProduct } = props;
+  const listProductSort = listProduct.sort(() => Math.random() - 0.5)
   return (
-    <div className='product-link-container' >
-    <div>
-         <h3>NUESTRO MERCHAN</h3>
+    <div className="product-link-container">
+      <div className="div-title-product">
+        <h3>Nuestra Merchan</h3>
+      </div>
+
+      <div className="product-div-container">
+        <div className="product-div" >
+          <Link to="/list-colections" target="_blank" className="product-link" > 
+          <img src={listProductSort[0].picture} alt="product-imagen" />
+          </Link>
+        </div>
+        <div className="product-div-center">
+          <Link to="/list-colections" target="_blank" className="link-twitch-link"> 
+          <h4>{listProductSort[0].name}</h4>
+          <img src={listProductSort[0].picture} alt="product-imagen"  />
+          </Link>
+        </div>
+        <div className="product-div" >
+          <Link to="/list-colections" target="_blank" className="link-twitch-link"> 
+          <img src={listProductSort[0].picture} alt="product-imagen" />
+          </Link>
+        </div>
+      </div>
     </div>
- 
-    <div>
-       <div className='product-link-text'>
-              <h3>Todos nuestros productos disponibles <span>onlline</span></h3>
-              <h3>Aquí te presentamos nuestra novedad:</h3>
-             <h2>{listProduct[listProduct.length -1].name}</h2>
-         </div>
-         <div>
-            <Link to="/list-colections" target="_blank" className='link-twitch-link'>
-            <img src={listProduct[listProduct.length -1].picture} alt="twitch-link" className='image-twitch-link'/>
-        </Link>
-         </div>
-    </div>
-        
-        
-    </div>
-  )
+  );
 }
 
-export default ProductsLink
+export default ProductsLink;

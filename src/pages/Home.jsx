@@ -12,46 +12,47 @@ import ListVideo from '../components/videos/ListVideo';
 
 
 function Home() {
-const navigate = useNavigate()
+  const navigate = useNavigate()
 
-// States
-const [isFetching, setIsFetching] = useState(true);
-const [listTwitchLink, setListTwitchLink] = useState(null)
-const [listProduct, setListProduct] = useState(null)
+  // States
+  const [isFetching, setIsFetching] = useState(true);
+  const [listTwitchLink, setListTwitchLink] = useState(null)
+  const [listProduct, setListProduct] = useState(null)
 
-useEffect(() => {
-  getData()
-}, [])
+  useEffect(() => {
+    getData()
+  }, [])
 
-const getData = async () => {
-  try {
-    const responseTwitch = await listTwitchLinkService()
-    const responseProduct = await listProductService()
-    setListTwitchLink(responseTwitch.data)
-    setListProduct(responseProduct.data)
-    setIsFetching(false)
+  const getData = async () => {
+    try {
+      const responseTwitch = await listTwitchLinkService()
+      const responseProduct = await listProductService()
+      setListTwitchLink(responseTwitch.data)
+      setListProduct(responseProduct.data)
+      setIsFetching(false)
 
-  } catch (error) {
-    navigate("/error")
+    } catch (error) {
+      navigate("/error")
+    }
   }
-}
 
-  
-if(isFetching === true) {
-  return <p>...loading</p>
-}
+
+  if (isFetching === true) {
+    return <p>...loading</p>
+  }
   return (
     <div className='home-container'>
-    <div className='twitch-link-container'>
+    
+      <div className='twitch-link-container'>
 
-     <TwitchLink listTwitchLink={listTwitchLink}/>
-    </div>
-    <div>
-      <ProductsLink listProduct={listProduct}/>
-    </div>
-    <div>
-      <ListVideo/>
-    </div>
+        <TwitchLink listTwitchLink={listTwitchLink} />
+      </div>
+      <div className='products-linkd-div'>
+        <ProductsLink listProduct={listProduct} />
+      </div>
+      <div>
+        <ListVideo />
+      </div>
     </div>
   )
 }
