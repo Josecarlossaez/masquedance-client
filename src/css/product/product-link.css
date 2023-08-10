@@ -2,10 +2,18 @@
     margin-top: 20px;
     background-color: antiquewhite;
     display: flex;
-    width: 90vw;
+    flex-direction: column;
+    width: 60vw;
     margin: auto;
-    border:2px solid green;
-    height: 600px;
+    border:3px solid black;
+    border-radius: 20px;
+    height: 400px;
+}
+.product-link-container h3 {
+    background-color: white;
+    width: 12rem;
+    margin: auto;
+    
 }
 .product-link-text{
 

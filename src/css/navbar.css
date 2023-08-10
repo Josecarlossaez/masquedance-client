@@ -13,7 +13,13 @@
     display: flex;
     flex-direction: column;
 } */
+.Nav {
+    /* border: 2px solid pink; */
+    height: 200px !important;
+   
+}
 .space-logo-user{
+    /* border: 2px solid green; */
     width: 100%;
     padding-top: 20px;
     display: flex;
@@ -34,19 +40,17 @@
 .user img{
     width: 3rem;
 }
-.logo-responsive img{
+.logo-peque img{
     display: none;
     width:250px;
     transition: all 300ms ease-out;
 }
-.logo-responsive img:hover{
-    transform: scale(1.15);
-    transition: all 300ms ease-in;
-}
+
 
 
 
 .navbar{
+    /* border: 2px solid red; */
     background-color:white;
     height: 100%;
     width: 100%;
@@ -70,9 +74,9 @@
 @media screen and (max-width:1024px) {
     .navbar{
     }
-    Nav{
+    .Nav{
       
-        height: 600px;
+        height: 100px !important;
     }
   
     .space-logo-user{
@@ -95,10 +99,25 @@
         justify-content: space-between; */
     }
     .space-logo-user .logo{
-        width: 50%;
+        display: none;
     }
-    .logo img{
-        width:220px;
+    .user {
+        /* border: 2px solid green; */
+        width: 100vw !important;
+        height: 80px;
+    }
+    .user .logo img {
+        display: block;
+        border: 2px solid blue;
+    }
+    /* .navbar .logo-responsive{
+        border: 2px solid black;
+        display: block;
+        width: 50%;
+    } */
+    .user .logo-peque img{
+        display: inline;
+        width:70px;
         transition: all 300ms ease-out;
     }
     .user img{

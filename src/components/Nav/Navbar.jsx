@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Burger from "./Burger";
 import logo from "../../images/logo-en-texto.png";
+import logoPeque from "../../images/logoPeque.png";
 import userLogo from "../../images/user_icon.svg";
 import cartLogo from "../../images/shopping-cart-outline-svgrepo-com.svg";
 import "../../css/navbar.css";
@@ -40,19 +41,24 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="user">
+          <div>
             <img src={userLogo} alt="userLogo" />
 
             <Link to="/cart">
               <img src={cartLogo} alt="cart-icon" />
             </Link>
           </div>
-        </div>
-        <div className="navbar">
-          <div className="logo-responsive">
-            <Link to="/">
-              <img src={logo} alt="logo" />
+          <div className="logo-peque">
+             <Link to="/">
+              <img src={logoPeque} alt="logo" />
             </Link>
           </div>
+          <div></div>
+            
+           
+          </div>
+        </div>
+        <div className="navbar">
           <div>
             <Burger />
           </div>
