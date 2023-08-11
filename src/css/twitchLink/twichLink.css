@@ -26,6 +26,14 @@
 @media screen and (max-width: 1024px) {
     .twitch-link-container{
       /* border: 2px solid blue; */
+        width: 55vw;
+        margin: 0 auto 0 auto;
+        height: 27rem;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .twitch-link-container{
+      /* border: 2px solid blue; */
         width: 90vw;
         margin: 0 auto 0 auto;
         height: 20rem;

@@ -10,7 +10,7 @@ function ProductsLink(props) {
   return (
     <div className="product-link-container">
       <div className="div-title-product">
-        <h3>Nuestra Merchan</h3>
+        <h3>Merchandising</h3>
       </div>
 
       <div className="product-div-container">

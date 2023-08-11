@@ -1,9 +1,134 @@
-.video-container{
-   
- display: flex;
- justify-content: center;
+.listVideoComponent {
+  /* background: rgb(255,255,255);
+background: linear-gradient(351deg, rgba(255,255,255,1) 28%, rgba(218,226,231,1) 66%); */
+
+  margin-top: 30px;
+
 }
-.data-container{
-    border: 2px solid yellow;
-    cursor: pointer;
+.list-video-container {
+  gap: 10px;
+  width: 70vw;
+  margin: auto;
+  margin-top: 30px;
+  display: flex;
+  
 }
+
+.title-component {
+   width: 70%;
+   margin:auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.title-component h1 {
+  color: rgb(65, 62, 62);
+  font-size: 5em;
+}
+.title-component img {
+    width: 60%;
+  }
+.vertical-order{
+    gap: 20px;
+    width: 48%;
+    margin: auto;
+    
+}
+.video-container {
+  background: rgb(255, 255, 255);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 1) 28%,
+    rgba(218, 226, 231, 1) 66%
+  );
+  width: 100%;
+  margin: auto;
+  margin-top: 5px;
+  border: 2px solid rgb(148, 140, 140);
+  display: flex;
+  flex-direction: column;
+  justify-content:flex-start;
+  align-items: center;
+}
+.video-container a {
+  text-decoration: none;
+  color: rgb(152, 102, 214);
+  
+}
+.text-video h2{
+    font-size: 1.8rem;
+}
+.info-video-container {
+  display: flex;
+  align-items: center;
+}
+
+.image-video {
+  position: relative;
+  width: 7rem;
+  height: 7rem;
+}
+.image-video img {
+  height: 100%;
+}
+.image-video h1 {
+  position: absolute;
+  z-index: 9;
+  color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 6em;
+}
+
+
+
+@media screen and (max-width:1024px) {
+    .title-component h1 {
+        color: rgb(65, 62, 62);
+        font-size: 3em;
+      }
+    .list-video-container {
+       flex-direction: column;
+       gap:0px;
+      }
+      .vertical-order{
+        width: 90%;
+        margin: auto;
+    }
+}
+@media screen and (max-width:768px) {
+    .title-component{
+        width: 90%;
+    }
+    .title-component h1 {
+        color: rgb(65, 62, 62);
+        font-size: 2em;
+      }
+    .list-video-container {
+        width: 90%;
+       flex-direction: column;
+       gap:0px;
+      }
+      .video-container {
+    
+        width: 100%;
+        margin: auto;
+        border: 2px solid rgb(148, 140, 140);
+        display: flex;
+        flex-direction: column;
+        justify-content:flex-start;
+        align-items: center;
+      }
+      .text-video h2{
+        font-size: 1rem;
+
+    }
+    .reactPlayer {
+        border: 2px solid blue;
+        width: 100% !important;
+        margin:auto;
+    }
+}
+
+

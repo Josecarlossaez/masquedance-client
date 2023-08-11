@@ -4,7 +4,9 @@
  
     width: 100%;
     min-height: 100vh;
-    background: white;
+    background: rgb(225, 151, 199);
+    background: linear-gradient(-10deg, rgb(192, 114, 164) 3%, rgba(255,255,255,1) 35%);
+    
     
     /* background: linear-gradient(238deg, rgba(9,118,121,1) 6%, rgba(68,67,75,1) 79%, rgba(105,191,190,1) 97%); */
 }
@@ -14,4 +16,6 @@
 }
 
 
-  
+@media screen and (max-width:1024px) {
+    
+}

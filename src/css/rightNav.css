@@ -65,6 +65,7 @@
 @media screen and (max-width:1024px) {
    
     .links{
+        overflow-y: auto;
         
         padding-left: 0px;
         justify-content: flex-start;
