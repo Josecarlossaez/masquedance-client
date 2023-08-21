@@ -11,11 +11,26 @@
     /* background: linear-gradient(238deg, rgba(9,118,121,1) 6%, rgba(68,67,75,1) 79%, rgba(105,191,190,1) 97%); */
 }
 
+.socialMedia-links-container {
+    width: 70%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.socialMedia-links-container img{
+   width: 40px;
+}
 .products-linkd-div {
     margin-top: 40px;
 }
 
 
 @media screen and (max-width:1024px) {
-    
+    .socialMedia-links-container {
+        width: 90%;
+       
+    }
+    .socialMedia-links-container img{
+       width: 30px;
+    }
 }

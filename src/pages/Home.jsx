@@ -2,13 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import '../css/home.css'
+// Services
 import { listTwitchLinkService } from '../services/twitchLink.services';
 import { listProductService } from '../services/product.services';
 import TwitchLink from '../components/twitchLink/TwitchLink';
 import ProductsLink from '../components/product/ProductsLink';
 import ListVideo from '../components/videos/ListVideo';
 
-// Services
+// IMAGES
+import twitchIcon from "../images/twitch.svg"
+import facebookIcon from "../images/facebook.svg"
+import youtubeIcon from "../images/youtube.svg"
+import twitterIcon from "../images/twitter.svg"
+
 
 
 function Home() {
@@ -42,6 +48,21 @@ function Home() {
   }
   return (
     <div className='home-container'>
+      <div className='socialMedia-links-container'>
+      <a href="">
+        <img src={twitterIcon} alt="" />
+      </a>
+      <a href="">
+        <img src={twitchIcon} alt="" />
+      </a>
+      <a href="">
+        <img src={facebookIcon} alt="" />
+      </a>
+      <a href="">
+        <img src={youtubeIcon} alt="" />
+      </a>
+
+      </div>
     
       <div className='twitch-link-container'>
 

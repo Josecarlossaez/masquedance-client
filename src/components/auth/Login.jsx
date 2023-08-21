@@ -86,7 +86,9 @@ function Login() {
             Login
           </button>
         </form>
-        <h4>Todavía no tienes una cuenta con nosotros, cre</h4>
+        <hr />
+        <p>Todavía no tientes cuenta | <span> <a href="/signup">Regístrate </a></span></p>
+       <a href="">¿Olvidaste la Contraseña?</a>
       </div>
     </section>
   );

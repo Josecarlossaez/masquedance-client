@@ -80,3 +80,6 @@
   .input-container input:focus {
     box-shadow: none;
   }
+  a {
+    text-decoration: none;
+  }
