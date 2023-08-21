@@ -12,9 +12,10 @@
     height: 400px;
 }
 .div-title-product h3 {
+    font-family:orbitron;
     background-color: white;
     z-index: inherit;
-    width: 20vw;
+    width: 22vw;
     margin: auto;
     position: absolute;
     left: 50%;
@@ -126,7 +127,7 @@
         position: absolute;
         left: 50%;
         transform: translate(-50%, -60%);
-        font-size: 2em;
+        font-size: 1.7em;
         
     }
 
@@ -136,7 +137,7 @@
     .product-link-container{
         width: 80%;
         height: 20rem;
-        border-radius: 50px;
+        border-radius: 30px;
 
     }
     .product-div-container {
@@ -167,7 +168,7 @@
         transform: translate(-50%, -60%);
         text-align: center;
 
-        font-size: 1.8em;
+        font-size: 1.6em;
         
     }
 

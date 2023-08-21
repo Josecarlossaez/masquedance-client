@@ -42,6 +42,7 @@ const Navbar = () => {
           </div>
           <div className="user">
           <div>
+          
             <img src={userLogo} alt="userLogo" />
 
             <Link to="/cart">

@@ -53,16 +53,15 @@ const RightNav = ( {open, changeStateBurger} ) => {
       <div className="nav-list">
         <Link to='/'  onClick={handleChangeBurger}>Home</Link>
         <Link to='/about'>About Us</Link>
-        <Link to='/records'>+QDance Records</Link>
+        <Link to='/list-blogs'>Blog</Link>
         <Link to='/list-tracks'>TRACKS</Link>
         <Link to='/list-colections'  onClick={handleChangeBurger}>Merchandising</Link>
         {user?.user.role === "admin" && <Link to='/admin'>Admin</Link>}
         
       </div>
       <div className="auth-list">
-        <Link to='/signup' onClick={handleChangeBurger}>Sign Up</Link>
-        <Link to='/login' onClick={handleChangeBurger}>Login</Link>
-        {isLoggedIn && <Link to='/' onClick={ handleLogout }>Logout</Link>}
+        {!isLoggedIn && <Link to='/login' onClick={handleChangeBurger} style={{marginLeft:"20px", textDecoration:"underline"}}>Login</Link>}
+        {isLoggedIn && <Link to='/' onClick={ handleLogout } style={{marginLeft:"20px", textDecoration:"underline"}}>Salir</Link>}
        
         
       </div>

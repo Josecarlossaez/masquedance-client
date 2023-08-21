@@ -14,6 +14,7 @@ import twitchIcon from "../images/twitch.svg"
 import facebookIcon from "../images/facebook.svg"
 import youtubeIcon from "../images/youtube.svg"
 import twitterIcon from "../images/twitter.svg"
+import instagramIcon from "../images/instagram.svg"
 
 
 
@@ -50,16 +51,19 @@ function Home() {
     <div className='home-container'>
       <div className='socialMedia-links-container'>
       <a href="">
-        <img src={twitterIcon} alt="" />
+        <img src={instagramIcon} alt="instagramIcon" />
       </a>
       <a href="">
-        <img src={twitchIcon} alt="" />
+        <img src={twitterIcon} alt="twitterIcon" />
       </a>
       <a href="">
-        <img src={facebookIcon} alt="" />
+        <img src={twitchIcon} alt="twitchIcon" />
       </a>
       <a href="">
-        <img src={youtubeIcon} alt="" />
+        <img src={facebookIcon} alt="facebookIcon" />
+      </a>
+      <a href="">
+        <img src={youtubeIcon} alt="youtubeIcon" />
       </a>
 
       </div>

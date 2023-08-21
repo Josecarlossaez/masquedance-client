@@ -22,6 +22,7 @@ background: linear-gradient(351deg, rgba(255,255,255,1) 28%, rgba(218,226,231,1)
   align-items: center;
 }
 .title-component h1 {
+  font-family: orbitron;
   color: rgb(65, 62, 62);
   font-size: 5em;
 }

@@ -19,6 +19,7 @@ import CreateColection from "../components/Colection/CreateColection";
 import ListProducts from "../components/product/ListProducts";
 import CreateTwitchLink from "../components/twitchLink/CreateTwitchLink";
 import CreateVideo from "../components/videos/CreateVideo";
+import CreateBlog from "../components/blog/CreateBlog";
 
 
 
@@ -35,15 +36,17 @@ function Admin() {
     const [listProduct, setlistProduct] = useState(false)
     const [createTwitchLink, setCreateTwitchLink] = useState(false)
     const [createVideo, setCreateVideo] = useState(false)
+    const [createBlog, setCreateBlog] = useState(false)
      
     // Toogle components
     const handleCreateProduct = () =>{
       setCreateProduct(true)
       setCreateTrack(false)
+      setCreateDj(false)
       setCreateColection(false)
       setCreateTwitchLink(false)
       setCreateVideo(false)
-    
+      setCreateBlog(false) 
      }
     
     const handleCreateTrack = () =>{
@@ -53,7 +56,7 @@ function Admin() {
       setCreateColection(false)
       setCreateTwitchLink(false)
       setCreateVideo(false)
-      
+      setCreateBlog(false)  
     } 
     const handleCreateDj = () =>{
       setCreateDj(true)
@@ -62,6 +65,7 @@ function Admin() {
       setCreateColection(false)
       setCreateTwitchLink(false)
       setCreateVideo(false)
+      setCreateBlog(false)
    }
     const handleCreateColection = () =>{
       setCreateProduct(false)
@@ -70,6 +74,7 @@ function Admin() {
       setCreateColection(true)
       setCreateTwitchLink(false)
       setCreateVideo(false)
+      setCreateBlog(false)
  }
     const handleListProduct = () => {
       setlistProduct(true)
@@ -79,6 +84,7 @@ function Admin() {
       setCreateColection(false)
       setCreateTwitchLink(false)
       setCreateVideo(false)
+      setCreateBlog(false)
     }
     const handleCreateTwitchLink = () => {
       setCreateTwitchLink(true)
@@ -88,7 +94,7 @@ function Admin() {
       setCreateDj(false)
       setCreateColection(false)
       setCreateVideo(false)
-
+      setCreateBlog(false)
     }
     const handleCreateVideo = () => {
       setCreateTwitchLink(false)
@@ -98,7 +104,17 @@ function Admin() {
       setCreateDj(false)
       setCreateColection(false)
       setCreateVideo(true)
+      setCreateBlog(false)
     }
+    const handleCreateBlog = () =>{
+      setCreateProduct(false)
+      setCreateTrack(false)
+      setCreateDj(false)
+      setCreateColection(false)
+      setCreateTwitchLink(false)
+      setCreateVideo(false)
+      setCreateBlog(true)
+     }
 
 
   return (
@@ -136,6 +152,10 @@ function Admin() {
           <button onClick={handleCreateTwitchLink} className="hash-button">Crear TwitchLink</button>
         </HashLink>
 
+        <HashLink smooth to="#profile-components">
+          <button onClick={handleCreateBlog} className="hash-button">Crear Blog</button>
+        </HashLink>
+
         
       </div>
       <div   id={activeHashlink &&'admin-components'}>
@@ -147,6 +167,7 @@ function Admin() {
        {createDj && <CreateDj/>}
        {createTwitchLink && <CreateTwitchLink/>}
        {createVideo && <CreateVideo/>}
+       {createBlog && <CreateBlog/>}
       </div>
 
     </div>
