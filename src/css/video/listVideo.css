@@ -6,11 +6,16 @@ background: linear-gradient(351deg, rgba(255,255,255,1) 28%, rgba(218,226,231,1)
 
 }
 .list-video-container {
+  background-color: white;
   gap: 10px;
   width: 70vw;
   margin: auto;
   margin-top: 30px;
+  margin-bottom: 30px;
   display: flex;
+
+  box-shadow: 10px 5px 5px #525462;
+  
   
 }
 
@@ -20,6 +25,9 @@ background: linear-gradient(351deg, rgba(255,255,255,1) 28%, rgba(218,226,231,1)
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+  rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+  cursor: pointer;
 }
 .title-component h1 {
   font-family: orbitron;

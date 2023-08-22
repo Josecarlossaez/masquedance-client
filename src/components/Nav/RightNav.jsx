@@ -52,7 +52,7 @@ const RightNav = ( {open, changeStateBurger} ) => {
        {/* <div></div> */}
       <div className="nav-list">
         <Link to='/'  onClick={handleChangeBurger}>Home</Link>
-        <Link to='/about'>About Us</Link>
+        <Link to='/about-us'>About Us</Link>
         <Link to='/list-blogs'>Blog</Link>
         <Link to='/list-tracks'>TRACKS</Link>
         <Link to='/list-colections'  onClick={handleChangeBurger}>Merchandising</Link>

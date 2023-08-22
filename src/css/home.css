@@ -12,14 +12,24 @@
 }
 
 .socialMedia-links-container {
-    width: 70%;
+    
+    width: 60%;
+    margin:auto;
+    margin-top:20px;
     display: flex;
     justify-content: flex-end;
     gap: 14px;
+    
 }
 .socialMedia-links-container img{
-   width: 40px;
+    width: 40px;
+    transition: all 300ms ease-out;
 }
+.socialMedia-links-container img:hover {
+    transform: scale(1.15);
+    transition: all 300ms ease-in;
+}
+
 .products-linkd-div {
     margin-top: 40px;
 }
@@ -27,7 +37,8 @@
 
 @media screen and (max-width:1024px) {
     .socialMedia-links-container {
-        width: 90%;
+        width: 100%;
+        justify-content: center;
        
     }
     .socialMedia-links-container img{

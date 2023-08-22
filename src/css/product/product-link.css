@@ -1,12 +1,12 @@
 .product-link-container{
-
+    
     position: relative;
-    margin-top: 20px;
     
     display: flex;
     flex-direction: column;
     width: 60vw;
     margin: auto;
+    margin-top: 60px;
     border:4px solid rgb(36, 34, 34);
     border-radius: 100px;
     height: 400px;
@@ -40,6 +40,8 @@
 
     width: 25%;
     height: 80%;
+    box-shadow: 10px 5px 5px #525462;
+
     
 }
 .product-div-center{

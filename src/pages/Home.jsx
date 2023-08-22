@@ -8,13 +8,9 @@ import { listProductService } from '../services/product.services';
 import TwitchLink from '../components/twitchLink/TwitchLink';
 import ProductsLink from '../components/product/ProductsLink';
 import ListVideo from '../components/videos/ListVideo';
+import SocialMedia from '../components/socialMedia/SocialMedia';
 
-// IMAGES
-import twitchIcon from "../images/twitch.svg"
-import facebookIcon from "../images/facebook.svg"
-import youtubeIcon from "../images/youtube.svg"
-import twitterIcon from "../images/twitter.svg"
-import instagramIcon from "../images/instagram.svg"
+
 
 
 
@@ -49,25 +45,10 @@ function Home() {
   }
   return (
     <div className='home-container'>
-      <div className='socialMedia-links-container'>
-      <a href="">
-        <img src={instagramIcon} alt="instagramIcon" />
-      </a>
-      <a href="">
-        <img src={twitterIcon} alt="twitterIcon" />
-      </a>
-      <a href="">
-        <img src={twitchIcon} alt="twitchIcon" />
-      </a>
-      <a href="">
-        <img src={facebookIcon} alt="facebookIcon" />
-      </a>
-      <a href="">
-        <img src={youtubeIcon} alt="youtubeIcon" />
-      </a>
 
-      </div>
-    
+    <div>
+      <SocialMedia/>
+    </div>
       <div className='twitch-link-container'>
 
         <TwitchLink listTwitchLink={listTwitchLink} />

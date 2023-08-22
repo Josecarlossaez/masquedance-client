@@ -44,10 +44,16 @@ const Navbar = () => {
           <div>
           
             <img src={userLogo} alt="userLogo" />
+           {isLoggedIn ?
 
             <Link to="/cart">
               <img src={cartLogo} alt="cart-icon" />
             </Link>
+            :
+            <Link to="/login">
+              <img src={cartLogo} alt="cart-icon" />
+            </Link>
+           }
           </div>
           <div className="logo-peque">
              <Link to="/">
