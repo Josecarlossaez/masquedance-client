@@ -1,24 +1,25 @@
-
+import React, { useContext, useEffect } from 'react'
 
 // import CSS
 import "../../css/product/create-product.css";
 
 // React
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, useParams } from "react-router-dom";
+// Context
 
 
 // Services
-import { createDjService } from '../../services/dj.services';
-import { uploadPictureService } from '../../services/upload.services';
 
-function CreateDj() {
+import { uploadPictureService } from '../../services/upload.services';
+import { deleteDjService, detailsDjService, updateDjService } from '../../services/dj.services';
+
+function UpdateDj() {
+  const { djId } = useParams()
 // Navigate
 const navigate = useNavigate();
-
-
-
+// Loading
+const [isFetching, setIsFetching] = useState(true);
 
 // input values
 const [nameInput, setNameInput] = useState("")
@@ -26,11 +27,38 @@ const [pictureUrlInput, setPictureUrlInput] = useState("")
 const [descriptionInput, setDescriptionInput] = useState("")
 // Value Restrictions
 const maxCharacters = 600
-// errorMessage from BE
+// Message from BE
 const [errorMessage, setErrorMessage] = useState("")
-
+const [okMessage, setOkMessage] = useState("");
 // Cloudinary is Loading
 const [isLoadingPicture, setIsLoadingPicture] = useState(false)
+
+useEffect(() => {
+  getData()
+}, [])
+
+const getData = async () => {
+  try {
+      const response = await detailsDjService(djId)
+      const { name, description, picture } = response.data
+      setNameInput(name)
+      setDescriptionInput(description)
+      setPictureUrlInput(picture)
+      setIsFetching(false);
+
+  } catch (error) {
+      navigate("/error")
+  }
+}
+
+
+
+if (isFetching === true) {
+  return <p>...loading</p>;
+}
+
+
+
 
 // Takes dj info
 const handleNameChange = (e) => setNameInput(e.target.value);
@@ -60,25 +88,32 @@ const handlePictureChange = async (e) => {
 
 // Send the input values to BE
 
-   const handleCreateDj = async (e) => {
+   const handleUpdateDj = async (e) => {
     e.preventDefault()
+    console.log("djId", djId)
 
-   const newDj = {
+   const djUpdate = {
      name: nameInput,
      picture: pictureUrlInput,
      description: descriptionInput
    }
 
     try {
-      await createDjService(newDj);
-      navigate("/");
+      await updateDjService(djUpdate,djId);
+      window.alert("Dj ACTUALIZADO CORRECTAMENTE");
+      // setOkMessage("Producto añadido correctamente");
+      // setTimeout(() => {
+      //   setOkMessage("");
+      // }, 2000);
+
+      navigate("/list-djs");
 
       
     } catch (error) {
       if(
 
         (error.response && error.response.status === 406) || 
-        (error.response && error.response.status === 400)
+        (error.response && error.response.status === 400) 
       ){
         setErrorMessage(error.response.data.message);
       }
@@ -86,13 +121,14 @@ const handlePictureChange = async (e) => {
 
    
    };
+  
 
 
   return (
     <section className="general-container">
       <div className="form-container">
         <form >
-          <h3>Crear DJ</h3>
+          <h3>Actualizar DJ</h3>
 
           <div className="input-container">
             <input value={nameInput} onChange={handleNameChange} />
@@ -152,14 +188,17 @@ const handlePictureChange = async (e) => {
 
           <button
             type="submit"
-            onClick={handleCreateDj}
+            onClick={handleUpdateDj}
            className="general-btn"
           >
-            Crear DJ
+            Actualizar DJ
           </button>
-          {errorMessage !== "" && (
-            <p className="error-message"> * {errorMessage}</p>
-          )}
+         
+          {errorMessage !== "" && ( <p className="error-message"> * {errorMessage}</p> )}
+          {okMessage !== "" && <p className="ok-message"> * {okMessage}</p>}
+
+           
+          
 
         </form>
       </div>
@@ -169,4 +208,4 @@ const handlePictureChange = async (e) => {
   )
 }
 
-export default CreateDj
+export default UpdateDj;

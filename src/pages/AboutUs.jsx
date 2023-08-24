@@ -31,7 +31,7 @@ function AboutUs() {
         </div>
       </div>
       <div className='text-bellow'>
-        <p>
+        {/* <p>
              Lorem ipsum dolor sit amet. Et odit quidem in consequatur quisquam sit 
               quia sint ea odit accusantium et quia deserunt. Ex quod eveniet aut soluta 
               ratione aut ullam Quis non voluptatum cumque ut sequi similique. Non volupts
@@ -46,7 +46,7 @@ function AboutUs() {
               velit pariatur At obcaecati nisi vel laudantium libero qui aspernatur minima est voluptates 
               nostrum et exercitationem vitae qui velit dolores. Qui omnis consequatur aut architecto accusamus 
               sed voluptatem galisum qui iste accusantium!
-        </p>
+        </p> */}
       </div>
       <Link to="/djs">
         <div className='dj-container'>

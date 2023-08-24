@@ -15,13 +15,13 @@
 } */
 .Nav {
     /* border: 2px solid pink; */
-    height: 200px !important;
+    height: 150px !important;
    
 }
 .space-logo-user{
     /* border: 2px solid green; */
     width: 100%;
-    padding-top: 20px;
+    padding-top: 10px;
     display: flex;
     justify-content: space-around;
 }
@@ -38,7 +38,7 @@
     
 }
 .user img{
-    width: 3rem;
+    width: 2.5rem;
     transition: all 300ms ease-out;
 
 }
@@ -58,6 +58,7 @@
 .navbar{
     /* border: 2px solid red; */
     background-color:white;
+    /* border:2px solid green; */
     height: 100%;
     width: 100%;
     margin: auto;
@@ -69,7 +70,7 @@
 }
 
 .logo img{
-    width:30rem;
+    width:25rem;
     transition: all 300ms ease-out;
 }
 .logo img:hover{

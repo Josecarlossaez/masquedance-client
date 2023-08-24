@@ -1,0 +1,79 @@
+.list-dj-page {
+   
+    width: 60%;
+    margin:auto;
+    margin-top: 20px;
+}
+.list-dj-header {
+    margin-top: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.list-dj-header h3 {
+    font-family: orbitron;
+    padding-left: 20px;
+    width: 60%;
+    /* height: 100px; */
+    background-color: rgb(181, 62, 62);
+    color: white;
+  
+    margin-left: 20px;
+    /* line-height: 100px; */
+    transform: skewX(-20deg);
+    transform-origin: left;
+    text-align: start;
+    font-size: 3em;
+}
+.list-dj-container {
+    margin-top: 20px;
+    width: 100%;
+    gap: 25px;
+    display: flex;
+    justify-content: center;
+    flex-flow: wrap;
+
+
+}
+.card-dj {
+    /* border:2px solid blue; */
+    border-radius: 20px;
+    width: 21rem;
+    height: 29rem;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+    rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    transition: all 300ms ease-out;
+
+}
+.card-dj:hover {
+    cursor:pointer;
+    box-shadow: 10px 5px 5px #525462;
+    transform: scale(1.05);
+    transition: all 300ms ease-in;
+
+
+}
+.card-dj-picture {
+    width: 100%;
+    height: 75%;
+}
+.card-dj-picture img {
+    border-radius: 20px  20px 0px 0px;
+
+    width: 100%;
+    height: 100%;
+}
+.card-dj-name {
+    border-radius: 0px 0px 20px  20px ;
+
+    width: 100%;
+    height: 25%;
+    background-color:  #69bfbe;
+    color: white;
+    font-family: orbitron;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}

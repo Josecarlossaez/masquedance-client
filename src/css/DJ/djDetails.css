@@ -1,35 +1,39 @@
-.aboutUsContainer {
+.dj-page {
 
     width: 70vw;
     margin: auto;
     margin-top: 40px;
 }
-.logo-texto-about {
+.dj-data {
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
     rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
     /* border: 2px solid red; */
     width: 100%;
+    height: 50vh;
+
     display: flex;
     justify-content: flex-start;
 
 }
-.logo-texto-img {
+.dj-picture {
     width: 30%;
+    height: 100%;
     padding: 20px 10px 20px 20px;
 
 }
 
-.logo-texto-about img {
+.dj-data img {
 
     width: 100%;
+    height: 100%;
     box-shadow: 10px 5px 5px #525462;
 
 }
-.logo-texto-texto {
+.dj-name-description {
     width: 70%;
     margin-left:3%;
 }
-.logo-texto-texto h2 {
+.dj-name-description h2 {
     font-family: orbitron;
     padding-left: 20px;
     width: 60%;
@@ -44,50 +48,24 @@
     text-align: start;
    
 }
-.logo-texto-texto p {
+.dj-name-description p {
     font-size: larger;
     text-align: start;
 
 }
-.text-bellow {
-    margin-top: 40px;
 
-}
-.text-bellow p {
-    color: #525462;
-    font-weight: bold;
-    text-align: start;
-}
-.dj-container {
-    background-color: rgb(217, 220, 223);
-   width: 80%;
-   margin: auto;
-   border-radius: 20px;
-    display: flex;
-    justify-content: center;
-    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
-    rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
-    transition: all 300ms ease-out;
-
-}
-.dj-container:hover {
-    box-shadow: 10px 5px 5px #525462;
-
-    transform: scale(1.05);
-    transition: all 300ms ease-in;
-}
-.dj-texto {
-    margin-left: 50px;
-    width: 60%;
+.dj-description {
+    margin-left: 20px;
+    width: 90%;
   
     text-align: start;
     align-items: center;
 }
-.dj-texto p{
+.dj-description h4{
     color: black;
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
-   font-size: 30px;
+   font-size: 20px;
 }
 .dj-texto h4 {
     padding-left: 20px;
@@ -101,66 +79,96 @@
    font-size: 40px;
 
 }
+.dj-tracks {
+    margin: auto;
+    margin-top: 20px;
+    width: 90%;
+}
+.track-container {
+    width: 100%;
+}
+.track-container {
+   
+    border-bottom: 2px solid #a19e9e; /* Línea debajo de cada track */
+  }
+  
+
+  
+  .track-player {
+    flex-grow: 1;
+  }
+  
+  /* Colores de fondo alternos */
+  .track-container:nth-child(odd) {
+   
+    background-color: white;
+    
+}
+
+
 @media screen and (max-width:1024px) {
-    .aboutUsContainer {
+    .dj-page {
 
         width: 90%;
         margin: auto;
         margin-top: 20px;
     
     }
-    .logo-texto-about {
+    .dj-data {
         flex-direction: column;
         justify-content: center;
     }
-    .logo-texto-img{
+    .dj-picture{
 
         width: 60%;
         margin: auto
         
     
     }
-    .logo-texto-texto {
+    .dj-name-description {
         width: 90%;
         margin-left:3%;
         margin-top: 20px;
     }
-    .logo-texto-texto h2 {
+    .dj-name-description h2 {
         width: 90%;
         margin: auto;
        
     }
-    .logo-texto-texto p{
+    .dj-name-description p{
         margin-top: 20px;
 
     }
-    .text-bellow p {
-       width: 90%;
-    }
-    .dj-container {
-        width: 90%;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    
-    }
-    .dj-texto {
+   
+   
+    .dj-description {
         width: 90%;
         margin-left: 0px;
     }
-    .dj-texto p{
+    .dj-description h4{
         color: black;
         font-family: 'Courier New', Courier, monospace;
         font-weight: bold;
        font-size: 15px;
     }
-    .dj-texto h4 {
+    .dj-description h4 {
        width: 100%;
        font-size: 20px;
     
+    }
+    .dj-tracks {
+        border:2px solid black;
+        margin: auto;
+        margin-top: 20px;
+        width: 90%;
+    }
+    .track-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap:10px;
     }
 
 
 
 }
-

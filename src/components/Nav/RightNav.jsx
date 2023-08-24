@@ -55,6 +55,7 @@ const RightNav = ( {open, changeStateBurger} ) => {
         <Link to='/about-us'>About Us</Link>
         <Link to='/list-blogs'>Blog</Link>
         <Link to='/list-tracks'>TRACKS</Link>
+        <Link to='/list-djs'>DJ´S</Link>
         <Link to='/list-colections'  onClick={handleChangeBurger}>Merchandising</Link>
         {user?.user.role === "admin" && <Link to='/admin'>Admin</Link>}
         

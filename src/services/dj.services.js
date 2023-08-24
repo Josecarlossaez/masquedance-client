@@ -12,7 +12,7 @@ const createDjService = (newDj) => {
     return service.post("/dj/create", newDj)
 }
 
-const updateDjService = (djId, djUpdate) => {
+const updateDjService = (djUpdate,djId) => {
     return service.patch(`/dj/${djId}/update`, djUpdate)
 }
 

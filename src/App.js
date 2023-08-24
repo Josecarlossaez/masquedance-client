@@ -19,6 +19,9 @@ import Cart from './pages/Cart';
 import ListTrack from './components/track/ListTrack';
 import ListBlogs from './components/blog/ListBlogs';
 import AboutUs from './pages/AboutUs';
+import ListDjs from './pages/ListDjs';
+import DjDetails from './components/dj/DjDetails';
+import UpdateDj from './components/dj/UpdateDj';
 
 function App() {
   return (
@@ -42,9 +45,10 @@ function App() {
       <Route path="/list-tracks" element={<ListTrack/>}/>
       <Route path="/list-blogs" element={<ListBlogs/>}/>
       <Route path="/about-us" element={<AboutUs/>}/>
+      <Route path="/list-djs" element={<ListDjs/>}/>
+      <Route path='/dj/:djId/details' element= {<DjDetails/>}/>
+      <Route path='/dj/:djId/update' element= {<UpdateDj/>}/>
 
-      
-      
 
 
     </Routes>
