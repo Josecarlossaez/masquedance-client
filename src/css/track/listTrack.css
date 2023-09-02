@@ -1,7 +1,11 @@
-
+.trackList-container{
+  width: 60%;
+  margin: auto;
+  margin-top: 20px;
+}
 .track-container {
 
-  width: 60%;
+  width: 100%;
   margin: auto;
   display: flex;
   justify-content: center;

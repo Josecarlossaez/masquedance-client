@@ -48,7 +48,7 @@ function AboutUs() {
               sed voluptatem galisum qui iste accusantium!
         </p> */}
       </div>
-      <Link to="/djs">
+      <Link to="/list-djs">
         <div className='dj-container'>
           <div className='dj-image'>
             <img src={dj} alt="" />
