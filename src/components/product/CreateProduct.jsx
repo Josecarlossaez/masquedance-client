@@ -4,7 +4,11 @@ import "../../css/product/create-product.css";
 // React
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+// Firebase
+import { auth, storage, db } from '../../firebase.js'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { addDoc } from 'firebase/firestore'
+import { collection } from 'firebase/firestore'
 // Services
 import { createProductService } from "../../services/product.services";
 import { uploadPictureService } from "../../services/upload.services.js";
@@ -41,6 +45,7 @@ function CreateProduct() {
   const [sizeInput, setSize] = useState("");
   const [descriptionInput, setDescription] = useState("");
   const [colorInput, setColorInput] = useState("");
+  // const [image, setImage] = useState([])
   const [pictureURL, setPictureUrl] = useState("");
   const [stockInput, setStock] = useState("");
   const [referenceInput, setReference] = useState("");
@@ -58,30 +63,35 @@ function CreateProduct() {
   const handleReferenceChange = (e) => setReference(e.value);
 
   // Cloudinary is Loading
-  const [isLoadingPicture, setIsLoadingPicture] = useState(false);
+  // const [isLoadingPicture, setIsLoadingPicture] = useState(false);
 
   const handlePictureChange = async (e) => {
-    // Cloudinary picture is Loading On
-    setIsLoadingPicture(true);
-
-    // upload the picture to cloudinary and receive the string for show the pic in the form
-    const sendObj = new FormData();
-    sendObj.append("picture", e.target.files[0]);
-
-    try {
-      const response = await uploadPictureService(sendObj);
-
-      setPictureUrl(response.data.picture);
-      // Cloudinary picture is Loading Off
-      setIsLoadingPicture(false);
-    } catch (error) {
+    console.log("e.target picture", e.target.files[0])
+   
+    const image = e.target.files[0]
+        // * upload image to firebaseStorage
+      try {
+     
+        console.log("image.name", image.name);
+      // 1 - Location where the picture is gonna be saved
+      const storageRef = ref(storage, `images/${image.name}`) // 1- storage, 2-image-name-URL || 1 {the ref}, 2 {file it-self}
+      // 2 - uploading the picture to firebase storage
+      const snapShot = await uploadBytes(storageRef, image)
+      // 3 - picture Url
+      const downloadUrl = await getDownloadURL(snapShot.ref)
+      console.log("downloadUrl", downloadUrl);
+      setPictureUrl(downloadUrl)
+      // 4 - new doc
+    }catch(error){
       navigate("/error");
-    }
+    }  
+       
   };
 
   // Send the input values to BE
   const handleCreateProduct = async (e) => {
     e.preventDefault();
+    
 
     const newProduct = {
       name: nameInput,
@@ -95,17 +105,11 @@ function CreateProduct() {
     };
 
     try {
-      await createProductService(newProduct);
-      navigate("/");
+      await addDoc(collection(db, 'products'), newProduct)
+      alert("Producto añadido correctamente")
+      window.location.reload(false)
     } catch (error) {
-      if (
-        (error.response && error.response.status === 406) ||
-        (error.response && error.response.status === 400)
-      ) {
-        setErrorMessage(error.response.data.errorMessage);
-      } else {
-        navigate("/error");
-      }
+     console.log(error)
     }
   };
 
@@ -182,18 +186,6 @@ function CreateProduct() {
             <input onChange={handlePictureChange} type="file" name="picture" />
             <label htmlFor="picture">Product Picture</label>
           </div>
-          {isLoadingPicture === true && <p>...loading picture</p>}
-          {/* Show the upload picture in this form */}
-          {pictureURL !== "" ? (
-            <img
-              src={pictureURL}
-              alt="yourPic"
-              width={200}
-              className="uploader-img"
-            />
-          ) : (
-            <p> [ No Picture Selected ]</p>
-          )}
 
           <button
             type="submit"
