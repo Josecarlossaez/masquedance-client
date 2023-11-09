@@ -4,6 +4,7 @@ import "../../css/product/create-product.css";
 // React
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 // Services
 import { createProductService } from "../../services/product.services";
 import { uploadPictureService } from "../../services/upload.services.js";
