@@ -93,7 +93,10 @@ function CreateProduct() {
     e.preventDefault();
     
 
-    const newProduct = {
+  
+
+    try {
+     const newProduct = await addDoc(collection(db, 'products'), {
       name: nameInput,
       price: priceInput,
       picture: pictureURL,
@@ -102,10 +105,8 @@ function CreateProduct() {
       description: descriptionInput,
       color: colorInput,
       stock: stockInput,
-    };
-
-    try {
-      await addDoc(collection(db, 'products'), newProduct)
+    })
+      console.log("producto añadido con id: ", newProduct.id)
       alert("Producto añadido correctamente")
       window.location.reload(false)
     } catch (error) {
