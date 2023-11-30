@@ -4,17 +4,16 @@ import "../../css/product/details-product.css";
 import { useEffect, useState } from "react";
 
 import { useNavigate, useParams, Link } from "react-router-dom";
-// Services
-import { detailsProductService } from "../../services/product.services";
-import {
-  addProductToColectionService,
-  listColectionService,
-  removeProductToColectionService,
-} from "../../services/colection.services.js";
+// Services Firebase
+import { collection, getDocs,doc,getDoc } from 'firebase/firestore'
+import { db } from '../../firebase'
+
+
 import { deleteProductService } from "../../services/product.services";
 
 function DetailsProduct() {
   const { productId } = useParams();
+
   const navigate = useNavigate();
 
   // States
@@ -29,119 +28,119 @@ function DetailsProduct() {
   const [productInColectionId, setProductInColectionId] = useState();
   const [shouldRefreshPage, setShouldRefreshPage] = useState(false);
 
-  console.log("productInColection", productInColection);
+ 
 
   useEffect(() => {
     getData();
   }, []);
 
-  useEffect(() => {
-    if (listColection) {
-      searchProductInColection();
-    }
-  }, [listColection]);
-  // Get the product Details data from API
-  useEffect(() => {
-    if (shouldRefreshPage) {
-      getData();
-      setShouldRefreshPage(false);
-      searchProductInColection();
-    }
-  }, [shouldRefreshPage]);
+  // useEffect(() => {
+  //   if (listColection) {
+  //     searchProductInColection();
+  //   }
+  // }, [listColection]);
+  // // Get the product Details data from API
+  // useEffect(() => {
+  //   if (shouldRefreshPage) {
+  //     getData();
+  //     setShouldRefreshPage(false);
+  //     searchProductInColection();
+  //   }
+  // }, [shouldRefreshPage]);
 
   const getData = async () => {
     try {
-      const details = await detailsProductService(productId);
-      const response = await listColectionService();
-
-      setProductDetails(details.data);
-      setListColection(response.data);
+      console.log("productId", productId)
+      const product = doc(db, 'products', productId)
+      const productById = await getDoc(product)
+      setProductDetails(productById.data())
       setIsFetching(false);
     } catch (error) {
       navigate("/error");
     }
   };
-  const searchProductInColection = () => {
-    console.log("listColection", listColection);
-    setIsFetching(true);
-    listColection?.forEach((each) => {
-      each.products.forEach((p) => {
-        if (p === productId) {
-          console.log("p", p);
-          console.log("each.name", each._id);
-          setProductInColection(p);
-          setProductInColectionId(each._id);
-        }
-      });
-      setIsFetching(false);
-    });
-  };
+  console.log("no hace esto",productDetails)
+  // const searchProductInColection = () => {
+  //   console.log("listColection", listColection);
+  //   setIsFetching(true);
+  //   listColection?.forEach((each) => {
+  //     each.products.forEach((p) => {
+  //       if (p === productId) {
+  //         console.log("p", p);
+  //         console.log("each.name", each._id);
+  //         setProductInColection(p);
+  //         setProductInColectionId(each._id);
+  //       }
+  //     });
+  //     setIsFetching(false);
+  //   });
+  // };
 
   // Choose Colection
-  const handleColectionChange = (e) => setColectionId(e.target.value);
+  // const handleColectionChange = (e) => setColectionId(e.target.value);
 
   // Call Service
 
-  const handleAddToColection = async (e) => {
-    e.preventDefault();
-    const productId2 = { productId: productId };
-    if(colectionId === undefined){
-      setErrorMessage("Tienes que seleccionar una colección")
-      return setTimeout(()=> {
-       setErrorMessage("")
-      },4000)
-    }
+  // const handleAddToColection = async (e) => {
+  //   e.preventDefault();
+  //   const productId2 = { productId: productId };
+  //   if(colectionId === undefined){
+  //     setErrorMessage("Tienes que seleccionar una colección")
+  //     return setTimeout(()=> {
+  //      setErrorMessage("")
+  //     },4000)
+  //   }
 
-    try {
-      await addProductToColectionService(colectionId, productId2);
-      setOkMessage("Producto añadido correctamente");
-      setTimeout(() => {
-        setShouldRefreshPage(true);
-        setOkMessage("");
-      }, 2000);
-    } catch (error) {
-      if (
-        (error.response && error.response.status === 406) ||
-        (error.response && error.response.status === 400)
-      ) {
-        setErrorMessage(error.response.data.errorMessage);
+  //   try {
+  //     await addProductToColectionService(colectionId, productId2);
+  //     setOkMessage("Producto añadido correctamente");
+  //     setTimeout(() => {
+  //       setShouldRefreshPage(true);
+  //       setOkMessage("");
+  //     }, 2000);
+  //   } catch (error) {
+  //     if (
+  //       (error.response && error.response.status === 406) ||
+  //       (error.response && error.response.status === 400)
+  //     ) {
+  //       setErrorMessage(error.response.data.errorMessage);
 
-        console.log("error", error.response.data.errorMessage);
-      } else {
-        navigate("/error");
-      }
-    }
-  };
+  //       console.log("error", error.response.data.errorMessage);
+  //     } else {
+  //       navigate("/error");
+  //     }
+  //   }
+  // };
 
   // REMOVE PRODUCT TO COLECTION
-  const handleRemoveToColection = async () => {
-    const colectionId = productInColectionId;
-    const productId2 = { productId: productId };
-    try {
-      await removeProductToColectionService(colectionId, productId2);
-      setOkMessage("Producto eliminado de la colección correctamente");
-      setTimeout(() => {
-        navigate("/list-products");
-      }, 2000);
-    } catch (error) {
-      navigate("/error");
-    }
-  };
+  // const handleRemoveToColection = async () => {
+  //   const colectionId = productInColectionId;
+  //   const productId2 = { productId: productId };
+  //   try {
+  //     await removeProductToColectionService(colectionId, productId2);
+  //     setOkMessage("Producto eliminado de la colección correctamente");
+  //     setTimeout(() => {
+  //       navigate("/list-products");
+  //     }, 2000);
+  //   } catch (error) {
+  //     navigate("/error");
+  //   }
+  // };
 
   // REMOVE PRODUCT 
-  const handleRemoveProduct = async () => {
+  // const handleRemoveProduct = async () => {
     
-    try {
-      await deleteProductService(productId)
-      setOkMessage("Producto Borrado Correctamente")
-      setTimeout(() => {
-         navigate("/list-products")
-      },2000)
+  //   try {
+  //     await deleteProductService(productId)
+  //     setOkMessage("Producto Borrado Correctamente")
+  //     setTimeout(() => {
+  //        navigate("/list-products")
+  //     },2000)
 
-    } catch (error) {
-      navigate("/error")
-    }
-   } 
+  //   } catch (error) {
+  //     navigate("/error")
+  //   }
+  //  } 
 
   if (isFetching === true) {
     return <p>LOading...</p>;
@@ -165,18 +164,7 @@ function DetailsProduct() {
             <h3>Stock: {productDetails.stock}</h3>
             <p>id: {productDetails._id}</p>
           </div>
-          {/* <div>
-      <label htmlFor="quantity">Cantidad:</label>
-      <select name="quantity" value={cantidad} onChange={handleCantidad}>
-        {Array.from({ length:30 }, (_, index) => (
-          <option key={index + 1} value={index + 1}>
-            {index + 1}
-          </option>
-        ))}
-      </select>
-
-    </div> */}
-          {!productInColection && (
+          {/* {!productInColection && (
             <div className="select-option">
               <label htmlFor="Choose Colection">Elige la colección</label>
 
@@ -189,9 +177,9 @@ function DetailsProduct() {
                 ))}
               </select>
             </div>
-          )}
+          )} */}
 
-          {!productInColection ? (
+          {/* {!productInColection ? (
             <div>
               <button
                 type="sumbit"
@@ -219,7 +207,7 @@ function DetailsProduct() {
               )}
               {okMessage !== "" && <p className="ok-message"> * {okMessage}</p>}
             </div>
-          )}
+          )} */}
           <div>
               <Link to={`/product/${productId}/edit`}>
             <button className="general-btn">
@@ -227,8 +215,8 @@ function DetailsProduct() {
             </button>
               </Link>
           </div>
-          {/*  */}
-          {!productInColection &&
+          
+          {/* {!productInColection &&
           <div>
            <button
                 type="sumbit"
@@ -239,9 +227,9 @@ function DetailsProduct() {
               </button>
               
             </div>
-          }
+          } */}
              
-          {/*  */}
+      
         </div>
       </div>
     </div>

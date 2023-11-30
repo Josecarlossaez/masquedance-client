@@ -4,9 +4,11 @@ import { uploadPictureService } from "../../services/upload.services";
 
 // Utilities
 import Select from "react-select";
-// Services
-import { detailsProductService } from "../../services/product.services";
-import { updateProductService } from "../../services/product.services";
+// Services Firebase
+import { collection,doc,getDoc, updateDoc } from 'firebase/firestore'
+import { db } from '../../firebase'
+import { auth, storage,} from '../../firebase.js'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 
 const sizeOptions = [
   { value: "S", label: "S" },
@@ -57,46 +59,64 @@ function EditProduct() {
   }, []);
 
   const getData = async () => {
-    const response = await detailsProductService(productId);
-    setDetails(response.data);
-    setIsFetching(false);
-    const { name, price, description, color, size, stock, picture } =
-      response.data;
-    setName(name);
-    setPrice(price);
-    setDescription(description);
-    setStock(stock);
-    setSize(size);
-    setColorInput(color);
-    setPictureUrl(picture);
-  };
-
-  // Cloudinary is Loading
-
-  const handlePictureChange = async (e) => {
-    // Cloudinary picture is Loading On
-    setIsLoadingPicture(true);
-
-    // upload the picture to cloudinary and receive the string for show the pic in the form
-    const sendObj = new FormData();
-    sendObj.append("picture", e.target.files[0]);
-
     try {
-      const response = await uploadPictureService(sendObj);
-
-      setPictureUrl(response.data.picture);
-      // Cloudinary picture is Loading Off
-      setIsLoadingPicture(false);
+      const product = doc(db, 'products', productId)
+      const productById = await getDoc(product)
+      setDetails(productById.data());
+      setIsFetching(false);
+      const { name, price, description, color, size, stock, picture } =
+        productById.data();
+      setName(name);
+      setPrice(price);
+      setDescription(description);
+      setStock(stock);
+      setSize(size);
+      setColorInput(color);
+      setPictureUrl(picture);
     } catch (error) {
-      navigate("/error");
+      navigate("/error")
     }
   };
+
+// Firebase storagePicture
+const handlePictureChange = async (e) => {
+  console.log("e.target picture", e.target.files[0])
+  setIsLoadingPicture(true)
+  const image = e.target.files[0]
+      // * upload image to firebaseStorage
+    try {
+   
+      console.log("image.name", image.name);
+    // 1 - Location where the picture is gonna be saved
+    const storageRef = ref(storage, `images/${image.name}`) // 1- storage, 2-image-name-URL || 1 {the ref}, 2 {file it-self}
+    // 2 - uploading the picture to firebase storage
+    const snapShot = await uploadBytes(storageRef, image)
+    // 3 - picture Url
+    const downloadUrl = await getDownloadURL(snapShot.ref)
+    console.log("downloadUrl", downloadUrl);
+    setPictureUrl(downloadUrl)
+  setIsLoadingPicture(false)
+
+    // 4 - new doc
+  }catch(error){
+    navigate("/error");
+  }  
+     
+};
 
   // Send the input values to BE
   const handleUpdateProduct = async (e) => {
     e.preventDefault();
 
-    const productUpdate = {
+    // const productUpdate = {
+      
+    // };
+
+    try {
+      const productToUpdate = doc(db, "products", productId);
+
+// Set the "capital" field of the city 'DC'
+await updateDoc(productToUpdate, {
       name: nameInput,
       price: priceInput,
       picture: pictureURL,
@@ -104,10 +124,10 @@ function EditProduct() {
       description: descriptionInput,
       color: colorInput,
       stock: stockInput,
-    };
-
-    try {
-      await updateProductService(productId, productUpdate);
+});
+      
+    
+    
       navigate("/");
     } catch (error) {
       if (

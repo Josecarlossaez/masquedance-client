@@ -4,14 +4,13 @@ import "../../css/product/create-product.css";
 // React
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// Firebase
+// Services Firebase
 import { auth, storage, db } from '../../firebase.js'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { addDoc } from 'firebase/firestore'
 import { collection } from 'firebase/firestore'
-// Services
-import { createProductService } from "../../services/product.services";
-import { uploadPictureService } from "../../services/upload.services.js";
+
+
 
 // Utilities
 import Select from "react-select";
@@ -46,6 +45,7 @@ function CreateProduct() {
   const [descriptionInput, setDescription] = useState("");
   const [colorInput, setColorInput] = useState("");
   // const [image, setImage] = useState([])
+  const [isLoadingPicture, setIsLoadingPicture] = useState(false);
   const [pictureURL, setPictureUrl] = useState("");
   const [stockInput, setStock] = useState("");
   const [referenceInput, setReference] = useState("");
@@ -67,6 +67,8 @@ function CreateProduct() {
 
   const handlePictureChange = async (e) => {
     console.log("e.target picture", e.target.files[0])
+  setIsLoadingPicture(true)
+
    
     const image = e.target.files[0]
         // * upload image to firebaseStorage
@@ -81,6 +83,8 @@ function CreateProduct() {
       const downloadUrl = await getDownloadURL(snapShot.ref)
       console.log("downloadUrl", downloadUrl);
       setPictureUrl(downloadUrl)
+  setIsLoadingPicture(false)
+
       // 4 - new doc
     }catch(error){
       navigate("/error");
@@ -187,7 +191,18 @@ function CreateProduct() {
             <input onChange={handlePictureChange} type="file" name="picture" />
             <label htmlFor="picture">Product Picture</label>
           </div>
-
+          {isLoadingPicture === true && <p>...loading picture</p>}
+          {/* Show the upload picture in this form */}
+          {pictureURL !== "" ? (
+            <img
+              src={pictureURL}
+              alt="yourPic"
+              width={200}
+              className="uploader-img"
+            />
+          ) : (
+            <p> [ No Picture Selected ]</p>
+          )}
           <button
             type="submit"
             onClick={handleCreateProduct}

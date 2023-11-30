@@ -54,8 +54,8 @@ function ListProducts() {
           listProduct.map((eachProduct) => {
 
             return (
-              <Link to={`/product/${eachProduct._id}/details`} >
-                <div key={eachProduct._id}>
+              <Link to={`/product/${eachProduct.id}/details`} >
+                <div key={eachProduct.id}>
                   <div className='product-box' >
 
                     <div className='image-product'>
