@@ -4,8 +4,10 @@ import React from 'react'
 import "../../css/product/create-product.css"
 
 // Services
-import { createColectionService } from '../../services/colection.services'
-import { uploadPictureService } from "../../services/upload.services"
+import { auth, storage, db } from '../../firebase.js'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { addDoc } from 'firebase/firestore'
+import { collection } from 'firebase/firestore'
 
 // React
 import { useState } from "react";
@@ -20,6 +22,9 @@ function CreateColection() {
 const [nameInput, setNameInput] = useState("")
 const [priceInput, setPriceInput] = useState("")
 const [pictureUrl, setPictureUrl] = useState("")
+//Download picture direction from Firebase
+const [isLoadingPicture, setIsLoadingPicture] = useState(false);
+
 
  // errorMessages from BE
  const [errorMessage, setErrorMessage] = useState("");
@@ -30,38 +35,43 @@ const handleSizeChange = (e) => setPriceInput(e.target.value)
 
 // Upload picture to Cloudinary
    // Cloudinary is Loading
-   const [isLoadingPicture, setIsLoadingPicture] = useState(false);
+ 
 
    const handlePictureChange = async (e) => {
-    // Cloudinary picture is Loading On
-    setIsLoadingPicture(true);
- 
-    // upload the picture to cloudinary and receive the string for show the pic in the form
-    const sendObj = new FormData();
-    sendObj.append("picture", e.target.files[0]);
- 
-    try {
-      const response = await uploadPictureService(sendObj);
- 
-      setPictureUrl(response.data.picture);
-      // Cloudinary picture is Loading Off
-      setIsLoadingPicture(false);
-    } catch (error) {
-      navigate("/error");
-    }
+    setIsLoadingPicture(true)
+
+    const image = e.target.files[0]
+     // * upload image to firebaseStorage
+   try {
+  
+     console.log("image.name", image.name);
+   // 1 - Location where the picture is gonna be saved
+   const storageRef = ref(storage, `images/${image.name}`) // 1- storage, 2-image-name-URL || 1 {the ref}, 2 {file it-self}
+   // 2 - uploading the picture to firebase storage
+   const snapShot = await uploadBytes(storageRef, image)
+   // 3 - picture Url
+   const downloadUrl = await getDownloadURL(snapShot.ref)
+   console.log("downloadUrl", downloadUrl);
+   setPictureUrl(downloadUrl)
+   setIsLoadingPicture(false)
+
+   // 4 - new doc
+ }catch(error){
+   navigate("/error");
+ }  
   };
 
   // Create Colection
   const handleCreateColection = async (e) => {
    e.preventDefault()
-
-   const newColection = {
-    name: nameInput,
-    price: priceInput,
-    picture: pictureUrl,
-   }
     try {
-        await createColectionService(newColection);
+      const newColection = await addDoc(collection(db, 'colections'), {
+        name: nameInput,
+        price: priceInput,
+        picture: pictureUrl,
+      }) 
+      alert("Colección añadida correctamente")
+      window.location.reload(false)
         navigate("/list-colections")
     } catch (error) {
         if (

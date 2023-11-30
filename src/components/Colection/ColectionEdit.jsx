@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { detailsColectionService, updateColectionService } from "../../services/colection.services";
-import { uploadPictureService } from "../../services/upload.services";
+// Services Firebase
+import { collection,doc,getDoc, updateDoc } from 'firebase/firestore'
+import { db } from '../../firebase'
+import { auth, storage,} from '../../firebase.js'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+
 import { AuthContext } from "../../context/auth.context";
 
 function ColectionEdit() {
@@ -29,10 +33,11 @@ function ColectionEdit() {
     // COLECTION DATA
   const getData = async () => {
     try {
-        const response = await detailsColectionService(colectionId);
-    setDetails(response.data);
+    const colection = doc(db, 'colections', colectionId)
+    const colectionById = await getDoc(colection)
+    setDetails(colectionById.data());  
    
-    const { name, price, picture } = response.data;
+    const { name, price, picture } = colectionById.data();
     setName(name);
     setPrice(price);
     setPictureUrl(picture);
@@ -46,38 +51,44 @@ function ColectionEdit() {
   // TAKES NEW COLECTION INFO
   const handleNameChange = (e) => setName(e.target.value);
   const handlePriceChange = (e) => setPrice(e.target.value);
-   // LOAD PICTURE ON CLOUDINARY
+   // LOAD PICTURE ON FIREBASE
    const handlePictureChange = async (e) => {
-    // Cloudinary picture is Loading On
-    setIsLoadingPicture(true);
-
-    // upload the picture to cloudinary and receive the string for show the pic in the form
-    const sendObj = new FormData();
-    sendObj.append("picture", e.target.files[0]);
-
-    try {
-      const response = await uploadPictureService(sendObj);
-
-      setPictureUrl(response.data.picture);
-      // Cloudinary picture is Loading Off
-      setIsLoadingPicture(false);
-    } catch (error) {
+    console.log("e.target picture", e.target.files[0])
+    setIsLoadingPicture(true)
+    const image = e.target.files[0]
+        // * upload image to firebaseStorage
+      try {
+     
+        console.log("image.name", image.name);
+      // 1 - Location where the picture is gonna be saved
+      const storageRef = ref(storage, `images/${image.name}`) // 1- storage, 2-image-name-URL || 1 {the ref}, 2 {file it-self}
+      // 2 - uploading the picture to firebase storage
+      const snapShot = await uploadBytes(storageRef, image)
+      // 3 - picture Url
+      const downloadUrl = await getDownloadURL(snapShot.ref)
+      console.log("downloadUrl", downloadUrl);
+      setPictureUrl(downloadUrl)
+    setIsLoadingPicture(false)
+  
+      // 4 - new doc
+    }catch(error){
       navigate("/error");
-    }
+    }  
+       
   };
 
   // UPDATE COLECTION
   const handleUpdateColection = async (e) => {
     e.preventDefault();
 
-    const colectionUpdate = {
-      name: nameInput,
-      price: priceInput,
-      picture: pictureURL
-    };
-
     try {
-      await updateColectionService(colectionId, colectionUpdate);
+      const colectionToUpdate = doc(db, "colections", colectionId);
+      await updateDoc(colectionToUpdate, {
+        name: nameInput,
+        price: priceInput,
+        picture: pictureURL,
+       
+  });
       setOkMessage("Colección actualizada correctamente")
       setTimeout(() => {
         navigate("/list-colections");

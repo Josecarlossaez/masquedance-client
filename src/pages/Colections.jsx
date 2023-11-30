@@ -7,12 +7,11 @@ import { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 
-// Services
-import { listColectionService } from "../services/colection.services";
-import { listProductService } from "../services/product.services";
+// Services FIREBASE
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '../firebase'
 
-// Utilities
-import Select from "react-select";
+
 
 function Colections() {
   const navigate = useNavigate();
@@ -33,16 +32,19 @@ function Colections() {
   const getData = async () => {
     // Bring Products data
     try {
-      const response = await listColectionService();
-      const responseProducts = await listProductService();
-     
-      setListColection(response.data);
-      setIsFetching(false);
+      const docs = []
+    const querySnapshot = await getDocs(collection(db, "colections"));
+    console.log("querySnapshot", querySnapshot)
+    querySnapshot.forEach((doc) => {
+      docs.push({...doc.data(), id:doc.id})
+      setListColection(docs)
+    })
+    setIsFetching(false)
     } catch (error) {
       navigate("/error");
     }
   };
-
+   console.log("listColection", listColection);
  
   if (isFetching === true) {
     return <p>...loading</p>;
@@ -58,7 +60,7 @@ function Colections() {
           return (
             <div  key={eachColection._id}>
               <Link
-                to={`/colection/${eachColection._id}/details`}
+                to={`/colection/${eachColection.id}/details`}
                 
                
               >
@@ -74,7 +76,7 @@ function Colections() {
                 </div>
               </Link>
               {user?.user.role === "admin" &&
-              <Link className="link-box" to={`/colection/${eachColection._id}/edit`}>
+              <Link className="link-box" to={`/colection/${eachColection.id}/edit`}>
                 <button className="general-btn"> Editar Colección</button>
               </Link>
               }

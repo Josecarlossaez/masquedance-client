@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 import { useNavigate, useParams, Link } from "react-router-dom";
 // Services Firebase
-import { collection, getDocs,doc,getDoc } from 'firebase/firestore'
+import { collection, getDocs,doc,getDoc, deleteDoc } from 'firebase/firestore'
 import { db } from '../../firebase'
 
 
@@ -128,19 +128,19 @@ function DetailsProduct() {
   // };
 
   // REMOVE PRODUCT 
-  // const handleRemoveProduct = async () => {
+  const handleRemoveProduct = async () => {
     
-  //   try {
-  //     await deleteProductService(productId)
-  //     setOkMessage("Producto Borrado Correctamente")
-  //     setTimeout(() => {
-  //        navigate("/list-products")
-  //     },2000)
+    try {
+      await deleteDoc(doc(db, "products", productId));
+      setOkMessage("Producto Borrado Correctamente")
+      setTimeout(() => {
+         navigate("/list-products")
+      },2000)
 
-  //   } catch (error) {
-  //     navigate("/error")
-  //   }
-  //  } 
+    } catch (error) {
+      navigate("/error")
+    }
+   } 
 
   if (isFetching === true) {
     return <p>LOading...</p>;
@@ -216,7 +216,7 @@ function DetailsProduct() {
               </Link>
           </div>
           
-          {/* {!productInColection &&
+          {!productInColection &&
           <div>
            <button
                 type="sumbit"
@@ -227,7 +227,7 @@ function DetailsProduct() {
               </button>
               
             </div>
-          } */}
+          }
              
       
         </div>

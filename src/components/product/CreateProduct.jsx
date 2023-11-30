@@ -62,15 +62,11 @@ function CreateProduct() {
   const handleColorChange = (e) => setColorInput(e.value);
   const handleReferenceChange = (e) => setReference(e.value);
 
-  // Cloudinary is Loading
-  // const [isLoadingPicture, setIsLoadingPicture] = useState(false);
+
 
   const handlePictureChange = async (e) => {
-    console.log("e.target picture", e.target.files[0])
-  setIsLoadingPicture(true)
-
-   
-    const image = e.target.files[0]
+      setIsLoadingPicture(true)
+       const image = e.target.files[0]
         // * upload image to firebaseStorage
       try {
      
