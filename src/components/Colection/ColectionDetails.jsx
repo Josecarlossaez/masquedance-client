@@ -3,9 +3,9 @@ import "../../css/product/details-product.css";
 import { useEffect, useState } from "react";
 
 import { useNavigate, useParams, Link } from "react-router-dom";
-// Services
-import { detailsColectionService } from "../../services/colection.services";
-import { addProductToCartService } from "../../services/user.services";
+// Services Firebase
+import { collection, getDocs,doc,getDoc, deleteDoc } from 'firebase/firestore'
+import { db } from '../../firebase'
 // Context
 import { AuthContext } from "../../context/auth.context.js";
 import { useContext } from "react"
@@ -22,7 +22,7 @@ function ColectionDetails() {
   const [errorMessage, setErrorMessage] = useState("")
 
   const [colectionDetails, setColectionDetails] = useState();
-  const [productId, setProductId] = useState();
+  // const [productId, setProductId] = useState();
 
   // States to check the sizes availables of this product
 
@@ -37,14 +37,16 @@ function ColectionDetails() {
   // Get the product Details data from API
   const getData = async () => {
     try {
-      const details = await detailsColectionService(colectionId);
+      console.log("productId dentro de colectionDetails", colectionId)
 
-      setColectionDetails(details.data);
+      const product = doc(db, 'products', colectionId)
+      const productById = await getDoc(product)
+      setColectionDetails(productById.data());
       // setProductId(details.data.products.filter((eachP) => eachP.size === sizeSelected)[0]._id)
-      const productSizeS = details.data.products.find((eachP) => eachP.size === "S");
-      if (productSizeS) {
-        handleClick("S", productSizeS._id);
-      }
+      // const productSizeS = details.data.products.find((eachP) => eachP.size === "S");
+      // if (productSizeS) {
+      //   handleClick("S", productSizeS._id);
+      // }
   
       setIsFetching(false);
     } catch (error) {
@@ -54,34 +56,34 @@ function ColectionDetails() {
 
   
 
-  const tallas = colectionDetails?.products.filter(
-    (each) => each.size === sizeSelected
-  );
+  // const tallas = colectionDetails?.products.filter(
+  //   (each) => each.size === sizeSelected
+  // );
  
 
-  const handleClick = (size, id) => {
-    setSizeSelected(size);
-    setProductId(id)
+  // const handleClick = (size, id) => {
+  //   setSizeSelected(size);
+  //   setProductId(id)
 
     // setProductId(
     //   colectionDetails?.products.filter(
     //     (eachP) => eachP.size === sizeSelected
     //   )[0]._id
     // );
-  };
+  // };
  
 
-  const handleAddProductToCart = async () => {
-    if(!isLoggedIn){
-      setErrorMessage("tienes que estar registrado para poder añadir productos al carrito")
-    }
-    try {
-      await addProductToCartService(productId);
-      navigate("/cart");
-    } catch (error) {
-      navigate(error);
-    }
-  };
+  // const handleAddProductToCart = async () => {
+  //   if(!isLoggedIn){
+  //     setErrorMessage("tienes que estar registrado para poder añadir productos al carrito")
+  //   }
+  //   try {
+  //     await addProductToCartService(productId);
+  //     navigate("/cart");
+  //   } catch (error) {
+  //     navigate(error);
+  //   }
+  // };
   if (isFetching === true) {
     return <p>LOading...</p>;
   }
@@ -91,7 +93,7 @@ function ColectionDetails() {
       <div>
         <h1>Colection Details</h1>
       </div>
-      {colectionDetails.products.length === 0 ? (
+      {colectionDetails.length === 0 ? (
         <h1>Todavía no tienes productos que mostrar</h1>
       ) : (
         <div className="details-container">
@@ -99,19 +101,21 @@ function ColectionDetails() {
             <img src={colectionDetails?.picture} alt="" />
           </div>
           <div className="details-data">
+          <h3>{colectionDetails.name}</h3> 
+
             <div className="details-info">
-              <h3>{tallas[0]?.name}</h3>
-              <h3>Talla: {tallas[0]?.size}</h3>
-              <h3>Precio: {tallas[0]?.price}€</h3>
-              <h3>Descripción del artículo: {tallas[0]?.description}</h3>
-              {tallas[0]?.stock < 5 && 
+             
+              
+              <h3>Precio: {colectionDetails?.price}€</h3>
+              <h3>Descripción del artículo: {colectionDetails?.description}</h3>
+              {/* {tallas[0]?.stock < 5 && 
                 <p style={{ color: "red" }}> Ultimas unidades</p>
-              }
+              } */}
             </div>
             <div className="details-sizeList">
               <h2>Seleccione Talla:</h2>
               <div className="sizes-container">
-                {colectionDetails?.products.map((eachP) => (
+                {/* colectionDetails?.products.map((eachP) => (
                   <div key={eachP._id}>
                     {sizeSelected === eachP.size ? (
                       <button
@@ -129,7 +133,40 @@ function ColectionDetails() {
                       </button>
                     )}
                   </div>
-                ))}
+                )) */}
+                {colectionDetails.size.s.stock > 0 ? (
+
+                  <button className="sizes">S</button> 
+                ):(
+                  <button  className="sizes-disabled">S</button> 
+                )
+                }
+                {colectionDetails.size.m.stock > 0 ? (
+
+                  <button className="sizes">M</button> 
+                  ):(
+                  <button  className="sizes-disabled">M</button> 
+                  )}
+                {colectionDetails.size.l.stock > 0 ? (
+
+                  <button className="sizes">L</button> 
+                  ):(
+                  <button  className="sizes-disabled">L</button> 
+                  )}
+                {colectionDetails.size.xl.stock > 0 ? (
+
+                  <button className="sizes">XL</button> 
+                  ):(
+                  <button  className="sizes-disabled">XL</button> 
+                  )}
+                {colectionDetails.size.xxl.stock > 0 ? (
+
+                  <button className="sizes">XXL</button> 
+                  ):(
+                  <button  className="sizes-disabled">XXL</button> 
+                  )}
+               
+                
               </div>
             </div>
               {/* ARRAY DE CANTIDAD */}
@@ -148,14 +185,14 @@ function ColectionDetails() {
               </select>
             </div> */}
             {/* FIN ARRAY DE CANTIDAD */}
-            <div>
+            {/* <div>
               <button onClick={handleAddProductToCart} className="general-btn">
                 Añadir al carrito
               </button>
               {errorMessage !== "" && (
             <p className="error-message"> * {errorMessage}</p>
           )}
-            </div>
+            </div> */}
           </div>
         </div>
       )}

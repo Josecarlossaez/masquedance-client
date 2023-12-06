@@ -64,7 +64,7 @@ function ListProducts() {
                     <div className='product-text'>
                       <h3>{eachProduct.name}</h3>
                       <h4>{eachProduct.price}€</h4>
-                      <h4>Talla {eachProduct.size}</h4>
+                      {/* <h4>Talla {eachProduct.size}</h4> */}
                     </div>
                   </div>
 

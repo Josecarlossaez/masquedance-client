@@ -55,6 +55,20 @@
     justify-content: center;
     align-items: center;
 }
+.sizes-disabled{
+    margin: 5px;
+    cursor: not-allowed !important;
+    border:solid 2px black;
+    border-radius: 3px;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    opacity: 0.5;
+
+}
 .sizes h1{
     font-family: 'Courier New', Courier, monospace;
 }

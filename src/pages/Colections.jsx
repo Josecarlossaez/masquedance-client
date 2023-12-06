@@ -33,7 +33,7 @@ function Colections() {
     // Bring Products data
     try {
       const docs = []
-    const querySnapshot = await getDocs(collection(db, "colections"));
+    const querySnapshot = await getDocs(collection(db, "products"));
     console.log("querySnapshot", querySnapshot)
     querySnapshot.forEach((doc) => {
       docs.push({...doc.data(), id:doc.id})
@@ -56,27 +56,27 @@ function Colections() {
         <h1>MERCHANDISING</h1>
       </div>
       <div className="products-container">
-        {listColection.map((eachColection) => {
+        {listColection.map((eachProduct) => {
           return (
-            <div  key={eachColection._id}>
+            <div  key={eachProduct._id}>
               <Link
-                to={`/colection/${eachColection.id}/details`}
+                to={`/colection/${eachProduct.id}/details`}
                 
                
               >
                 <div className="product-box">
                   <div className="image-product">
-                    <img src={eachColection.picture} alt="pict" />
+                    <img src={eachProduct.picture} alt="pict" />
                   </div>
                   <div className="product-text">
-                    <h3>{eachColection.name}</h3>
-                    {/* <h4>{eachColection.description}</h4> */}
-                    <h4>{eachColection.price}€</h4>
+                    <h3>{eachProduct.name}</h3>
+                    {/* <h4>{eachProduct.description}</h4> */}
+                    <h4>{eachProduct.price}€</h4>
                   </div>
                 </div>
               </Link>
               {user?.user.role === "admin" &&
-              <Link className="link-box" to={`/colection/${eachColection.id}/edit`}>
+              <Link className="link-box" to={`/colection/${eachProduct.id}/edit`}>
                 <button className="general-btn"> Editar Colección</button>
               </Link>
               }

@@ -10,7 +10,9 @@ import ProductsLink from '../components/product/ProductsLink';
 import ListVideo from '../components/videos/ListVideo';
 import SocialMedia from '../components/socialMedia/SocialMedia';
 
-
+// Services FIREBASE
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '../firebase'
 
 
 
@@ -28,10 +30,15 @@ function Home() {
 
   const getData = async () => {
     try {
+    const docs = []
+    const querySnapshot = await getDocs(collection(db, "products"));
+    console.log("querySnapshot", querySnapshot)
+    querySnapshot.forEach((doc) => {
+      docs.push({...doc.data(), id:doc.id})
+      setListProduct(docs)
+    })
       const responseTwitch = await listTwitchLinkService()
-      const responseProduct = await listProductService()
       setListTwitchLink(responseTwitch.data)
-      setListProduct(responseProduct.data)
       setIsFetching(false)
 
     } catch (error) {

@@ -7,21 +7,13 @@ import { useNavigate } from "react-router-dom";
 // Services Firebase
 import { auth, storage, db } from '../../firebase.js'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
-import { addDoc } from 'firebase/firestore'
-import { collection } from 'firebase/firestore'
+// import { doc} from 'firebase/firestore'
+import { collection, doc,setDoc } from 'firebase/firestore'
 
 
 
 // Utilities
 import Select from "react-select";
-
-const sizeOptions = [
-  { value: "S", label: "S" },
-  { value: "M", label: "M" },
-  { value: "L", label: "L" },
-  { value: "XL", label: "XL" },
-  { value: "XXL", label: "XXL" },
-];
 
 const colorOptions = [
   { value: "amarillo", label: "amarillo" },
@@ -30,10 +22,7 @@ const colorOptions = [
   { value: "negro", label: "negro" },
   { value: "verde", label: "verde" },
 ];
-const referenceOptions = [
-  { value: "true", label: "true" },
-  { value: "false", label: "false" },
-];
+
 
 function CreateProduct() {
   const navigate = useNavigate();
@@ -41,14 +30,17 @@ function CreateProduct() {
   // input values
   const [nameInput, setName] = useState("");
   const [priceInput, setPrice] = useState("");
-  const [sizeInput, setSize] = useState("");
+  const [stockSInput, setStockSInput] = useState("");
+  const [stockMInput, setStockMInput] = useState("");
+  const [stockLInput, setStockLInput] = useState("");
+  const [stockXLInput, setStockXLInput] = useState("");
+  const [stockXXLInput, setStockXXLInput] = useState("");
   const [descriptionInput, setDescription] = useState("");
   const [colorInput, setColorInput] = useState("");
   // const [image, setImage] = useState([])
   const [isLoadingPicture, setIsLoadingPicture] = useState(false);
   const [pictureURL, setPictureUrl] = useState("");
-  const [stockInput, setStock] = useState("");
-  const [referenceInput, setReference] = useState("");
+
 
   // errorMessages from BE
   const [errorMessage, setErrorMessage] = useState("");
@@ -56,11 +48,13 @@ function CreateProduct() {
   const handleNameChange = (e) => setName(e.target.value);
   const handlePriceChange = (e) => setPrice(e.target.value);
   const handleDescriptionChange = (e) => setDescription(e.target.value);
-  const handleSizeChange = (e) => setSize(e.value);
-  const handleCantidadChange = (e) => setStock(e.target.value);
-
+  const handleStockSInput = (e) => setStockSInput(e.target.value);
+  const handleStockMInput = (e) => setStockMInput(e.target.value);
+  const handleStockLInput = (e) => setStockLInput(e.target.value);
+  const handleStockXLInput = (e) => setStockXLInput(e.target.value);
+  const handleStockXXLInput = (e) => setStockXXLInput(e.target.value);
   const handleColorChange = (e) => setColorInput(e.value);
-  const handleReferenceChange = (e) => setReference(e.value);
+
 
 
 
@@ -79,7 +73,7 @@ function CreateProduct() {
       const downloadUrl = await getDownloadURL(snapShot.ref)
       console.log("downloadUrl", downloadUrl);
       setPictureUrl(downloadUrl)
-  setIsLoadingPicture(false)
+      setIsLoadingPicture(false)
 
       // 4 - new doc
     }catch(error){
@@ -91,22 +85,48 @@ function CreateProduct() {
   // Send the input values to BE
   const handleCreateProduct = async (e) => {
     e.preventDefault();
-    
-
-  
 
     try {
-     const newProduct = await addDoc(collection(db, 'products'), {
+      const  productRef = collection(db,'products');
+      const newProductDocRef = doc(productRef);
+      console.log("id", newProductDocRef.id)
+
+     
+        await setDoc(newProductDocRef,{
+                  id: newProductDocRef.id,
       name: nameInput,
       price: priceInput,
-      picture: pictureURL,
-      size: sizeInput,
-      reference: referenceInput,
-      description: descriptionInput,
       color: colorInput,
-      stock: stockInput,
+      picture: pictureURL,
+      description: descriptionInput,
+      size: {
+        s:{
+          name: "S",
+          stock: stockSInput
+        },
+       m:{
+          name: "M",
+          stock: stockMInput
+        },
+        l:{
+          name: "L",
+          stock: stockLInput
+        },
+        xl:{
+          name: "XL",
+          stock: stockXLInput
+        },
+        xxl:{
+          name: "XXL",
+          stock: stockXXLInput
+        },
+        }
+    
+      
     })
-      console.log("producto añadido con id: ", newProduct.id)
+      
+
+      console.log("producto añadido con id: ", newProductDocRef.id)
       alert("Producto añadido correctamente")
       window.location.reload(false)
     } catch (error) {
@@ -145,27 +165,52 @@ function CreateProduct() {
             >
               Description
             </label>
-          </div>
-          <div className="input-container">
-            <input value={stockInput} onChange={handleCantidadChange} />
 
-            <label className={stockInput && "filled"} htmlFor="stcok">
-              Stock
+          </div>
+          {/* <div className="input-container">
+            <input value={stockSInput} onChange={handleStockSInput} />
+
+            <label className={stockSInput && "filled"} htmlFor="Stock talla S">
+              Stock talla S
+            </label>
+          </div> */}
+          <div className="input-container">
+            <input value={stockSInput} onChange={handleStockSInput} />
+            <label className={stockSInput && "filled"} htmlFor="StockTallaS">
+              Talla S Stock
             </label>
           </div>
+
           <div className="input-container">
-            <div className="select-size">
-              <div className="name-select">
-                <h4>Talla</h4>
-              </div>
-              <div className="select-input">
-                <Select
-                  defaultValue={sizeInput}
-                  onChange={handleSizeChange}
-                  options={sizeOptions}
-                />
-              </div>
-            </div>
+            <input value={stockMInput} onChange={handleStockMInput} />
+
+            <label className={stockMInput && "filled"} htmlFor="stocTallaM">
+              Stock talla M
+            </label>
+          </div>
+
+          <div className="input-container">
+            <input value={stockLInput} onChange={handleStockLInput} />
+
+            <label className={stockLInput && "filled"} htmlFor="stock">
+              Stock talla L
+            </label>
+          </div>
+
+          <div className="input-container">
+            <input value={stockXLInput} onChange={handleStockXLInput} />
+
+            <label className={stockXLInput && "filled"} htmlFor="stock">
+              Stock talla XL
+            </label>
+          </div>
+
+          <div className="input-container">
+            <input value={stockXXLInput} onChange={handleStockXXLInput} />
+
+            <label className={stockXXLInput && "filled"} htmlFor="stock">
+              Stock talla XXL
+            </label>
           </div>
 
           <div className="input-container">
