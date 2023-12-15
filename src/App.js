@@ -22,8 +22,13 @@ import AboutUs from './pages/AboutUs';
 import ListDjs from './pages/ListDjs';
 import DjDetails from './components/dj/DjDetails';
 import UpdateDj from './components/dj/UpdateDj';
+// Context
+import { AuthContext } from "./context/auth.context";
+import { useContext } from "react"
 
 function App() {
+  const {isAdmin} = useContext(AuthContext)
+
   return (
     <div className="App">
     <Navbar/>
@@ -33,7 +38,9 @@ function App() {
       <Route path='/login' element= {<Login/>}/>
       <Route path='/create-product' element= {<CreateProduct/>}/>
       <Route path='/create-track' element= {<CreateTrack/>}/>
+      {isAdmin &&
       <Route path='/admin' element= {<Admin/>}/>
+      }
       <Route path='/create-dj' element= {<CreateDj/>}/>
       <Route path='/list-colections' element= {<Colections/>}/>
       <Route path='/colection/:colectionId/details' element= {<ColectionDetails/>}/>

@@ -54,6 +54,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: orbitron;
+    
+    
+}
+.sizes-selected h1{
+    font-size: 22px;
+    font-weight: bold;
+
 }
 .sizes-disabled{
     margin: 5px;
@@ -70,5 +78,6 @@
 
 }
 .sizes h1{
-    font-family: 'Courier New', Courier, monospace;
+    font-family: orbitron;
+    font-size: 20px;
 }

@@ -12,6 +12,7 @@ import { useContext } from "react"
 
 function ColectionDetails() {
   const { colectionId } = useParams();
+  const productId = colectionId
   const { isLoggedIn } = useContext(AuthContext)
 
   const navigate = useNavigate();
@@ -61,16 +62,16 @@ function ColectionDetails() {
   // );
  
 
-  // const handleClick = (size, id) => {
-  //   setSizeSelected(size);
-  //   setProductId(id)
+  const handleClick = (size, id) => {
+    setSizeSelected(size);
+    // setProductId(id)
 
     // setProductId(
     //   colectionDetails?.products.filter(
     //     (eachP) => eachP.size === sizeSelected
     //   )[0]._id
     // );
-  // };
+  };
  
 
   // const handleAddProductToCart = async () => {
@@ -115,58 +116,25 @@ function ColectionDetails() {
             <div className="details-sizeList">
               <h2>Seleccione Talla:</h2>
               <div className="sizes-container">
-                {/* colectionDetails?.products.map((eachP) => (
-                  <div key={eachP._id}>
-                    {sizeSelected === eachP.size ? (
+                {colectionDetails?.size.map((eachSize) => (
+                  <div key={eachSize}>
+                    {sizeSelected === eachSize.name ? (
                       <button
                         className="sizes-selected"
-                        onClick={() => handleClick(eachP.size)}
+                        onClick={() => handleClick(eachSize.name)}
                       >
-                        <h1>{eachP.size}</h1>
+                        <h1>{eachSize.name}</h1>
                       </button>
                     ) : (
                       <button
                         className="sizes"
-                        onClick={() => handleClick(eachP.size, eachP._id) }
+                        onClick={() => handleClick(eachSize.name) }
                       >
-                        <h1>{eachP.size}</h1>
+                        <h1>{eachSize.name}</h1>
                       </button>
                     )}
                   </div>
-                )) */}
-                {colectionDetails.size.s.stock > 0 ? (
-
-                  <button className="sizes">S</button> 
-                ):(
-                  <button  className="sizes-disabled">S</button> 
-                )
-                }
-                {colectionDetails.size.m.stock > 0 ? (
-
-                  <button className="sizes">M</button> 
-                  ):(
-                  <button  className="sizes-disabled">M</button> 
-                  )}
-                {colectionDetails.size.l.stock > 0 ? (
-
-                  <button className="sizes">L</button> 
-                  ):(
-                  <button  className="sizes-disabled">L</button> 
-                  )}
-                {colectionDetails.size.xl.stock > 0 ? (
-
-                  <button className="sizes">XL</button> 
-                  ):(
-                  <button  className="sizes-disabled">XL</button> 
-                  )}
-                {colectionDetails.size.xxl.stock > 0 ? (
-
-                  <button className="sizes">XXL</button> 
-                  ):(
-                  <button  className="sizes-disabled">XXL</button> 
-                  )}
-               
-                
+                ))} 
               </div>
             </div>
               {/* ARRAY DE CANTIDAD */}

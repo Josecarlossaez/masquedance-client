@@ -2,8 +2,9 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth.context.js";
-// Axios Services
-import { loginService } from "../../services/auth.services";
+// Axios Services Firebase
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase";
 // CSS
 import "../../css/login.css"
 
@@ -26,31 +27,21 @@ function Login() {
   };
 
   // When user press the button send the input value to BE
-  const handleLogin = async (e) => {
+  const handleLogin =  (e) => {
     e.preventDefault();
 
     // 1. To take credential user info.
-    const userInfo = {
-      email: email,
-      password: password,
-    };
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(userCredential);
+        navigate("/")
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
-    try {
-      // 2. Contact BE To validate it
-      const response = await loginService(userInfo);
 
-      // 3. Token received so we save it into localStorage
-      localStorage.setItem("authToken", response.data.authToken);
-
-      authenticateUser(); // invoke to validate user
-      navigate("/");
-    } catch (error) {
-      if (error.response && error.response.status === 400) {
-        setErrorMessage(error.response.data.errorMessage);
-      } else {
-        navigate("/error");
-      }
-    }
   };
 
   return (

@@ -99,28 +99,28 @@ function CreateProduct() {
       color: colorInput,
       picture: pictureURL,
       description: descriptionInput,
-      size: {
-        s:{
+      size: [
+        {
           name: "S",
           stock: stockSInput
         },
-       m:{
+       {
           name: "M",
           stock: stockMInput
         },
-        l:{
+        {
           name: "L",
           stock: stockLInput
         },
-        xl:{
+        {
           name: "XL",
           stock: stockXLInput
         },
-        xxl:{
+        {
           name: "XXL",
           stock: stockXXLInput
         },
-        }
+      ]
     
       
     })

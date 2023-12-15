@@ -8,6 +8,11 @@ import "../../css/rightNav.css";
 // Context
 import { AuthContext } from "../../context/auth.context.js";
 import { useContext } from "react"
+// Firebase SErvices
+import { getAuth, signOut } from "firebase/auth";
+
+
+
 
 const Ul = styled.ul`
   list-style: none;
@@ -37,14 +42,23 @@ const Ul = styled.ul`
 
 const RightNav = ( {open, changeStateBurger} ) => {
   const navigate = useNavigate();
-  const {authenticateUser, isLoggedIn, user} = useContext(AuthContext)
+  const {authenticateUser, isLoggedIn, isAdmin} = useContext(AuthContext)
   const handleChangeBurger = () =>{
     changeStateBurger()
   }
   const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    authenticateUser();
-    navigate("/home");
+    // Cerrar sesión (Logout)
+
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      // Sign-out successful.
+      authenticateUser();
+      navigate("/");
+      console.log("usuario deslogeado")
+    }).catch((error) => {
+      console.log(error);
+    });
+
   };
   return (
     
@@ -57,7 +71,7 @@ const RightNav = ( {open, changeStateBurger} ) => {
         <Link to='/list-tracks'>TRACKS</Link>
         <Link to='/list-djs'>DJ´S</Link>
         <Link to='/list-colections'  onClick={handleChangeBurger}>Merchandising</Link>
-        {user?.user.role === "admin" && <Link to='/admin'>Admin</Link>}
+        {isAdmin && <Link to='/admin'>Admin</Link>}
         
       </div>
       <div className="auth-list">
