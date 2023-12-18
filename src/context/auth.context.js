@@ -4,7 +4,7 @@
 import { createContext, useState, useEffect } from "react";
 // Services
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs,doc,getDoc } from 'firebase/firestore'
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore'
 import { db } from '../firebase'
 
 
@@ -19,54 +19,73 @@ function AuthWrapper(props) {
   const [userId, setUserId] = useState("");
   const [isFetching, setIsFetching] = useState(true);
   const [isAdmin, setisAdmin] = useState(false)
-  const [authUser, setaAthUser] = useState(null)
+  const [authUser, setAuthUser] = useState(null)
   const [user, setUser] = useState(null)
-  
+
 
   useEffect(() => {
-    authenticateUser();
-    getUserData()
+
+  authenticateUser()
+ 
+  
+    
   }, []);
+
   useEffect(() => {
     getUserData()
   }, [userId]);
 
   const authenticateUser = async () => {
+    console.log("entrando en authenticateUser");
     setIsFetching(true);
-    const auth = getAuth();
-    onAuthStateChanged(auth, (authUser) => {
-  if (authUser) {
-    // authUser is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/auth.user
-    const uid = authUser;
-    console.log("🚀 r uid Firebase", uid.uid)
-    setUserId(uid.uid);
-    setIsLoggedIn(true);
-    if( uid.email === "jcsaez83@gmail.com"){
-      setisAdmin(true)
+    const auth = await getAuth();
+    try {
+      await onAuthStateChanged(auth, (authUser) => {
+        if (authUser) {
+          
+          // authUser is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/auth.user
+          const uid = authUser;
+          console.log("🚀 r uid Firebase", uid.uid)
+          setUserId(uid.uid);
+          setIsLoggedIn(true);
+          if (uid.email === "jcsaez83@gmail.com") {
+            setisAdmin(true)
+          }
+  
+  
+          // ...
+          setIsFetching(false)
+        
+          
+        } else {
+          // User is signed out
+          // ...
+          setisAdmin(false)
+  
+          setIsLoggedIn(false);
+          setUserId("");
+          setIsFetching(false);
+          console.log("no hay usuarios activos");
+        }
+      });
+    } catch (error) {
+      console.log("error en el await de conseguir la id de usuario",error)
     }
-
-
-    // ...
-    setIsFetching(false)
-  } else {
-    // User is signed out
-    // ...
-    setisAdmin(false)
-
-    setIsLoggedIn(false);
-    setUserId("");
-    setIsFetching(false);
-    console.log("no hay usuarios activos");
-  }
-});
+    
   };
-  const getUserData = async () =>{
-    if(userId === undefined || userId === ""){
+  console.log("userId comp", userId);
+  const getUserData = async () => {
+    console.log("entrando en getDataUser", userId);
+
+    console.log("userId en getUserData", userId)
+    if (userId === undefined || userId === "") {
       return
-    }else{
+    } else {
 
       try {
+        setIsFetching(true);
+
         const userRef = doc(db, 'users', userId)
         const userById = await getDoc(userRef)
         setUser(userById.data())
@@ -77,18 +96,14 @@ function AuthWrapper(props) {
         console.log("no se ha podido cargar el usuario de la base de datos");
       }
     }
-  } 
-
-  
-
-
-
+  }
 
   const passedContext = {
     isAdmin,
     isLoggedIn,
     authUser,
     user,
+    getUserData,
     authenticateUser,
     setIsLoggedIn,
     setUserId,

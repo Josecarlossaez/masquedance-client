@@ -18,7 +18,7 @@ function Colections() {
 
   // Extract User info
   
-  const { user } = useContext(AuthContext)
+  const { isAdmin } = useContext(AuthContext)
   
   // States
   const [isFetching, setIsFetching] = useState(true);
@@ -75,7 +75,7 @@ function Colections() {
                   </div>
                 </div>
               </Link>
-              {user?.user.role === "admin" &&
+              {isAdmin &&
               <Link className="link-box" to={`/colection/${eachProduct.id}/edit`}>
                 <button className="general-btn"> Editar Colección</button>
               </Link>

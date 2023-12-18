@@ -40,10 +40,10 @@ function Signup() {
     setIsFetching(true);
   
     try {
+      setIsFetching(true)
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       console.log("Usuario creado recientemente", userCredential.user.uid);
       setNewUserId(userCredential.user.uid);
-      setIsFetching(false);
       console.log("Entrando en el bloque try, ID del nuevo usuario:", userCredential.user.uid);
   
       // Utiliza la referencia a la colección sin incluir la ID del documento en la función collection
@@ -53,9 +53,13 @@ function Signup() {
       await setDoc(newUserRef, {
         username: username,
         id: userCredential.user.uid,
-        email: email
+        email: email,
+        cart: [],
+        orders: [],
+        youtubeReproductionList: [],
+        role: ""
       });
-  
+      setIsFetching(false)
       alert("Usuario añadido correctamente");
       window.location.reload(false);
       navigate("/login");

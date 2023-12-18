@@ -13,57 +13,58 @@ import "../css/Cart/cart.css";
 // ICONS
 import deleteIcon from "../images/icons8-eliminar-64.png";
 //  SERVICES
-import { removeProductFromCartService } from "../services/user.services";
-import { createOrderService } from "../services/order.services";
+import { getDoc, collection, getDocs, doc } from "firebase/firestore";
+import { db } from '../firebase'
+
 // COMPONENTS
 
 import PaypalCheckoutButton from "../components/paypal/PaypalCheckoutButton";
 
+
+
 function Cart() {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
-  console.log(user);
+  
+ 
 
   // States
   const [isFetching, setIsFetching] = useState("");
+  const [cart, setCart] = useState([])
   const [details, setDetails] = useState([]);
   const [quantities, setQuantities] = useState({});
   const [errorMessage, setErrorMessage] = useState("")
   const [orderToPayment, setOrderToPayment] = useState(null);
+  const [userActive, setUserActive] = useState(null)
   // const [stockFail, setStockFail] = useState(false)
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
-    const initialQuantities = details.reduce((acc, item) => {
-      acc[item._id] = 1;
+    const initialQuantities = cart.reduce((acc, item) => {
+      acc[item] = 1;
       return acc;
     }, {});
 
     setQuantities(initialQuantities);
-  }, [details]);
+  }, [cart]);
 
   
 
-  const getData = async () => {
-    try {
-      const response = await listCartProductService();
-      setDetails(response.data);
-      console.log("response", response.data);
-      setIsFetching(false);
-    } catch (error) {
-      navigate("/error");
-    }
+  const getData =  () => {
+ 
+      setCart(user?.cart)
   };
 
-  // let order = details.map((item) => {
-  //   const newItem = { ...item };
-  //   newItem.cantidad = quantities[item._id];
-  //   newItem.subtotal = quantities[item._id] * newItem.price;
-  //   return newItem;
-  // })
+
+  let order = details.map((item) => {
+    const newItem = { ...item };
+    newItem.cantidad = quantities[item._id];
+    newItem.subtotal = quantities[item._id] * newItem.price;
+    return newItem;
+  })
 
   const handleQuantityChange = (productId, value) => {
     setQuantities((prevQuantities) => ({
@@ -71,15 +72,17 @@ function Cart() {
       [productId]: value,
     }));
   };
+
   console.log("prevQuantities", quantities);
+
   const calculateSubtotal = (productId) => {
     const quantity = quantities[productId];
-    const product = details.find((item) => item._id === productId);
+    const product = cart.find((item) => item === productId);
     return quantity * product.price;
   };
 
   const calculateTotal = () => {
-    const total = details.reduce((accumulator, item) => {
+    const total = cart.reduce((accumulator, item) => {
       const subtotal = calculateSubtotal(item._id);
       return accumulator + subtotal;
     }, 0);
@@ -90,13 +93,9 @@ function Cart() {
   // Delete product from cart
   const handleDeleteProduct = async (id) => {
     console.log("id", id);
-    try {
-      await removeProductFromCartService(id);
-      getData();
-    } catch (error) {
-      navigate("/error");
-    }
+   
   };
+
   const handleContinuarCompra = async () => {
     
     const order = details.map((item) => {
@@ -177,13 +176,13 @@ function Cart() {
             </tr>
           </thead>
           <tbody>
-            {details.map((item) => (
-              <tr key={item._id}>
+            {cart.map((item) => (
+              <tr key={item.id}>
                 <td>
                   <img src={item.picture} alt="pic" />
                 </td>
                 <td>
-                  {item.name}, talla: {item.size}
+                  {item.name}, talla: {item.sizeSelected}
                 </td>
                 <td>{item.price} €</td>
                 <td>
@@ -229,7 +228,7 @@ function Cart() {
                     </button>
                   </div>
                 </td>
-                <td>{calculateSubtotal(item._id)} €</td>
+                {/* <td>{calculateSubtotal(item._id)} €</td> */}
                 <td>
                   <img
                     onClick={() => handleDeleteProduct(item._id)}
@@ -247,7 +246,7 @@ function Cart() {
             <p className="error-message"> * {errorMessage}</p>
           )}
       <div>
-        <h2>Total: {calculateTotal()}€</h2> <p>{`( 7€ de gastos de envío)`}.</p>
+        {/* <h2>Total: {calculateTotal()}€</h2> <p>{`( 7€ de gastos de envío)`}.</p> */}
        <div>
       <HashLink smooth to="#paypal-button-container"> 
         <button onClick={()=> handleContinuarCompra()} className="btn-bought">Continuar Compra</button>

@@ -1,19 +1,18 @@
 import React from "react";
 import "../../css/product/details-product.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 
 import { useNavigate, useParams, Link } from "react-router-dom";
 // Services Firebase
-import { collection, getDocs,doc,getDoc, deleteDoc } from 'firebase/firestore'
+import { collection, getDocs,doc,getDoc, updateDoc, arrayUnion } from 'firebase/firestore'
 import { db } from '../../firebase'
 // Context
 import { AuthContext } from "../../context/auth.context.js";
-import { useContext } from "react"
+
 
 function ColectionDetails() {
   const { colectionId } = useParams();
-  const productId = colectionId
-  const { isLoggedIn } = useContext(AuthContext)
+  const { isLoggedIn, user, getUserData } = useContext(AuthContext)
 
   const navigate = useNavigate();
 
@@ -34,21 +33,15 @@ function ColectionDetails() {
     getData();
   }, []);
 
+
+
  
   // Get the product Details data from API
   const getData = async () => {
     try {
-      console.log("productId dentro de colectionDetails", colectionId)
-
       const product = doc(db, 'products', colectionId)
       const productById = await getDoc(product)
       setColectionDetails(productById.data());
-      // setProductId(details.data.products.filter((eachP) => eachP.size === sizeSelected)[0]._id)
-      // const productSizeS = details.data.products.find((eachP) => eachP.size === "S");
-      // if (productSizeS) {
-      //   handleClick("S", productSizeS._id);
-      // }
-  
       setIsFetching(false);
     } catch (error) {
       navigate("/error");
@@ -64,27 +57,30 @@ function ColectionDetails() {
 
   const handleClick = (size, id) => {
     setSizeSelected(size);
-    // setProductId(id)
-
-    // setProductId(
-    //   colectionDetails?.products.filter(
-    //     (eachP) => eachP.size === sizeSelected
-    //   )[0]._id
-    // );
   };
  
 
-  // const handleAddProductToCart = async () => {
-  //   if(!isLoggedIn){
-  //     setErrorMessage("tienes que estar registrado para poder añadir productos al carrito")
-  //   }
-  //   try {
-  //     await addProductToCartService(productId);
-  //     navigate("/cart");
-  //   } catch (error) {
-  //     navigate(error);
-  //   }
-  // };
+  const handleAddProductToCart = async () => {
+    if(!isLoggedIn){
+      setErrorMessage("tienes que estar registrado para poder añadir productos al carrito")
+    }
+  console.log("sizeSelected", sizeSelected);
+  const productToCart = {...colectionDetails,
+  sizeSelected: sizeSelected
+  }
+
+    try {
+       
+      const userToUpdate = doc(db, "users", user.id)
+      await updateDoc(userToUpdate,{
+        cart: arrayUnion(productToCart)
+      })
+       getUserData()
+       navigate("/cart");
+    } catch (error) {
+      navigate(error);
+    }
+  };
   if (isFetching === true) {
     return <p>LOading...</p>;
   }
@@ -153,14 +149,14 @@ function ColectionDetails() {
               </select>
             </div> */}
             {/* FIN ARRAY DE CANTIDAD */}
-            {/* <div>
+            <div>
               <button onClick={handleAddProductToCart} className="general-btn">
                 Añadir al carrito
               </button>
               {errorMessage !== "" && (
             <p className="error-message"> * {errorMessage}</p>
           )}
-            </div> */}
+            </div>
           </div>
         </div>
       )}
