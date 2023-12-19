@@ -88,14 +88,17 @@ function Cart() {
   };
 
   const calculateTotal = () => {
-   
-    
+    const total = quantities.reduce((accumulator, item) => {
+      const subtotal = calculateSubtotal(item.eachId);
+      return accumulator + subtotal;
+    }, 0);
+    console.log("quantititels", quantities);
 
-    // return total + 7;
+    return total + 7;
   };
   // Delete product from cart
   const handleDeleteProduct = async (id) => {
-    console.log("id", id);
+    
    
   };
 
@@ -234,7 +237,7 @@ function Cart() {
                 <td>{calculateSubtotal(item.eachId)} €</td>
                 <td>
                   <img
-                    onClick={() => handleDeleteProduct(item._id)}
+                    onClick={() => handleDeleteProduct(item.eachId)}
                     className="delete-icon"
                     src={deleteIcon}
                     alt="delete-icon"
@@ -249,7 +252,7 @@ function Cart() {
             <p className="error-message"> * {errorMessage}</p>
           )}
       <div>
-        {/* <h2>Total: {calculateTotal()}€</h2> <p>{`( 7€ de gastos de envío)`}.</p> */}
+        <h2>Total: {calculateTotal()}€</h2> <p>{`( 7€ de gastos de envío)`}.</p>
        <div>
       <HashLink smooth to="#paypal-button-container"> 
         <button onClick={()=> handleContinuarCompra()} className="btn-bought">Continuar Compra</button>
