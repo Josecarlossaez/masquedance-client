@@ -32,7 +32,8 @@ function Cart() {
   const [isFetching, setIsFetching] = useState("");
   const [cart, setCart] = useState([])
   const [details, setDetails] = useState([]);
-  const [quantities, setQuantities] = useState({});
+  const [quantities, setQuantities] = useState([]);
+  const [prevQuantities, setPrevQuantities] = useState([]);
   const [errorMessage, setErrorMessage] = useState("")
   const [orderToPayment, setOrderToPayment] = useState(null);
   const [userActive, setUserActive] = useState(null)
@@ -42,16 +43,18 @@ function Cart() {
     getData();
   }, [user]);
 
-  useEffect(() => {
-    const initialQuantities = cart.reduce((acc, item) => {
-      acc[item] = 1;
-      return acc;
-    }, {});
+  useEffect( () => {
+    // chargeQuantities()
 
-    setQuantities(initialQuantities);
-  }, [cart]);
-
+   const initialQuantities = cart.map((each,index) => ({
+    ...each,
+    cantidad:1,
+    eachId: index
+   }))
   
+    setQuantities(initialQuantities);
+    setPrevQuantities(initialQuantities);
+  }, [cart]);
 
   const getData =  () => {
  
@@ -59,36 +62,36 @@ function Cart() {
   };
 
 
-  let order = details.map((item) => {
+  let order = cart.map((item) => {
     const newItem = { ...item };
-    newItem.cantidad = quantities[item._id];
-    newItem.subtotal = quantities[item._id] * newItem.price;
+    newItem.cantidad = quantities[item.cantidad];
+    newItem.subtotal = quantities[item.cantidad] * newItem.price;
     return newItem;
   })
 
-  const handleQuantityChange = (productId, value) => {
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [productId]: value,
-    }));
+  const handleQuantityChange = (eachId, value) => {
+    console.log("eachId", eachId)
+    console.log("value", value);
+  setQuantities((prevQuantities)=>
+  prevQuantities.map((item) => ({
+    ...item,
+    cantidad: item.eachId === eachId ? value : item.cantidad
+  }))
+  )
   };
 
-  console.log("prevQuantities", quantities);
 
-  const calculateSubtotal = (productId) => {
-    const quantity = quantities[productId];
-    const product = cart.find((item) => item === productId);
+  const calculateSubtotal = (eachId) => {
+    const quantity = quantities[eachId].cantidad;
+    const product = quantities.find((item) => item.eachId === eachId);
     return quantity * product.price;
   };
 
   const calculateTotal = () => {
-    const total = cart.reduce((accumulator, item) => {
-      const subtotal = calculateSubtotal(item._id);
-      return accumulator + subtotal;
-    }, 0);
-    console.log("quantititels", quantities);
+   
+    
 
-    return total + 7;
+    // return total + 7;
   };
   // Delete product from cart
   const handleDeleteProduct = async (id) => {
@@ -108,7 +111,7 @@ function Cart() {
    let stockFail = false;
     order.forEach((each) => {
       if(each.cantidad > each.stock){
-        setErrorMessage(`Hay un problema con el producto ${each.name} talla:${each.size}, solamente quedan ${each.stock} en stock`)
+        setErrorMessage(`Hay un problema con el producto ${each.name} talla:${each.sizeSelected}, solamente quedan ${each.stock} en stock`)
         setTimeout(() => {
           setErrorMessage("")
         }, 2000);
@@ -176,8 +179,8 @@ function Cart() {
             </tr>
           </thead>
           <tbody>
-            {cart.map((item) => (
-              <tr key={item.id}>
+            {quantities?.map((item) => (
+              <tr key={item.eachId}>
                 <td>
                   <img src={item.picture} alt="pic" />
                 </td>
@@ -205,10 +208,10 @@ function Cart() {
                     <button
                       onClick={() =>
                         handleQuantityChange(
-                          item._id,
-                          quantities[item._id] - 1 < 1
+                          item.eachId,
+                          quantities[item.eachId].cantidad - 1 < 1
                             ? 1
-                            : quantities[item._id] - 1
+                            : quantities[item.eachId].cantidad - 1
                         )
                       }
                     >
@@ -216,19 +219,19 @@ function Cart() {
                     </button>
                     <input
                       type="number"
-                      value={quantities[item._id]}
+                      value={quantities[item.eachId].cantidad }
                       readOnly
                     />
                     <button
                       onClick={() =>
-                        handleQuantityChange(item._id, quantities[item._id] + 1)
+                        handleQuantityChange(item.eachId, quantities[item.eachId].cantidad + 1)
                       }
                     >
                       +
                     </button>
                   </div>
                 </td>
-                {/* <td>{calculateSubtotal(item._id)} €</td> */}
+                <td>{calculateSubtotal(item.eachId)} €</td>
                 <td>
                   <img
                     onClick={() => handleDeleteProduct(item._id)}

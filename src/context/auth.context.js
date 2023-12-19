@@ -32,6 +32,7 @@ function AuthWrapper(props) {
   }, []);
 
   useEffect(() => {
+    console.log("userId actualizado");
     getUserData()
   }, [userId]);
 

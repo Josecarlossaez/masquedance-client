@@ -66,7 +66,8 @@ function ColectionDetails() {
     }
   console.log("sizeSelected", sizeSelected);
   const productToCart = {...colectionDetails,
-  sizeSelected: sizeSelected
+  sizeSelected: sizeSelected,
+  cantidad: 1,
   }
 
     try {
