@@ -13,7 +13,7 @@ import "../css/Cart/cart.css";
 // ICONS
 import deleteIcon from "../images/icons8-eliminar-64.png";
 //  SERVICES
-import { getDoc, collection, getDocs, doc } from "firebase/firestore";
+import { getDoc, collection, getDocs, doc, updateDoc} from "firebase/firestore";
 import { db } from '../firebase'
 
 // COMPONENTS
@@ -24,7 +24,7 @@ import PaypalCheckoutButton from "../components/paypal/PaypalCheckoutButton";
 
 function Cart() {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user, getUserData } = useContext(AuthContext);
   
  
 
@@ -43,18 +43,21 @@ function Cart() {
     getData();
   }, [user]);
 
-  useEffect( () => {
-    // chargeQuantities()
 
-   const initialQuantities = cart.map((each,index) => ({
-    ...each,
-    cantidad:1,
-    eachId: index
-   }))
-  
-    setQuantities(initialQuantities);
-    setPrevQuantities(initialQuantities);
-  }, [cart]);
+
+  useEffect( () => {
+    if(quantities.length === 0){
+
+      const initialQuantities = cart.map((each,index) => ({
+       ...each,
+       cantidad:1,
+       eachId: index
+      }))
+     
+       setQuantities(initialQuantities);
+       setPrevQuantities(initialQuantities);
+    }
+   }, [cart]);
 
   const getData =  () => {
  
@@ -97,8 +100,21 @@ function Cart() {
     return total + 7;
   };
   // Delete product from cart
-  const handleDeleteProduct = async (id) => {
-    
+  const handleDeleteProduct = async (eachId) => {
+    console.log("quantities en la función delete", quantities);
+    const arrayToDeleteProduct = [...quantities]
+    arrayToDeleteProduct.splice(eachId,1)
+    console.log("arrayToDeleteProduct", arrayToDeleteProduct);
+
+   try {
+    const userToUpdate = doc(db, "users", user.id)
+    await updateDoc(userToUpdate, {cart: arrayToDeleteProduct} )
+    console.log("ha salido bien la borrada, ahora toca refrescar el carro del usuario")
+    getUserData()
+   } catch (error) {
+    console.log(error)
+   }
+
    
   };
 
