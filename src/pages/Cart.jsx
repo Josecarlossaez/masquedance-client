@@ -50,7 +50,6 @@ function Cart() {
 
       const initialQuantities = cart.map((each,index) => ({
        ...each,
-       cantidad:1,
        eachId: index
       }))
      
@@ -72,15 +71,25 @@ function Cart() {
     return newItem;
   })
 
-  const handleQuantityChange = (eachId, value) => {
+  const handleQuantityChange = async (eachId, value) => {
     console.log("eachId", eachId)
     console.log("value", value);
-  setQuantities((prevQuantities)=>
-  prevQuantities.map((item) => ({
-    ...item,
-    cantidad: item.eachId === eachId ? value : item.cantidad
-  }))
-  )
+    try {
+      const updatedQuantities = prevQuantities.map((item) => ({
+        ...item,
+        cantidad: item.eachId === eachId && value 
+        
+      })
+      
+      
+      )
+      setQuantities(updatedQuantities)
+     const userToUpdateQuantity = doc(db, "users", user.id)
+     await updateDoc(userToUpdateQuantity,{cart:updatedQuantities} ) 
+     console.log("cantidad actualizada");
+  } catch (error) {
+    console.log("error dentro de handleQuantityChange", error)
+  }
   };
 
 

@@ -99,6 +99,7 @@ function CreateProduct() {
       color: colorInput,
       picture: pictureURL,
       description: descriptionInput,
+      cantidad: 1,
       size: [
         {
           name: "S",
