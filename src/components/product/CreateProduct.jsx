@@ -54,7 +54,52 @@ function CreateProduct() {
   const handleStockXLInput = (e) => setStockXLInput(e.target.value);
   const handleStockXXLInput = (e) => setStockXXLInput(e.target.value);
   const handleColorChange = (e) => setColorInput(e.value);
+// empieza lección alfonso
 
+
+console.log("hola Alfonso")
+
+// array
+const mejorjugadordelahistoria = ["iñigoruizdegalarreta"]
+console.log ("cual es el mejor jugador de lah istoria?", mejorjugadordelahistoria)
+
+let jc = "Jose CArlos"
+const muebles = ["sillas", "messas", "sofás", 3, 7, jc]
+// variables
+let alfonso = 10
+console.log("array de muebles",muebles);
+
+// objeto
+const familia = {
+  madre: "Lidia",
+  padre: "Antonio",
+  hijo: "Alfonso",
+  son: 3,
+  // array
+  coches:["peugeot", "reanult", "volkswagen"]
+}
+
+console.log("la familia de alfonos =", familia);
+console.log("cuantos son? son ", familia.coches.length);
+// Función de flecha
+const funcionDeAlfonso = () => {
+  
+  // averiguar si tiene un coche renault
+  for( let index = 0; index<familia.coches.length; index++ ){
+    if(familia.coches[index] === "reanult"){
+    return "alavialaba"
+    
+    }else{
+      console.log("no ha encontrado coincidencia");
+      console.log(familia.coches[index])
+    }
+  }
+}
+
+console.log(funcionDeAlfonso())
+
+
+// termina lección alfonso
 
 
 
@@ -64,14 +109,12 @@ function CreateProduct() {
         // * upload image to firebaseStorage
       try {
      
-        console.log("image.name", image.name);
       // 1 - Location where the picture is gonna be saved
       const storageRef = ref(storage, `images/${image.name}`) // 1- storage, 2-image-name-URL || 1 {the ref}, 2 {file it-self}
       // 2 - uploading the picture to firebase storage
       const snapShot = await uploadBytes(storageRef, image)
       // 3 - picture Url
       const downloadUrl = await getDownloadURL(snapShot.ref)
-      console.log("downloadUrl", downloadUrl);
       setPictureUrl(downloadUrl)
       setIsLoadingPicture(false)
 
@@ -89,7 +132,6 @@ function CreateProduct() {
     try {
       const  productRef = collection(db,'products');
       const newProductDocRef = doc(productRef);
-      console.log("id", newProductDocRef.id)
 
      
         await setDoc(newProductDocRef,{
@@ -127,7 +169,6 @@ function CreateProduct() {
     })
       
 
-      console.log("producto añadido con id: ", newProductDocRef.id)
       alert("Producto añadido correctamente")
       window.location.reload(false)
     } catch (error) {
@@ -256,6 +297,7 @@ function CreateProduct() {
             <p className="error-message"> * {errorMessage}</p>
           )}
         </form>
+          <button type="submit" onClick={funcionDeAlfonso}>Botón de Alfonso</button>
       </div>
     </section>
   );

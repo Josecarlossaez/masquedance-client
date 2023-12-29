@@ -33,7 +33,6 @@ function Cart() {
   const [cart, setCart] = useState([])
   const [details, setDetails] = useState([]);
   const [quantities, setQuantities] = useState([]);
-  const [prevQuantities, setPrevQuantities] = useState([]);
   const [errorMessage, setErrorMessage] = useState("")
   const [orderToPayment, setOrderToPayment] = useState(null);
   const [userActive, setUserActive] = useState(null)
@@ -54,7 +53,6 @@ function Cart() {
       }))
      
        setQuantities(initialQuantities);
-       setPrevQuantities(initialQuantities);
     }
    }, [cart]);
 
@@ -62,74 +60,66 @@ function Cart() {
  
       setCart(user?.cart)
   };
-
-
   let order = cart.map((item) => {
     const newItem = { ...item };
     newItem.cantidad = quantities[item.cantidad];
     newItem.subtotal = quantities[item.cantidad] * newItem.price;
     return newItem;
   })
-
+// * FUNCTION TO CHANGE THE ITEM QUANTITY
   const handleQuantityChange = async (eachId, value) => {
     console.log("eachId", eachId)
     console.log("value", value);
     try {
-      const updatedQuantities = prevQuantities.map((item) => ({
+      const updatedQuantities = quantities.map((item) => ({
         ...item,
-        cantidad: item.eachId === eachId && value 
-        
-      })
-      
-      
-      )
+        cantidad: item.eachId === eachId ? value : item.cantidad   
+      }))
       setQuantities(updatedQuantities)
-     const userToUpdateQuantity = doc(db, "users", user.id)
-     await updateDoc(userToUpdateQuantity,{cart:updatedQuantities} ) 
-     console.log("cantidad actualizada");
-  } catch (error) {
-    console.log("error dentro de handleQuantityChange", error)
-  }
+
+      const userToUpdateQuantity = doc(db, "users", user.id)
+      await updateDoc(userToUpdateQuantity,{cart:updatedQuantities} ) 
+      console.log("cantidad actualizada");
+    } catch (error) {
+      console.log("error dentro de handleQuantityChange", error)
+    }
   };
-
-
+// * CALCULATE SUBTOTAL
   const calculateSubtotal = (eachId) => {
     const quantity = quantities[eachId].cantidad;
     const product = quantities.find((item) => item.eachId === eachId);
     return quantity * product.price;
   };
 
+  // * CALCULATE TOTAL
   const calculateTotal = () => {
     const total = quantities.reduce((accumulator, item) => {
       const subtotal = calculateSubtotal(item.eachId);
       return accumulator + subtotal;
     }, 0);
     console.log("quantititels", quantities);
-
     return total + 7;
   };
-  // Delete product from cart
+
+
+  //* Delete product from cart
   const handleDeleteProduct = async (eachId) => {
     console.log("quantities en la función delete", quantities);
     const arrayToDeleteProduct = [...quantities]
     arrayToDeleteProduct.splice(eachId,1)
-    console.log("arrayToDeleteProduct", arrayToDeleteProduct);
-
-   try {
-    const userToUpdate = doc(db, "users", user.id)
-    await updateDoc(userToUpdate, {cart: arrayToDeleteProduct} )
-    console.log("ha salido bien la borrada, ahora toca refrescar el carro del usuario")
-    getUserData()
-   } catch (error) {
-    console.log(error)
-   }
-
-   
+      try {
+        const userToUpdate = doc(db, "users", user.id)
+        await updateDoc(userToUpdate, {cart: arrayToDeleteProduct} )
+        console.log("ha salido bien la borrada, ahora toca refrescar el carro del usuario")
+        getUserData()
+      } catch (error) {
+        console.log(error)
+      } 
   };
 
-  const handleContinuarCompra = async () => {
-    
-    const order = details.map((item) => {
+  // * CONFIRM BOUGHT
+  const handleContinuarCompra = async () => {  
+      const order = details.map((item) => {
       const newItem = { ...item };
       newItem.cantidad = quantities[item._id];
       
@@ -147,27 +137,24 @@ function Cart() {
       }
     })
     
-    
+    // * STOCK FAIL => TODO : SET ERRORMESSAGE
     console.log("stockFail", stockFail)
    if(stockFail === true) {
 
     return 
-   }
-    
+   } 
     console.log("ha pasado el return");
 
     
-  
+  // * TOTAL WHEN CONFIRMATION IS TRUE
     let total = order.reduce((accumulator, item) => {
       const subtotal = item.subtotal || 0; // Si subtotal es undefined, se establece como 0
       return accumulator + subtotal;
-    }, 0);
-     
-    // Gastos de envío
-    total = total +7
-  
-  
-    
+    }, 0); 
+        // Gastos de envío
+        total = total +7
+  // * ORDER OBJECT CREATION
+   
     console.log("pedido", order);
     const newOrder = {
       total: total,
