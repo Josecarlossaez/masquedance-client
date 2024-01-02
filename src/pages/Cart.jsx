@@ -36,7 +36,7 @@ function Cart() {
   const [errorMessage, setErrorMessage] = useState("")
   const [orderToPayment, setOrderToPayment] = useState(null);
   const [userActive, setUserActive] = useState(null)
-  // const [stockFail, setStockFail] = useState(false)
+  const [stockFail, setStockFail] = useState(false)
 
   useEffect(() => {
     getData();
@@ -119,13 +119,12 @@ function Cart() {
 
   // * CONFIRM BOUGHT
   const handleContinuarCompra = async () => {  
-      const order = details.map((item) => {
-      const newItem = { ...item };
-      newItem.cantidad = quantities[item._id];
-      
-      newItem.subtotal = quantities[item._id] * newItem.price;
+      const order = quantities.map((item) => {
+      const newItem = { ...item }; 
+      newItem.subtotal = item.cantidad * item.price;
       return newItem;
     });
+    console.log("order dentro de continuarCompra", order);
    let stockFail = false;
     order.forEach((each) => {
       if(each.cantidad > each.stock){
@@ -153,13 +152,13 @@ function Cart() {
     }, 0); 
         // Gastos de envío
         total = total +7
+
   // * ORDER OBJECT CREATION
-   
     console.log("pedido", order);
     const newOrder = {
       total: total,
-      username: user.user.username,
-      email: user.user.email,
+      username: user.username,
+      email: user.email,
       orderCart: order,
     };
     setOrderToPayment(newOrder);

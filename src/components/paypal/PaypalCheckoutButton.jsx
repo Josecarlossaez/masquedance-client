@@ -25,6 +25,7 @@ function PaypalCheckoutButton(props) {
 
   // FORM STATES
   const [nameInput, setNameInput] = useState("");
+  const [phoneInput, setPhoneInput] = useState("");
   const [addressInput, setAddressInput] = useState("");
   const [cpInput, setCpInput] = useState("");
   const [townInput, setTownInput] = useState("");
@@ -33,6 +34,7 @@ function PaypalCheckoutButton(props) {
 
   // take user´s address info
   const handleNameChange = (e) => setNameInput(e.target.value);
+  const handlePhoneChange = (e) => setPhoneInput(e.target.value);
   const handleAddressChange = (e) => setAddressInput(e.target.value);
   const handleCpChange = (e) => setCpInput(e.target.value);
   const handleTownChange = (e) => setTownInput(e.target.value);
@@ -53,6 +55,7 @@ function PaypalCheckoutButton(props) {
       province: provinceInput,
       country: countryInput,
       name: nameInput,
+      phone: phoneInput
     });
   }, [
     addressInput,
@@ -63,6 +66,7 @@ function PaypalCheckoutButton(props) {
     nameInput,
     orderToPayment,
     paidFor,
+    phoneInput
   ]);
   console.log("newOrder", newOrder);
   
@@ -74,7 +78,8 @@ function PaypalCheckoutButton(props) {
       newOrder.province === "" ||
       newOrder.town === "" ||
       newOrder.country === "" ||
-      newOrder.cp === ""
+      newOrder.cp === "" ||
+      newOrder.phone === ""
     ) {
       setErrorMessage("Debe rellenar todos los campos");
       setTimeout(() => {
@@ -128,13 +133,20 @@ function PaypalCheckoutButton(props) {
         </div>
         {/*  */}
         <div className="input-container">
+          <input value={phoneInput} onChange={handlePhoneChange} />
+          <label className={phoneInput && "filled"} htmlFor="name">
+            Teléfono
+          </label>
+        </div>
+        {/*  */}
+        <div className="input-container">
           <input value={addressInput} onChange={handleAddressChange} />
           <label className={addressInput && "filled"} htmlFor="name">
             Dirección completa
           </label>
         </div>
         {/*  */}
-        <div>
+        
           <div className="input-container">
             <input value={townInput} onChange={handleTownChange} />
             <label className={townInput && "filled"} htmlFor="name">
@@ -148,9 +160,9 @@ function PaypalCheckoutButton(props) {
               Código Postal
             </label>
           </div>
-        </div>
+        
         {/*  */}
-        <div>
+       
           <div className="input-container">
             <input value={provinceInput} onChange={handleProvinceChange} />
             <label className={provinceInput && "filled"} htmlFor="name">
@@ -164,7 +176,7 @@ function PaypalCheckoutButton(props) {
               País
             </label>
           </div>
-        </div>
+       
         {/*  */}
       </div>
       {errorMessage !== "" && (
@@ -189,7 +201,7 @@ function PaypalCheckoutButton(props) {
           <div>
         
             <div style={{ position: "relative" }}>
-              <PayPalButtons
+              {/* <PayPalButtons
                 className="paypalButtons"
                 style={{
                   color: "silver",
@@ -241,7 +253,7 @@ function PaypalCheckoutButton(props) {
       .paypal-buttons .paypal-button-container:not(:first-child) {
         display: none;
       }
-    `}</style>
+    `}</style> */}
             </div>
             <div className="credit-card-btn">
               <HashLink smooth to="#stripe-element">

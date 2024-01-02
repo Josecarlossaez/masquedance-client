@@ -54,11 +54,14 @@ function ConfirmOrder(props) {
       </tbody>
     </table>
    </div>
+   <hr />
    <div>
     <h3>Total más gastos de envío: {newOrder.total}€</h3>
    </div>
+   <br />
    <div className='user-data'>
     <h4>Enviar a: {newOrder.name}</h4>
+    <h4>Teléfono: {newOrder.phone}</h4>
     <h4>Dirección {newOrder.address}</h4>
     <h4>Ciudad: {newOrder.town}</h4>
     <h4>CP: {newOrder.cp}</h4>

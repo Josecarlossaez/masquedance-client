@@ -5,7 +5,7 @@ import "../../css/product/create-product.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // Services Firebase
-import { auth, storage, db } from '../../firebase.js'
+import { storage, db } from '../../firebase.js'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 // import { doc} from 'firebase/firestore'
 import { collection, doc,setDoc } from 'firebase/firestore'
@@ -60,7 +60,7 @@ function CreateProduct() {
 console.log("hola Alfonso")
 
 // array
-const mejorjugadordelahistoria = ["iñigoruizdegalarreta"]
+const mejorjugadordelahistoria = ["iñigoRuizDegalarreta"]
 console.log ("cual es el mejor jugador de lah istoria?", mejorjugadordelahistoria)
 
 let jc = "Jose CArlos"
