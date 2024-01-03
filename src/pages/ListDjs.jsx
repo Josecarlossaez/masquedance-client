@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react'
 import "../css/DJ/listDj.css"
 import djLogo from "../images/dj-sombra.webp"
 import { useNavigate } from 'react-router-dom'
-import { listDjService } from '../services/dj.services'
+// Services FIREBASE
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '../firebase'
 
 import logoPeque from "../images/logoPeque.png"
 import { Link } from 'react-router-dom'
@@ -21,14 +23,14 @@ function ListDjs() {
   }, [])
 
   const getData = async () => {
-    try {
-      const response = await listDjService()
-      setDjList(response.data);
-      setIsFetching(false);
-
-    } catch (error) {
-      navigate("/error")
-    }
+    const docs = []
+    const querySnapshot = await getDocs(collection(db, "djs"));
+    console.log("querySnapshot", querySnapshot)
+    querySnapshot.forEach((doc) => {
+      docs.push({...doc.data(), id:doc.id})
+      setDjList(docs)
+    })
+    setIsFetching(false)
   }
 
 
@@ -48,8 +50,8 @@ function ListDjs() {
         {
           djList.map((each) => {
             return (
-                <div className='card-dj'key={each._id} >
-              <Link  to={`/dj/${each._id}/details`}>
+                <div className='card-dj'key={each.id} >
+              <Link  to={`/dj/${each.id}/details`}>
                   <div className='card-dj-picture'>
                     <img src={each.picture} alt="djPicture" />
                   </div>

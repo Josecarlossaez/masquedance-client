@@ -2,8 +2,9 @@ import React, { useContext, useEffect, useState } from 'react'
 //CSS
 import "../../css/DJ/djDetails.css"
 import { useNavigate, useParams } from 'react-router-dom';
-import { deleteDjService, detailsDjService } from '../../services/dj.services';
-import { listTrackByDjService } from '../../services/track.services';
+// Services Firebase
+import { collection, getDocs,doc,getDoc, deleteDoc } from 'firebase/firestore'
+import { db } from '../../firebase'
 import Player from '@madzadev/audio-player';
 import { AuthContext } from "../../context/auth.context.js";
 import { Link } from 'react-router-dom';
@@ -18,45 +19,44 @@ const {  user } = useContext(AuthContext);
 
     const [isFetching, setIsFetching] = useState(true);
     const [dj, setDj] = useState()
-    const [trackByDj, setTrackByDj] = useState()
+    const [trackByDj, setTrackByDj] = useState([])
+  const [okMessage, setOkMessage] = useState("");
+
 
 
     useEffect(() => {
         getData()
     }, [])
-
+  console.log("dj -->",dj);
     const getData = async () => {
-        try {
-            const response = await detailsDjService(djId)
-            setDj(response.data);
-            const listTrackByDj = await listTrackByDjService(djId)
-           
-            console.log("estatuts",listTrackByDj.request.status  )
-            console.log("listTrackByDj", listTrackByDj)
-                setTrackByDj(listTrackByDj.data)
-            
-            setIsFetching(false);
-
-        } catch (error) {
-            navigate("/error")
-        }
+      try {
+        const dj = doc(db, 'djs', djId)
+        const djById = await getDoc(dj)
+        setDj(djById.data());
+        setIsFetching(false);
+      } catch (error) {
+        navigate("/error");
+      }
     }
 
     const handleDeleteDj = async (e) => {
         e.preventDefault()
-       const userConfirmed =  window.confirm(`Está seguro que quiere eliminar a ${dj.name}`); 
-       if ( userConfirmed) {
 
-           try {
-             await deleteDjService(djId)
+        try {
+          const result = window.confirm("Estás seguro que quieres eliminar este Dj??")
+          if (result) {
+              await deleteDoc(doc(db, "djs", djId));
+          setOkMessage("DJ Borrado Correctamente")
+          setTimeout(() => {
              navigate("/list-djs")
-       
-           } catch (error) {
-             console.log(error)
-           }
-       }
-    
-    
+          },2000)
+          } else {
+            console.log("entrando en return");
+            return
+          }
+        } catch (error) {
+          navigate("/error")
+        }
        }
 
 
@@ -68,15 +68,15 @@ const {  user } = useContext(AuthContext);
         <div className='dj-page'>
             <div className='dj-data'>
                 <div className='dj-picture'>
-                    <img src={dj.picture} alt="" />
+                    <img src={dj?.picture} alt="" />
 
                 </div>
                 <div className='dj-name-description'>
                 <div className='dj-name'>
-                   <h2>{dj.name}</h2>
+                   <h2>{dj?.name}</h2>
                 </div>
                      <div className='dj-description'>
-                  <h4>{dj.description}</h4>
+                  <h4>{dj?.description}</h4>
                 </div>
                 
 
@@ -99,7 +99,7 @@ const {  user } = useContext(AuthContext);
         </div>
         }
             <div className='dj-tracks'>
-                {trackByDj.length === 0?
+                {trackByDj?.length === 0?
                     (
                         <h1>Este dj no tiene canciones</h1>
                     ) : (

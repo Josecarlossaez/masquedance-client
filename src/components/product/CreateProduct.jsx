@@ -2,7 +2,7 @@ import React from "react";
 // CSS
 import "../../css/product/create-product.css";
 // React
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // Services Firebase
 import { storage, db } from '../../firebase.js'
@@ -22,6 +22,11 @@ const colorOptions = [
   { value: "negro", label: "negro" },
   { value: "verde", label: "verde" },
 ];
+const contieneTallasOptions = [
+  { value: true, label: "true" },
+  { value: false, label: "false" },
+
+]
 
 
 function CreateProduct() {
@@ -37,6 +42,7 @@ function CreateProduct() {
   const [stockXXLInput, setStockXXLInput] = useState("");
   const [descriptionInput, setDescription] = useState("");
   const [colorInput, setColorInput] = useState("");
+  const [contieneTallasInput, setContieneTallasInput] = useState(false)
   // const [image, setImage] = useState([])
   const [isLoadingPicture, setIsLoadingPicture] = useState(false);
   const [pictureURL, setPictureUrl] = useState("");
@@ -54,53 +60,13 @@ function CreateProduct() {
   const handleStockXLInput = (e) => setStockXLInput(e.target.value);
   const handleStockXXLInput = (e) => setStockXXLInput(e.target.value);
   const handleColorChange = (e) => setColorInput(e.value);
-// empieza lección alfonso
+  const handleContieneTallasChange = (e) => setContieneTallasInput(e.value === true);
 
-
-console.log("hola Alfonso")
-
-// array
-const mejorjugadordelahistoria = ["iñigoRuizDegalarreta"]
-console.log ("cual es el mejor jugador de lah istoria?", mejorjugadordelahistoria)
-
-let jc = "Jose CArlos"
-const muebles = ["sillas", "messas", "sofás", 3, 7, jc]
-// variables
-let alfonso = 10
-console.log("array de muebles",muebles);
-
-// objeto
-const familia = {
-  madre: "Lidia",
-  padre: "Antonio",
-  hijo: "Alfonso",
-  son: 3,
-  // array
-  coches:["peugeot", "reanult", "volkswagen"]
-}
-
-console.log("la familia de alfonos =", familia);
-console.log("cuantos son? son ", familia.coches.length);
-// Función de flecha
-const funcionDeAlfonso = () => {
+useEffect(() => {
   
-  // averiguar si tiene un coche renault
-  for( let index = 0; index<familia.coches.length; index++ ){
-    if(familia.coches[index] === "reanult"){
-    return "alavialaba"
-    
-    }else{
-      console.log("no ha encontrado coincidencia");
-      console.log(familia.coches[index])
-    }
-  }
-}
-
-console.log(funcionDeAlfonso())
-
-
-// termina lección alfonso
-
+console.log("contieneTAllas", contieneTallasInput)
+  
+}, [contieneTallasInput])
 
 
   const handlePictureChange = async (e) => {
@@ -142,6 +108,7 @@ console.log(funcionDeAlfonso())
       picture: pictureURL,
       description: descriptionInput,
       cantidad: 1,
+      contieneTallas: contieneTallasInput,
       size: [
         {
           name: "S",
@@ -207,15 +174,23 @@ console.log(funcionDeAlfonso())
             >
               Description
             </label>
-
           </div>
-          {/* <div className="input-container">
-            <input value={stockSInput} onChange={handleStockSInput} />
 
-            <label className={stockSInput && "filled"} htmlFor="Stock talla S">
-              Stock talla S
-            </label>
-          </div> */}
+          <div className="input-container">
+            <div className="select-size">
+              <div className="name-select">
+                <h4>Contiene Tallas</h4>
+              </div>
+              <div className="select-input">
+                <Select
+                  onChange={handleContieneTallasChange}
+                  options={contieneTallasOptions}
+                />
+              </div>
+            </div>
+          </div>
+          {contieneTallasInput &&
+          <div>
           <div className="input-container">
             <input value={stockSInput} onChange={handleStockSInput} />
             <label className={stockSInput && "filled"} htmlFor="StockTallaS">
@@ -269,6 +244,13 @@ console.log(funcionDeAlfonso())
               </div>
             </div>
           </div>
+          </div>
+           
+          
+          }
+          
+
+          
 
           <div className="uploader-pic">
             <input onChange={handlePictureChange} type="file" name="picture" />
@@ -297,7 +279,6 @@ console.log(funcionDeAlfonso())
             <p className="error-message"> * {errorMessage}</p>
           )}
         </form>
-          <button type="submit" onClick={funcionDeAlfonso}>Botón de Alfonso</button>
       </div>
     </section>
   );

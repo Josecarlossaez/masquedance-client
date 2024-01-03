@@ -13,7 +13,7 @@ import "../css/Cart/cart.css";
 // ICONS
 import deleteIcon from "../images/icons8-eliminar-64.png";
 //  SERVICES
-import { getDoc, collection, getDocs, doc, updateDoc} from "firebase/firestore";
+import { getDoc, collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from '../firebase'
 
 // COMPONENTS
@@ -25,13 +25,12 @@ import PaypalCheckoutButton from "../components/paypal/PaypalCheckoutButton";
 function Cart() {
   const navigate = useNavigate();
   const { user, getUserData } = useContext(AuthContext);
-  
- 
+
+
 
   // States
   const [isFetching, setIsFetching] = useState("");
   const [cart, setCart] = useState([])
-  const [details, setDetails] = useState([]);
   const [quantities, setQuantities] = useState([]);
   const [errorMessage, setErrorMessage] = useState("")
   const [orderToPayment, setOrderToPayment] = useState(null);
@@ -39,52 +38,69 @@ function Cart() {
   const [stockFail, setStockFail] = useState(false)
 
   useEffect(() => {
-    getData();
-  }, [user]);
+    getUserDataCart();
+  }, []);
 
 
 
-  useEffect( () => {
-    if(quantities.length === 0){
+  useEffect(() => {
+    if (quantities.length === 0) {
 
-      const initialQuantities = cart.map((each,index) => ({
-       ...each,
-       eachId: index
+      const initialQuantities = cart?.map((each, index) => ({
+        ...each,
+        eachId: index
       }))
-     
-       setQuantities(initialQuantities);
-    }
-   }, [cart]);
 
-  const getData =  () => {
- 
-      setCart(user?.cart)
+      setQuantities(initialQuantities);
+    }
+  }, [cart]);
+
+  // const getData = () => {
+
+  //   setCart(user?.cart)
+  // };
+
+  const getUserDataCart = async () => {
+    try {
+      const userDoc = await getDoc(doc(db, "users", user.id));
+      const userData = userDoc.data();
+      console.log("actualizado carrito", userData.cart);
+      // Actualiza solo el carrito en el estado local
+      setCart(userData.cart || []);
+  
+    } catch (error) {
+      console.error("Error al obtener los datos del usuario:", error);
+    }
   };
-  let order = cart.map((item) => {
+
+  let order = cart?.map((item) => {
     const newItem = { ...item };
     newItem.cantidad = quantities[item.cantidad];
     newItem.subtotal = quantities[item.cantidad] * newItem.price;
     return newItem;
   })
-// * FUNCTION TO CHANGE THE ITEM QUANTITY
+  // * FUNCTION TO CHANGE THE ITEM QUANTITY
   const handleQuantityChange = async (eachId, value) => {
     console.log("eachId", eachId)
     console.log("value", value);
     try {
       const updatedQuantities = quantities.map((item) => ({
         ...item,
-        cantidad: item.eachId === eachId ? value : item.cantidad   
+        cantidad: item.eachId === eachId ? value : item.cantidad
       }))
       setQuantities(updatedQuantities)
 
       const userToUpdateQuantity = doc(db, "users", user.id)
-      await updateDoc(userToUpdateQuantity,{cart:updatedQuantities} ) 
+      await updateDoc(userToUpdateQuantity, { cart: updatedQuantities })
       console.log("cantidad actualizada");
+      getUserDataCart()
     } catch (error) {
       console.log("error dentro de handleQuantityChange", error)
     }
   };
-// * CALCULATE SUBTOTAL
+
+  
+  // * CALCULATE SUBTOTAL
   const calculateSubtotal = (eachId) => {
     const quantity = quantities[eachId].cantidad;
     const product = quantities.find((item) => item.eachId === eachId);
@@ -106,28 +122,28 @@ function Cart() {
   const handleDeleteProduct = async (eachId) => {
     console.log("quantities en la función delete", quantities);
     const arrayToDeleteProduct = [...quantities]
-    arrayToDeleteProduct.splice(eachId,1)
-      try {
-        const userToUpdate = doc(db, "users", user.id)
-        await updateDoc(userToUpdate, {cart: arrayToDeleteProduct} )
-        console.log("ha salido bien la borrada, ahora toca refrescar el carro del usuario")
-        getUserData()
-      } catch (error) {
-        console.log(error)
-      } 
+    arrayToDeleteProduct.splice(eachId, 1)
+    try {
+      const userToUpdate = doc(db, "users", user.id)
+      await updateDoc(userToUpdate, { cart: arrayToDeleteProduct })
+      console.log("ha salido bien la borrada, ahora toca refrescar el carro del usuario")
+      getUserData()
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   // * CONFIRM BOUGHT
-  const handleContinuarCompra = async () => {  
-      const order = quantities.map((item) => {
-      const newItem = { ...item }; 
+  const handleContinuarCompra = async () => {
+    const order = quantities.map((item) => {
+      const newItem = { ...item };
       newItem.subtotal = item.cantidad * item.price;
       return newItem;
     });
     console.log("order dentro de continuarCompra", order);
-   let stockFail = false;
+    let stockFail = false;
     order.forEach((each) => {
-      if(each.cantidad > each.stock){
+      if (each.cantidad > each.stock) {
         setErrorMessage(`Hay un problema con el producto ${each.name} talla:${each.sizeSelected}, solamente quedan ${each.stock} en stock`)
         setTimeout(() => {
           setErrorMessage("")
@@ -135,25 +151,25 @@ function Cart() {
         stockFail = true;
       }
     })
-    
+
     // * STOCK FAIL => TODO : SET ERRORMESSAGE
     console.log("stockFail", stockFail)
-   if(stockFail === true) {
+    if (stockFail === true) {
 
-    return 
-   } 
+      return
+    }
     console.log("ha pasado el return");
 
-    
-  // * TOTAL WHEN CONFIRMATION IS TRUE
+
+    // * TOTAL WHEN CONFIRMATION IS TRUE
     let total = order.reduce((accumulator, item) => {
       const subtotal = item.subtotal || 0; // Si subtotal es undefined, se establece como 0
       return accumulator + subtotal;
-    }, 0); 
-        // Gastos de envío
-        total = total +7
+    }, 0);
+    // Gastos de envío
+    total = total + 7
 
-  // * ORDER OBJECT CREATION
+    // * ORDER OBJECT CREATION
     console.log("pedido", order);
     const newOrder = {
       total: total,
@@ -171,17 +187,20 @@ function Cart() {
     //   navigate("/error")
     // }
   };
-  
+
   let divDisabled;
-  !orderToPayment ? (divDisabled="table") : (divDisabled="disabled")
-  
+  !orderToPayment ? (divDisabled = "table") : (divDisabled = "disabled")
+
   if (isFetching === true) {
     return <p>LOading...</p>;
   }
-  
+
   return (
+
     <div>
-      <div>
+          {!cart ? ( <p>no tienes nada</p>) : (
+ <div>
+    <div>
         <table className={divDisabled}>
           <thead>
             <tr>
@@ -199,7 +218,7 @@ function Cart() {
                   <img src={item.picture} alt="pic" />
                 </td>
                 <td>
-                  {item.name}, talla: {item.sizeSelected}
+                  {item.name}{item.contieneTallas && <span>, talla: {item.sizeSelected}</span>}
                 </td>
                 <td>{item.price} €</td>
                 <td>
@@ -233,7 +252,7 @@ function Cart() {
                     </button>
                     <input
                       type="number"
-                      value={quantities[item.eachId].cantidad }
+                      value={quantities[item.eachId].cantidad}
                       readOnly
                     />
                     <button
@@ -260,27 +279,30 @@ function Cart() {
         </table>
       </div>
       {errorMessage !== "" && (
-            <p className="error-message"> * {errorMessage}</p>
-          )}
+        <p className="error-message"> * {errorMessage}</p>
+      )}
       <div>
         <h2>Total: {calculateTotal()}€</h2> <p>{`( 7€ de gastos de envío)`}.</p>
-       <div>
-      <HashLink smooth to="#paypal-button-container"> 
-        <button onClick={()=> handleContinuarCompra()} className="btn-bought">Continuar Compra</button>
-        {/* {okMessage !== "" && <p className="ok-message"> * {okMessage}</p>} */}
-      </HashLink>
-      </div>
+        <div>
+          <HashLink smooth to="#paypal-button-container">
+            <button onClick={() => handleContinuarCompra()} className="btn-bought">Continuar Compra</button>
+            {/* {okMessage !== "" && <p className="ok-message"> * {okMessage}</p>} */}
+          </HashLink>
+        </div>
       </div>
       <hr />
-     
+
       {orderToPayment !== null &&
-      <div id="paypal-button-container">
-        <PaypalCheckoutButton orderToPayment={orderToPayment} />
-      </div>
+        <div id="paypal-button-container">
+          <PaypalCheckoutButton orderToPayment={orderToPayment} />
+        </div>
       }
-     
-      
+  </div>
+   )}
     </div>
+
+
+
   );
 }
 

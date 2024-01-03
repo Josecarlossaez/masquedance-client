@@ -25,12 +25,12 @@
     
     display: flex;
     gap:5px;
-    flex-direction: column;
+    flex-direction: row;
 }
 .sizes-container{
     border: 2px solid blue;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 .sizes{
     margin: 5px;

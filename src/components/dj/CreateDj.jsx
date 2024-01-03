@@ -7,11 +7,11 @@ import "../../css/product/create-product.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
-
-// Services
-import { createDjService } from '../../services/dj.services';
-import { uploadPictureService } from '../../services/upload.services';
+// Services Firebase
+import { storage, db } from '../../firebase.js'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+// import { doc} from 'firebase/firestore'
+import { collection, doc,setDoc } from 'firebase/firestore'
 
 function CreateDj() {
 // Navigate
@@ -22,7 +22,7 @@ const navigate = useNavigate();
 
 // input values
 const [nameInput, setNameInput] = useState("")
-const [pictureUrlInput, setPictureUrlInput] = useState("")
+const [pictureUrlInput, setPictureUrl] = useState("")
 const [descriptionInput, setDescriptionInput] = useState("")
 // Value Restrictions
 const maxCharacters = 600
@@ -40,22 +40,25 @@ const handleDescriptionChange = (e) =>  setDescriptionInput(e.target.value)
 
 
 const handlePictureChange = async (e) => {
-  setIsLoadingPicture(true);
-
- // upload the picture to cloudinary and receive the string for show the pic in the form
-
-  const sendObj = new FormData();
-  sendObj.append("picture", e.target.files[0]);
-
+  setIsLoadingPicture(true)
+   const image = e.target.files[0]
+    // * upload image to firebaseStorage
   try {
-    const response = await uploadPictureService(sendObj)
-    setPictureUrlInput(response.data.picture)
-    // Cloudinary picture is Loading Off
-    setIsLoadingPicture(false);
-    
-  } catch (error) {
-    navigate("/error")
-  }
+ 
+  // 1 - Location where the picture is gonna be saved
+  const storageRef = ref(storage, `images/${image.name}`) // 1- storage, 2-image-name-URL || 1 {the ref}, 2 {file it-self}
+  // 2 - uploading the picture to firebase storage
+  const snapShot = await uploadBytes(storageRef, image)
+  // 3 - picture Url
+  const downloadUrl = await getDownloadURL(snapShot.ref)
+  setPictureUrl(downloadUrl)
+  setIsLoadingPicture(false)
+
+  // 4 - new doc
+}catch(error){
+  navigate("/error");
+}  
+   
 };
 
 // Send the input values to BE
@@ -70,18 +73,18 @@ const handlePictureChange = async (e) => {
    }
 
     try {
-      await createDjService(newDj);
-      navigate("/");
-
-      
+        const  djRef = collection(db,'djs');
+        const newDjDocRef = doc(djRef);
+        await setDoc(newDjDocRef, {
+          id: newDjDocRef.id,
+          name: nameInput,
+          picture: pictureUrlInput,
+          description: descriptionInput
+        })
+        alert("Dj añadido correctamente")
+        window.location.reload(false)     
     } catch (error) {
-      if(
-
-        (error.response && error.response.status === 406) || 
-        (error.response && error.response.status === 400)
-      ){
-        setErrorMessage(error.response.data.message);
-      }
+      console.log(error)
     }
 
    

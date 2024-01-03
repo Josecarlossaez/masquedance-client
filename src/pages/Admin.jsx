@@ -47,6 +47,7 @@ function Admin() {
       setCreateTwitchLink(false)
       setCreateVideo(false)
       setCreateBlog(false) 
+      setlistProduct(false)
      }
     
     const handleCreateTrack = () =>{

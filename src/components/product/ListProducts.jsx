@@ -4,7 +4,7 @@ import "../../css/product/list-products.css"
 
 // React
 import { useState, useEffect } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 // Services FIREBASE
 import { collection, getDocs } from 'firebase/firestore'

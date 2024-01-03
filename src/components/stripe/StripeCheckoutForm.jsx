@@ -6,7 +6,7 @@ import { stripePaymentService } from "../../services/stripe.services";
 import { createOrderService } from "../../services/order.services";
 // Firebase Services
 import { db } from '../../firebase'
-import { collection, doc,setDoc, arrayUnion, updateDoc } from 'firebase/firestore'
+import { collection, doc,setDoc, arrayUnion, updateDoc, deleteField } from 'firebase/firestore'
 
 import { AuthContext } from "../../context/auth.context.js";
 
@@ -18,7 +18,7 @@ function StripeCheckoutForm(props) {
     const {newOrder} = props.newOrder
     const {setErrorMessage} = props
 
-    const {  user } = useContext(AuthContext)
+    const {  user, getUserData } = useContext(AuthContext)
 
 
 
@@ -64,14 +64,15 @@ function StripeCheckoutForm(props) {
       const newOrderRef = doc(orderRef)
       newOrder.id = newOrderRef.id
       newOrder.state = "pending"
-      console.log("id de order", newOrder.id);
       await setDoc(newOrderRef, newOrder)
       const userToUpdate = doc(db, "users", user.id)
       await updateDoc(userToUpdate,{
         orders: arrayUnion(newOrder)
       })
-      console.log("Nuevo pedido creado correctamente");
-
+      await updateDoc(userToUpdate,{
+        cart: []
+      } )
+      getUserData()
       navigate("/")
       
     } catch (error) {
