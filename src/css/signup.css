@@ -64,7 +64,7 @@
   }
   
   .input-container input {
-    background-color: #69bfbe;
+    background-color: none;
     color: #000000;
     height: 64px;
     border-radius: 4px;
@@ -82,6 +82,7 @@
   .input-container input:focus {
     box-shadow: none;
   }
+ 
 
   @media screen and (max-width:1024px) {
     .form-container form {

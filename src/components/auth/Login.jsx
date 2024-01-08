@@ -3,18 +3,23 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth.context.js";
 // Axios Services Firebase
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, getAuth } from "firebase/auth";
 import { auth } from "../../firebase";
+// Firebase Database
+import { collection, doc, setDoc } from 'firebase/firestore'
+import { db } from '../../firebase'
 // CSS
 import "../../css/login.css"
+// Google Button
+import GoogleButton from 'react-google-button'
 
 function Login() {
 
-  const { authenticateUser } = useContext(AuthContext);
+  // const { authenticateUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
 const provider = new GoogleAuthProvider();
+const authWithGoogle = getAuth();
 
 
   // input States
@@ -22,6 +27,9 @@ const provider = new GoogleAuthProvider();
   const [password, setPassword] = useState("");
   // ErrorMessage from BE
   const [errorMessage, setErrorMessage] = useState("");
+  const [isFetching, setIsFetching] = useState(false);
+
+
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -47,6 +55,60 @@ const provider = new GoogleAuthProvider();
 
 
   };
+
+const singInWithGoogle = async () => {
+  // signInWithPopup(authWithGoogle, provider)
+  try {
+    const result = await signInWithPopup(authWithGoogle, provider);
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    console.log("credenciales en la auth con Google", credential);
+    const token = credential.accessToken;
+    // The signed-in user info.
+    console.log("user en al auth", result.user)
+    const userId = result.user.uid;
+    const email = result.user.email
+    console.log(`email --> ${email}, id: ${userId}`);
+
+    // Create user in the DB
+    const userRef = collection(db, 'users');
+    const newUserRef = doc(userRef, userId);
+
+
+
+    await setDoc(newUserRef, {
+      
+      id: userId,
+      email: email,
+      cart: [],
+      orders: [],
+      youtubeReproductionList: [],
+      role: ""
+    });
+    setIsFetching(false)
+    alert("Usuario añadido correctamente");
+    window.location.reload(false);
+    navigate("/");
+
+
+  } catch (error) {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData ? error.customData.email : null;
+    // The AuthCredential type that was used.
+    const credential = GoogleAuthProvider.credentialFromError(error);
+    // ...
+  }
+  
+}
+
+if (isFetching === true) {
+  return <p>LOading...</p>;
+}
+
+
 
   return (
     <section className="general-container">
@@ -84,6 +146,9 @@ const provider = new GoogleAuthProvider();
         <hr />
         <p>Todavía no tientes cuenta | <span> <a href="/signup">Regístrate </a></span></p>
        <a href="">¿Olvidaste la Contraseña?</a>
+      <div>
+      <GoogleButton type="dark" label="Entra con Google" onClick={singInWithGoogle}/>
+      </div>
       </div>
     </section>
   );
