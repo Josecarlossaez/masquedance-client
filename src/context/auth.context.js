@@ -50,7 +50,7 @@ function AuthWrapper(props) {
           console.log("🚀 r uid Firebase", uid.uid)
           setUserId(uid.uid);
           setIsLoggedIn(true);
-          if (uid.email === "jcsaez83@gmail.com") {
+          if (uid.email === "jcsaez83@gmail.com" || uid.email === "user1@gmail.com") {
             setisAdmin(true)
           }
   

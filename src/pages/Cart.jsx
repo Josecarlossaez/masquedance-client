@@ -19,6 +19,7 @@ import { db } from '../firebase'
 // COMPONENTS
 
 import PaypalCheckoutButton from "../components/paypal/PaypalCheckoutButton";
+import { Link } from "react-router-dom";
 
 
 
@@ -29,13 +30,15 @@ function Cart() {
 
 
   // States
-  const [isFetching, setIsFetching] = useState("");
+  const [isFetching, setIsFetching] = useState(false);
   const [cart, setCart] = useState([])
   const [quantities, setQuantities] = useState([]);
   const [errorMessage, setErrorMessage] = useState("")
   const [orderToPayment, setOrderToPayment] = useState(null);
+  const [order, setOrder] = useState([])
   const [userActive, setUserActive] = useState(null)
   const [stockFail, setStockFail] = useState(false)
+  const [productToVerifyStock, setProductToVerifyStock] = useState({})
 
   useEffect(() => {
     getUserDataCart();
@@ -73,12 +76,12 @@ function Cart() {
     }
   };
 
-  let order = cart?.map((item) => {
-    const newItem = { ...item };
-    newItem.cantidad = quantities[item.cantidad];
-    newItem.subtotal = quantities[item.cantidad] * newItem.price;
-    return newItem;
-  })
+  // let order = cart?.map((item) => {
+  //   const newItem = { ...item };
+  //   newItem.cantidad = quantities[item.cantidad];
+  //   newItem.subtotal = quantities[item.cantidad] * newItem.price;
+  //   return newItem;
+  // })
   // * FUNCTION TO CHANGE THE ITEM QUANTITY
   const handleQuantityChange = async (eachId, value) => {
     console.log("eachId", eachId)
@@ -135,28 +138,63 @@ function Cart() {
 
   // * CONFIRM BOUGHT
   const handleContinuarCompra = async () => {
-    const order = quantities.map((item) => {
-      const newItem = { ...item };
-      newItem.subtotal = item.cantidad * item.price;
-      return newItem;
-    });
-    console.log("order dentro de continuarCompra", order);
     let stockFail = false;
-    order.forEach((each) => {
-      if (each.cantidad > each.stock) {
-        setErrorMessage(`Hay un problema con el producto ${each.name} talla:${each.sizeSelected}, solamente quedan ${each.stock} en stock`)
-        setTimeout(() => {
-          setErrorMessage("")
-        }, 2000);
-        stockFail = true;
-      }
-    })
-
-    // * STOCK FAIL => TODO : SET ERRORMESSAGE
-    console.log("stockFail", stockFail)
-    if (stockFail === true) {
-
-      return
+    let order;
+    try {
+      order = await Promise.all(
+        quantities.map(async (item) => {
+          const product = doc(db, "products", item.id);
+          const productById = await getDoc(product);
+          setProductToVerifyStock(productById.data());
+          console.log("item", item);
+          console.log("productToVerifyStock", productById.data());
+  
+          if (item.contieneTallas === true) {
+            productById.data().size.forEach((eachSize) => {
+              if (eachSize.name === item.sizeSelected) {
+                if (eachSize.stock < item.cantidad) {
+                  stockFail = true;
+                  setStockFail(true);
+                  alert(
+                    `El producto ${item.name}, talla: ${item.sizeSelected}, tiene un stock máximo de ${eachSize.stock} unidades.`
+                  );
+                }
+              }
+            });
+          }
+  
+          if (item.contieneTallas === false) {
+            if (productById.data().stock < item.cantidad) {
+              console.log("entrando en el if de contieneTallas === false");
+              stockFail = true;
+              setStockFail(true);
+              alert(
+                `El producto ${item.name}, tiene un stock máximo de ${item.stock} unidades.`
+              );
+              setIsFetching(false);
+            }
+          }
+  
+          const newItem = { ...item };
+          newItem.subtotal = item.cantidad * item.price;
+          return newItem;
+        })
+        );
+        
+        
+        console.log("stockFail justo antes del return", stockFail);
+        if (stockFail) {
+          return;
+        }
+        // setOrder(pedido)
+        
+        console.log("order dentro de continuarCompra", order);
+        
+        // Resto del código...
+        
+      } catch (error) {
+        // Manejar errores, si es necesario
+      console.error("Error al procesar las cantidades", error);
     }
     console.log("ha pasado el return");
 
@@ -198,7 +236,13 @@ function Cart() {
   return (
 
     <div>
-          {!cart ? ( <p>no tienes nada</p>) : (
+          {cart.length === 0 ? ( 
+            <div>
+            <h2> Todavía no tienes productos en el carrito</h2>
+            <Link to="/list-colections">Pincha aquí para conocer nuestro <span>MERCHANDISING</span></Link>
+            </div>
+            
+            ) : (
  <div>
     <div>
         <table className={divDisabled}>

@@ -29,17 +29,19 @@ function ColectionDetails() {
   // States to add object to Cart
 
   const [sizeSelected, setSizeSelected] = useState("");
+  const [setsizeStockSelected, setSizeStockSelected] = useState("")
   useEffect(() => {
     getData();
    
   }, []);
 
-  useEffect(() => {
-   console.log("colection Details ==> ", colectionDetails)
-   if(colectionDetails?.contieneTallas === true) {
-    setSizeSelected("S")
-   }
-  }, [colectionDetails]);
+  // useEffect(() => {
+  //  console.log("colection Details ==> ", colectionDetails)
+  //  if(colectionDetails?.contieneTallas === true) {
+  //   setSizeSelected(colectionDetails)
+  //   colectionDetails
+  //  }
+  // }, [colectionDetails]);
 
 
 
@@ -65,7 +67,16 @@ function ColectionDetails() {
 
   const handleClick = (size) => {
     setSizeSelected(size);
+    colectionDetails.size.forEach((each) => {
+      if(each.name === size){
+        setSizeStockSelected(each.stock)
+      }
+    })
   };
+  // const handleStockSelected = (each) => {
+  //   console.log("eahc stock", each)
+  //   setSizeStockSelected(each)
+  // }
 
 
   const handleAddProductToCart = async () => {
@@ -86,18 +97,12 @@ function ColectionDetails() {
         console.log("entrando en el for")
         if ( productToCart.name === each.name && productToCart.sizeSelected === each.sizeSelected) {
           console.log("entrando en el primer if")
-          foundMatch = true;
-          console.log("hay coincidencia,user.cart[each]", foundMatch)
-          const result = window.confirm("Ya tienes ese producto en tu carrito, quieres añadir otro??")
-          if (result) {
+          foundMatch = true;        
             each.cantidad = each.cantidad + 1
             await updateDoc(userToUpdate, { cart: user.cart })
             getUserData()
             navigate("/cart");
-          } else {
-            console.log("entrando en return");
-            return
-          }
+         
         }   
       }
       if (!foundMatch) {
@@ -135,16 +140,16 @@ function ColectionDetails() {
 
               <h3>Precio: {colectionDetails?.price}€</h3>
               <h3>Descripción del artículo: {colectionDetails?.description}</h3>
-              {/* {tallas[0]?.stock < 5 && 
-                <p style={{ color: "red" }}> Ultimas unidades</p>
-              } */}
+              
             </div>
             {colectionDetails.contieneTallas === true &&
               <div className="sizes-container">
                   <h2>Seleccione Talla:</h2>
                 <div className="details-sizeList">
                   {colectionDetails?.size.map((eachSize) => (
-                    <div key={eachSize}>
+                    eachSize.stock > 0 && (
+
+                    <div key={eachSize.name}>
                       {sizeSelected === eachSize.name ? (
                         <button
                           className="sizes-selected"
@@ -161,7 +166,13 @@ function ColectionDetails() {
                         </button>
                       )}
                     </div>
+                    )
+                    
+
                   ))}
+                  {sizeSelected !== "" &&  
+                <p style={{ color: "blue" }}> Quedan {setsizeStockSelected} unidades</p>
+                  }
                 </div>
               </div>
             }

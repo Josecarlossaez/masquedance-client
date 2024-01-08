@@ -9,14 +9,6 @@ import { db } from '../../firebase'
 import { auth, storage,} from '../../firebase.js'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 
-const sizeOptions = [
-  { value: "S", label: "S" },
-  { value: "M", label: "M" },
-  { value: "L", label: "L" },
-  { value: "XL", label: "XL" },
-  { value: "XXL", label: "XXL" },
-];
-
 const colorOptions = [
   { value: "amarillo", label: "amarillo" },
   { value: "azul", label: "azul" },
@@ -24,6 +16,10 @@ const colorOptions = [
   { value: "negro", label: "negro" },
   { value: "verde", label: "verde" },
 ];
+const contieneTallasOptions = [
+  { value: true, label: "true" },
+  { value: false, label: "false" },
+]
 
 
 function EditProduct() {
@@ -36,12 +32,18 @@ function EditProduct() {
   const [details, setDetails] = useState([]);
   const [nameInput, setName] = useState("");
   const [priceInput, setPrice] = useState("");
-  const [sizeInput, setSize] = useState("");
   const [descriptionInput, setDescription] = useState("");
   const [colorInput, setColorInput] = useState("");
   const [pictureURL, setPictureUrl] = useState("");
-  const [stockInput, setStock] = useState("");
+  const [stockSInput, setStockSInput] = useState("");
+  const [stockMInput, setStockMInput] = useState("");
+  const [stockLInput, setStockLInput] = useState("");
+  const [stockXLInput, setStockXLInput] = useState("");
+  const [stockXXLInput, setStockXXLInput] = useState("");
+  const [stockInput, setStockInput] = useState("")
   const [isLoadingPicture, setIsLoadingPicture] = useState(false);
+  const [contieneTallasInput, setContieneTallasInput] = useState(false)
+
 
   // errorMessages from BE
   const [errorMessage, setErrorMessage] = useState("");
@@ -49,9 +51,15 @@ function EditProduct() {
   const handleNameChange = (e) => setName(e.target.value);
   const handlePriceChange = (e) => setPrice(e.target.value);
   const handleDescriptionChange = (e) => setDescription(e.target.value);
-  const handleSizeChange = (e) => setSize(e.value);
-  const handleCantidadChange = (e) => setStock(e.target.value);
   const handleColorChange = (e) => setColorInput(e.value);
+  const handleStockInput = (e) => setStockInput(e.target.value);
+  const handleStockSInput = (e) => setStockSInput(e.target.value);
+  const handleStockMInput = (e) => setStockMInput(e.target.value);
+  const handleStockLInput = (e) => setStockLInput(e.target.value);
+  const handleStockXLInput = (e) => setStockXLInput(e.target.value);
+  const handleStockXXLInput = (e) => setStockXXLInput(e.target.value);
+ 
+
 
   useEffect(() => {
     getData();
@@ -62,20 +70,27 @@ function EditProduct() {
       const product = doc(db, 'products', productId)
       const productById = await getDoc(product)
       setDetails(productById.data());
+      console.log("productByIdData",productById.data());
       setIsFetching(false);
-      const { name, price, description, color, size, stock, picture } =
+      const { name, price, description, color, stock, picture, size, contieneTallas } =
         productById.data();
       setName(name);
       setPrice(price);
       setDescription(description);
-      setStock(stock);
-      setSize(size);
+      setStockInput(stock);
+      setStockSInput(size[0].stock)
+      setStockMInput(size[1].stock)
+      setStockLInput(size[2].stock)
+      setStockXLInput(size[3].stock)
+      setStockXXLInput(size[4].stock)
       setColorInput(color);
       setPictureUrl(picture);
+      setContieneTallasInput(contieneTallas)
     } catch (error) {
       navigate("/error")
     }
   };
+  console.log("details del product-->" , details)
 
 // Firebase storagePicture
 const handlePictureChange = async (e) => {
@@ -114,20 +129,42 @@ const handlePictureChange = async (e) => {
     try {
       const productToUpdate = doc(db, "products", productId);
 
-// Set the "capital" field of the city 'DC'
 await updateDoc(productToUpdate, {
-      name: nameInput,
-      price: priceInput,
-      picture: pictureURL,
-      size: sizeInput,
-      description: descriptionInput,
-      color: colorInput,
-      stock: stockInput,
+  name: nameInput,
+  price: priceInput,
+  color: colorInput,
+  picture: pictureURL,
+  description: descriptionInput,
+  cantidad: 1,
+  stock: stockInput,
+  contieneTallas: contieneTallasInput,
+  size: [
+    {
+      name: "S",
+      stock: stockSInput
+    },
+   {
+      name: "M",
+      stock: stockMInput
+    },
+    {
+      name: "L",
+      stock: stockLInput
+    },
+    {
+      name: "XL",
+      stock: stockXLInput
+    },
+    {
+      name: "XXL",
+      stock: stockXXLInput
+    },
+  ],
 });
       
     
     
-      navigate("/");
+      navigate("/admin");
     } catch (error) {
       if (
         (error.response && error.response.status === 406) ||
@@ -188,27 +225,57 @@ await updateDoc(productToUpdate, {
               onChange={handleDescriptionChange}
             />
           </div>
+
           {/*  */}
 
-          <div className="input-container">
+          {!contieneTallasInput &&
+            <div className="input-container">
+            <input value={stockInput} onChange={handleStockInput} />
+
             <label className={stockInput && "filled"} htmlFor="stock">
               Stock
             </label>
-            <input value={stockInput} onChange={handleCantidadChange} />
           </div>
+           }
+          {contieneTallasInput &&
+          <div>
           <div className="input-container">
-            <div className="select-size">
-              <div className="name-select">
-                <h4>Talla</h4>
-              </div>
-              <div className="select-input">
-                <Select
-                  defaultValue={sizeInput || details.size}
-                  onChange={handleSizeChange}
-                  options={sizeOptions}
-                />
-              </div>
-            </div>
+            <input value={stockSInput} onChange={handleStockSInput} />
+            <label className={stockSInput && "filled"} htmlFor="StockTallaS">
+              Talla S Stock
+            </label>
+          </div>
+
+          <div className="input-container">
+            <input value={stockMInput} onChange={handleStockMInput} />
+
+            <label className={stockMInput && "filled"} htmlFor="stocTallaM">
+              Stock talla M
+            </label>
+          </div>
+
+          <div className="input-container">
+            <input value={stockLInput} onChange={handleStockLInput} />
+
+            <label className={stockLInput && "filled"} htmlFor="stock">
+              Stock talla L
+            </label>
+          </div>
+
+          <div className="input-container">
+            <input value={stockXLInput} onChange={handleStockXLInput} />
+
+            <label className={stockXLInput && "filled"} htmlFor="stock">
+              Stock talla XL
+            </label>
+          </div>
+
+          <div className="input-container">
+            <input value={stockXXLInput} onChange={handleStockXXLInput} />
+
+            <label className={stockXXLInput && "filled"} htmlFor="stock">
+              Stock talla XXL
+            </label>
           </div>
 
           <div className="input-container">
@@ -218,13 +285,17 @@ await updateDoc(productToUpdate, {
               </div>
               <div className="select-input">
                 <Select
-                  defaultValue={colorInput || details.color}
+                  defaultValue={colorInput}
                   onChange={handleColorChange}
                   options={colorOptions}
                 />
               </div>
             </div>
           </div>
+          </div>
+           
+          
+          }
 
           <div className="uploader-pic">
             <input onChange={handlePictureChange} type="file" name="picture" />

@@ -25,7 +25,6 @@ const colorOptions = [
 const contieneTallasOptions = [
   { value: true, label: "true" },
   { value: false, label: "false" },
-
 ]
 
 
@@ -40,6 +39,7 @@ function CreateProduct() {
   const [stockLInput, setStockLInput] = useState("");
   const [stockXLInput, setStockXLInput] = useState("");
   const [stockXXLInput, setStockXXLInput] = useState("");
+  const [stockInput, setStockInput] = useState("")
   const [descriptionInput, setDescription] = useState("");
   const [colorInput, setColorInput] = useState("");
   const [contieneTallasInput, setContieneTallasInput] = useState(false)
@@ -54,13 +54,14 @@ function CreateProduct() {
   const handleNameChange = (e) => setName(e.target.value);
   const handlePriceChange = (e) => setPrice(e.target.value);
   const handleDescriptionChange = (e) => setDescription(e.target.value);
+  const handleStockInput = (e) => setStockInput(e.target.value);
   const handleStockSInput = (e) => setStockSInput(e.target.value);
   const handleStockMInput = (e) => setStockMInput(e.target.value);
   const handleStockLInput = (e) => setStockLInput(e.target.value);
   const handleStockXLInput = (e) => setStockXLInput(e.target.value);
   const handleStockXXLInput = (e) => setStockXXLInput(e.target.value);
   const handleColorChange = (e) => setColorInput(e.value);
-  const handleContieneTallasChange = (e) => setContieneTallasInput(e.value === true);
+  const handleContieneTallasChange = (e) => setContieneTallasInput(e.value);
 
 useEffect(() => {
   
@@ -189,6 +190,16 @@ console.log("contieneTAllas", contieneTallasInput)
               </div>
             </div>
           </div>
+
+           {!contieneTallasInput &&
+            <div className="input-container">
+            <input value={stockInput} onChange={handleStockInput} />
+
+            <label className={stockInput && "filled"} htmlFor="stock">
+              Stock
+            </label>
+          </div>
+           }
           {contieneTallasInput &&
           <div>
           <div className="input-container">

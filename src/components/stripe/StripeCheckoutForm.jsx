@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import "../../css/stripe/stripeCheckoutForm.css";
 import { stripePaymentService } from "../../services/stripe.services";
-import { createOrderService } from "../../services/order.services";
 // Firebase Services
 import { db } from '../../firebase'
 import { collection, doc,setDoc, arrayUnion, updateDoc, deleteField } from 'firebase/firestore'
 
 import { AuthContext } from "../../context/auth.context.js";
+import { orderMailService} from "../../services/mailing.services.js"
 
 
 function StripeCheckoutForm(props) {
@@ -29,6 +29,15 @@ function StripeCheckoutForm(props) {
     
   const stripe = useStripe();
   const elements = useElements();
+
+  const handleInfo = async () => {
+    console.log("enviando mail con esta orden -->", newOrder);
+    try {
+      await orderMailService(newOrder)
+    } catch (error) {
+      console.log("error enviando el mails desde client", error);
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,9 +78,36 @@ function StripeCheckoutForm(props) {
       await updateDoc(userToUpdate,{
         orders: arrayUnion(newOrder)
       })
+      
+      newOrder.orderCart.forEach(async (each) => {
+        console.log("each dentro de orderCheckout", each);
+      
+        if (each.contieneTallas === false) {
+          let newQuantity = each.stock - each.cantidad
+          const productById = doc(db, "products", each.id);
+          alert(`Actualizando producto ${each.name}, con la cantidad ${each.stock} - ${each.cantidad} ${newQuantity}`)
+          await updateDoc(productById, { stock: newQuantity });
+          
+        }
+      
+        if (each.contieneTallas === true) {
+          const productById = doc(db, "products", each.id);
+          each.size.forEach((eachSize) => {
+            if( eachSize.name === each.sizeSelected ) {
+              alert(`Actualizando producto ${each.name}, con la cantidad ${eachSize.stock} - ${each.cantidad} en la talla: ${eachSize.name}`)
+              eachSize.stock = eachSize.stock - each.cantidad
+            }
+          })
+
+            await updateDoc(productById, { size: each.size})
+      alert(`Actualizando producto ${each.name}`)
+
+        }
+      });
       await updateDoc(userToUpdate,{
         cart: []
       } )
+      await orderMailService(newOrder)
       getUserData()
       navigate("/")
       
@@ -81,10 +117,14 @@ function StripeCheckoutForm(props) {
 
   };
   return (
-    <form onSubmit={handleSubmit} className="form">
+    <div>
+       <form onSubmit={handleSubmit} className="form">
       <CardElement className="stripe-element" id="stripe-element" />
       <button className="buy">Comprar</button>
     </form> 
+    <button onClick={handleInfo}>Enviar mails</button>
+    </div>
+   
   );
 }
 

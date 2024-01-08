@@ -3,7 +3,8 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth.context.js";
 // Axios Services Firebase
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
 import { auth } from "../../firebase";
 // CSS
 import "../../css/login.css"
@@ -12,6 +13,9 @@ function Login() {
 
   const { authenticateUser } = useContext(AuthContext);
   const navigate = useNavigate();
+
+const provider = new GoogleAuthProvider();
+
 
   // input States
   const [email, setEmail] = useState("");
