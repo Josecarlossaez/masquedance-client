@@ -1,4 +1,6 @@
 import React from 'react'
+import { useState } from "react"
+
 // CSS
 import  "../../css/home.css"
 
@@ -12,12 +14,29 @@ import tiktokIcon from "../../images/tiktok.svg"
 import telegramIcon from "../../images/telegram.svg"
 
 function SocialMedia() {
+  const [popUp, setPopUp] = useState("")
+
+  const showPopup = (e) => {
+    e.preventDefault()
+    setPopUp(e.target.value);
+    console.log("popup",popUp)
+    console.log("e.tr-val", e.target.value);
+  };
+
+ 
 
 
   return (
+    <div className='socialMedia-container'>
+      
+      {popUp !== "" &&
+    <div className='socialMedia-text'>   
+       <p>{popUp}</p>
+    </div>
+      }
     <div className='socialMedia-links-container'>
-    <a href="">
-      <img src={instagramIcon} alt="instagramIcon" />
+      <a href="">
+      <img src={instagramIcon} value="Compártenos en Instagram" onMouseEnter={showPopup} onMouseLeave={()=>setPopUp("")} alt="instagramIcon" />
     </a>
     <a href="">
       <img src={twitterIcon} alt="twitterIcon" />
@@ -25,9 +44,7 @@ function SocialMedia() {
     <a href="">
       <img src={twitchIcon} alt="twitchIcon" />
     </a>
-    <a href="">
-      <img src={facebookIcon} alt="facebookIcon" />
-    </a>
+    
     <a href="">
       <img src={youtubeIcon} alt="youtubeIcon" />
     </a>
@@ -37,6 +54,8 @@ function SocialMedia() {
     <a href="">
       <img src={telegramIcon} alt="telegramIcon" />
     </a>
+    </div>
+    
     </div>
   )
 }

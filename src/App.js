@@ -22,6 +22,7 @@ import AboutUs from './pages/AboutUs';
 import ListDjs from './pages/ListDjs';
 import DjDetails from './components/dj/DjDetails';
 import UpdateDj from './components/dj/UpdateDj';
+import MyAccount from './pages/MyAccount'
 // Context
 import { AuthContext } from "./context/auth.context";
 import { useContext } from "react"
@@ -55,6 +56,8 @@ function App() {
       <Route path="/list-djs" element={<ListDjs/>}/>
       <Route path='/dj/:djId/details' element= {<DjDetails/>}/>
       <Route path='/dj/:djId/update' element= {<UpdateDj/>}/>
+      <Route path='/account' element= {<MyAccount/>}/>
+
 
 
 

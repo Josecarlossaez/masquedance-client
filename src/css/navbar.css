@@ -13,32 +13,48 @@
     display: flex;
     flex-direction: column;
 } */
+.main-nav-container{
+    border: 2px solid red;
+    width: 100vw;
+
+}
+
 .Nav {
-    /* border: 2px solid pink; */
-    height: 150px !important;
+    border: 2px solid pink;
+   
+    /* height: 80px!important; */
    
 }
-.space-logo-user{
-    /* border: 2px solid green; */
-    width: 100%;
-    padding-top: 10px;
+.social-logo-user{
+    border: 2px solid green;
+    width: 70%;
+    height: 100%;
+    /* padding-top: 10px; */
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
 }
-.space-logo-user div{
+.social-logo-user div{
     width: 33%
 
 }
-.user{
-
+.social{
+    border: 2px solid darkgray;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+.user{
+    border: 2px solid darkgray;
+    display: flex;
+    justify-content: flex-end;
     align-items: center;
     gap: 10px
     
 }
 .user img{
-    width: 2.5rem;
+    border: 2px solid red;
+    width: 2.7rem;
     transition: all 300ms ease-out;
 
 }
@@ -47,7 +63,8 @@
     transition: all 300ms ease-in;
 }
 .logo-peque img{
-    display: none;
+    
+    /* display: none; */
     width:250px;
     transition: all 300ms ease-out;
 }
@@ -89,13 +106,13 @@
         
         height: 100px !important;
         background-color: rgb(244, 250, 250);
-        box-shadow: rgba(14, 30, 37, 0.12) 0px 4px 4px 0px,
-            rgba(14, 30, 37, 0.32) 0px 10px 10px 0px;
+        /* box-shadow: rgba(14, 30, 37, 0.12) 0px 4px 4px 0px,
+            rgba(14, 30, 37, 0.32) 0px 10px 10px 0px; */
     
 
     }
   
-    .space-logo-user{
+    .social-logo-user{
         height: 60px;
         display: inline;
         display: flex;
@@ -104,7 +121,7 @@
  
 
     }
-    .space{
+    .social{
         display: none;
     }
     .navbar{
@@ -114,9 +131,9 @@
         /* border: 2px solid red;
         width: 100%;
         display: flex;
-        justify-content: space-between; */
+        justify-content: social-between; */
     }
-    .space-logo-user .logo{
+    .social-logo-user .logo{
         display: none;
     }
     .user {

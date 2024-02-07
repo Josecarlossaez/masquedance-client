@@ -1,9 +1,9 @@
 .twitch-link-container{
   /* border: 2px solid red; */
-  width: 60vw;
+  width: 70vw;
   margin: auto;
   margin-top: 20px;
-    height: 50rem;
+    height: 40rem;
     box-shadow: 10px 5px 5px #525462;
 }
 .link-twitch-link img{

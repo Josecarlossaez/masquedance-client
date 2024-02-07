@@ -1,7 +1,7 @@
 // CSS
 import "../../css/signup.css"
 // React
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // Services Firebase
 // import { auth } from "../../firebase";
@@ -9,54 +9,96 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import { collection, doc, setDoc, getDocs } from 'firebase/firestore'
 import { db } from '../../firebase'
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, getAuth } from "firebase/auth";
 
 
-
-
+// Google Button
+import GoogleButton from 'react-google-button'
 
 function Signup() {
   const navigate = useNavigate();
+  const provider = new GoogleAuthProvider();
+  const authWithGoogle = getAuth();
 
 
   // input values
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isFetching, setIsFetching] = useState(false);
+  const [activePassword, setActivePassword] = useState(false)
 
  
 
   // errorMessages from BE
   const [errorMessage, setErrorMessage] = useState("");
   // Takes user info
-  const handleUsernameChange = (e) => setUsername(e.target.value);
+  useEffect(() => {
+    if(email === ""){
+      setActivePassword(false)
+    }else{
+      setActivePassword(true)
+    }
+    
+  }, [email])
+
+
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
-  // Send the input values to BE
+
+  // Sign in with Google
+  const singInWithGoogle = async () => {
+    // signInWithPopup(authWithGoogle, provider)
+    try {
+      const result = await signInWithPopup(authWithGoogle, provider);
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      console.log("credenciales en la auth con Google", credential);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      console.log("user en al auth", result.user)
+      const userId = result.user.uid;
+      const email = result.user.email
+      console.log(`email --> ${email}, id: ${userId}`);
+  
+      // Create user in the DB
+      const userRef = collection(db, 'users');
+      const newUserRef = doc(userRef, userId);
+  
+  
+  
+      await setDoc(newUserRef, {
+        
+        id: userId,
+        email: email,
+        cart: [],
+        orders: [],
+        youtubeReproductionList: [],
+        role: ""
+      });
+      setIsFetching(false)
+      navigate("/");
+  
+  
+    } catch (error) {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData ? error.customData.email : null;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      // ...
+    }
+    
+  }
+
   const handleSignup = async (e) => {
     e.preventDefault();
-    // setIsFetching(true);
   
     try {
-      // setIsFetching(true)
-      // Validación 1
-      if (username === "" || email === "" || password === "") {
-        setErrorMessage("Todos los campos tienen que estar rellenos")
-        setTimeout(() => {
-          setErrorMessage("")
-        }, 2000)
-        return;
-      }
-      // Validación 2
-      if (username.length < 4) {
-        setErrorMessage("El usuario tiene que tener al menos 4 caracteres")
-        setTimeout(() => {
-          setErrorMessage("")
-        }, 3000)
-        return;
-      }
-      // Validacion 3
+    
+      // Validacion 1
       const emailFormat =
     /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
     if (!emailFormat.test(email)) {
@@ -66,7 +108,7 @@ function Signup() {
       }, 3000)
       return;
     }
-      // Validation 4: Password format validation
+      // Validation 2: Password format validation
       const passwordFormat = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
     if (!passwordFormat.test(password)) {
       setErrorMessage(" La contraseña debe tener al menos 8 caracteres, una mayúscula y un número")
@@ -76,7 +118,7 @@ function Signup() {
       return;
     }
 
-    // Validation 5: email doesn´t already exist in the DB
+    // Validation 3: email doesn´t already exist in the DB
     let userExists = false;
     const usersCollection = collection(db, 'users');
     const querySnapshot = await getDocs(usersCollection);
@@ -108,7 +150,6 @@ function Signup() {
 
   
       await setDoc(newUserRef, {
-        username: username,
         id: userCredential.user.uid,
         email: email,
         cart: [],
@@ -117,9 +158,7 @@ function Signup() {
         role: ""
       });
       setIsFetching(false)
-      alert("Usuario añadido correctamente");
-      window.location.reload(false);
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       console.log('Error al crear el usuario:', error);
     }
@@ -132,21 +171,19 @@ function Signup() {
   return (
     <section className="general-container">
       <div className="form-container">
-        <form >
           <h3>Sign-Up</h3>
-
-          <div className="input-container">
-            <input value={username} onChange={handleUsernameChange} />
-            <label className={username && "filled"} htmlFor="username">
-              User Name
-            </label>
-          </div>
+      <div>
+      <GoogleButton type="dark" label="Regístrate con Google" onClick={singInWithGoogle}/>
+      </div>
+      <h4>O si prefieres ... </h4>
+        <form >
           <div className="input-container">
             <input value={email} onChange={handleEmailChange} />
             <label className={email && "filled"} htmlFor="email">
               Email
             </label>
           </div>
+          {activePassword &&
           <div className="input-container">
             <input
               value={password}
@@ -157,9 +194,7 @@ function Signup() {
               Password
             </label>
           </div>
-
-
-
+          }
           <button
             type="submit"
             onClick={handleSignup}

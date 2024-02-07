@@ -52,20 +52,22 @@ function Home() {
   }
   return (
     <div className='home-container'>
-
-    <div>
-      <SocialMedia/>
-    </div>
       <div className='twitch-link-container'>
-
-        <TwitchLink listTwitchLink={listTwitchLink} />
+          <TwitchLink listTwitchLink={listTwitchLink} />
       </div>
+
+      <div>
+      <SocialMedia/>
+      </div>
+
       <div className='products-linkd-div'>
         <ProductsLink listProduct={listProduct} />
       </div>
+
       <div>
         <ListVideo />
-      </div>
+      </div>  
+      
     </div>
   )
 }

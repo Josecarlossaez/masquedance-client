@@ -14,6 +14,11 @@ table {
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+.disabled {
+  opacity: 0.5; /* Reduce la opacidad para desactivar visualmente la tabla */
+  pointer-events: none; /* Evita que los elementos de la tabla respondan a eventos de ratón */
+  /* Otros estilos de desactivación, según sea necesario */
+}
 
 th, td {
   text-align: center;

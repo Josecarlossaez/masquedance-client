@@ -86,8 +86,7 @@ const singInWithGoogle = async () => {
       role: ""
     });
     setIsFetching(false)
-    alert("Usuario añadido correctamente");
-    window.location.reload(false);
+   
     navigate("/");
 
 

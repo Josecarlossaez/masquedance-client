@@ -27,7 +27,7 @@ function Cart() {
   const navigate = useNavigate();
   const { user, getUserData } = useContext(AuthContext);
 
-
+  let divDisabled;
 
   // States
   const [isFetching, setIsFetching] = useState(false);
@@ -186,11 +186,9 @@ function Cart() {
         if (stockFail) {
           return;
         }
-        // setOrder(pedido)
         
         console.log("order dentro de continuarCompra", order);
         
-        // Resto del código...
         
       } catch (error) {
         // Manejar errores, si es necesario
@@ -211,7 +209,6 @@ function Cart() {
     console.log("pedido", order);
     const newOrder = {
       total: total,
-      username: user.username,
       email: user.email,
       orderCart: order,
     };
@@ -225,9 +222,11 @@ function Cart() {
     //   navigate("/error")
     // }
   };
-
-  let divDisabled;
   !orderToPayment ? (divDisabled = "table") : (divDisabled = "disabled")
+  
+  console.log("divDisabled",divDisabled);
+  console.log("orderToPayment",orderToPayment);
+  
 
   if (isFetching === true) {
     return <p>LOading...</p>;
