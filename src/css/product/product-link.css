@@ -109,7 +109,6 @@
 @media screen and (max-width:1024px) {
     .product-link-container{
         width: 55%;
-        border-radius: 50px;
 
     }
     .product-div-container {
@@ -134,6 +133,8 @@
         z-index: inherit;
         width: 27vw;
         margin: auto;
+        margin-top: 0px;
+        margin-bottom: 0px;
         position: absolute;
         left: 50%;
         transform: translate(-50%, -60%);

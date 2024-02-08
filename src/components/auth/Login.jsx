@@ -145,8 +145,9 @@ if (isFetching === true) {
         <hr />
         <p>Todavía no tientes cuenta | <span> <a href="/signup">Regístrate </a></span></p>
        <a href="">¿Olvidaste la Contraseña?</a>
+       <br />
       <div>
-      <GoogleButton type="dark" label="Entra con Google" onClick={singInWithGoogle}/>
+      <GoogleButton className="google-button" type="dark" label="Entra con Google" onClick={singInWithGoogle}/>
       </div>
       </div>
     </section>

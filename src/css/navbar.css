@@ -1,30 +1,13 @@
-/* div.navbar{
-    border: 5px solid black;
-    background-color: white;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-} */
 
-/* .nav-container{
-    background-color: white;
-    width: 100vw;
-    border: 2px solid red;
-    display: flex;
-    flex-direction: column;
-} */
+.social-1024{
+    display: none;
+}
 .main-nav-container{
     border: 2px solid red;
     width: 100vw;
-
 }
 
-.Nav {
-    border: 2px solid pink;
-   
-    /* height: 80px!important; */
-   
-}
+
 .social-logo-user{
     border: 2px solid green;
     width: 70%;
@@ -45,7 +28,7 @@
     gap: 10px;
 }
 .user{
-    border: 2px solid darkgray;
+    border: 2px solid rgb(34, 238, 11);
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -96,66 +79,57 @@
 }
 
 @media screen and (max-width:1024px) {
-    .navbar{
-       
-       
-    
-
+    .main-nav{
+        border: 4px solid pink !important;
+        display: flex !important;
+        justify-content: flex-start !important;
+        flex-direction: row !important;
     }
-    .Nav{
-        
-        height: 100px !important;
-        background-color: rgb(244, 250, 250);
-        /* box-shadow: rgba(14, 30, 37, 0.12) 0px 4px 4px 0px,
-            rgba(14, 30, 37, 0.32) 0px 10px 10px 0px; */
-    
-
+ 
+    .main-nav-container{
+        height: 110px;
+        display: flex;
+        flex-direction: column;
+    }
+   
+    .social-1024{
+        display: inline;
+    }
+    .social-1024 a{
+        margin: 5px;
     }
   
     .social-logo-user{
+        width: 85%;
+        border: 4px solid yellow;
         height: 60px;
-        display: inline;
         display: flex;
-        justify-content: flex-start;
-        align-items: center;
- 
-
+        flex-direction: row;
+    
     }
     .social{
         display: none;
     }
-    .navbar{
-        height: 0px;
-        /* display: none; */
 
-        /* border: 2px solid red;
-        width: 100%;
-        display: flex;
-        justify-content: social-between; */
+    .user{
+        border: 4px solid rgb(7, 206, 53);
+        margin-top: 47px;
     }
-    .social-logo-user .logo{
-        display: none;
+  
+    .logo img{
+        margin-top: 10px;
+        width: 200px;
     }
-    .user {
+    .user div{
         /* border: 2px solid green; */
         width: 100vw !important;
         height: 80px;
-    }
-    .user .logo img {
-        display: block;
-        border: 2px solid blue;
-    }
-    /* .navbar .logo-responsive{
-        border: 2px solid black;
-        display: block;
-        width: 50%;
-    } */
-    .user .logo-peque img{
-        display: inline;
-        width:70px;
-        transition: all 300ms ease-out;
+        display: flex;
+        justify-content: flex-end;
     }
     .user img{
+        border: 4px solid pink;
         width: 2rem;
     }
+   
 }

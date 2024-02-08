@@ -5,7 +5,7 @@ import Burger from "./Burger";
 import logo from "../../images/logo-en-texto.png";
 import userLogo from "../../images/user_icon.svg";
 import cartLogo from "../../images/shopping-cart-outline-svgrepo-com.svg";
-import faceBPeque from "../../images/facebook-peque.svg"
+import tiktokPeque from "../../images/brand-tiktok-sq-svgrepo-com.svg"
 import instaPeque from "../../images/insta-peque.svg"
 import xPeque from "../../images/x-peque.svg"
 import twitchPeque from "../../images/twitch-peque.svg"
@@ -19,7 +19,7 @@ import { AuthContext } from "../../context/auth.context.js";
 import { useContext } from "react";
 
 const Nav = styled.nav`
-   border: 2px solid blue;
+   border: 4px solid blue;
   position: fixed
   ${"" /* margin-top: -140px; */}
   padding: 0px 0 10px 0;
@@ -38,69 +38,85 @@ const Navbar = () => {
 
   return (
     <div className="main-nav-container">
-        <Nav className="Nav">
-      {/* <div className="nav-container"> */}
-      <div className="social-logo-user">
-        <div className="social">
-          <Link to="/">
-            <img src={faceBPeque} alt="logo" />
-          </Link>
+      <Nav className="main-nav">
+        <div className="social-logo-user">
+          <div className="social">
+            <Link to="/">
+              <img src={instaPeque} alt="logo" />
+            </Link>
 
-          <Link to="/">
-            <img src={instaPeque} alt="logo" />
-          </Link>
+            <Link to="/">
+              <img src={twitchPeque} alt="logo" />
+            </Link>
 
-          <Link to="/">
-            <img src={xPeque} alt="logo" />
-          </Link>
+            <Link to="/">
+              <img src={tiktokPeque} alt="logo" />
+            </Link>
 
-          <Link to="/">
-            <img src={twitchPeque} alt="logo" />
-          </Link>
+            <Link to="/">
+              <img src={youtPeque} alt="logo" />
+            </Link>
 
-          <Link to="/">
-            <img src={youtPeque} alt="logo" />
-          </Link>
-        </div>
-        
-        
+            <Link to="/">
+              <img src={xPeque} alt="logo" />
+            </Link>
+          </div>
+                {/*  */}
+          <div className="logo">
+            <Link to="/">
+              <img src={logo} alt="logo" />
+            </Link>
+          </div>
+            {/*  */}
+          <div className="user">
+            <div>
+              {isLoggedIn ?
 
-        <div className="logo">
-          <Link to="/">
-            <img src={logo} alt="logo" />
-          </Link>
-        </div>
-
-        <div className="user">
-          <div>
-            {isLoggedIn ?
-
-              <Link to="/account">
-                <img src={userLogo} alt="userLogo" />
-              </Link>
-              :
-              <Link to="/login">
-                <img src={userLogo} alt="userLogo" />
-              </Link>
-            }
+                <Link to="/account">
+                  <img src={userLogo} alt="userLogo" />
+                </Link>
+                :
+                <Link to="/login">
+                  <img src={userLogo} alt="userLogo" />
+                </Link>
+              }
 
 
-            {isLoggedIn ?
+              {isLoggedIn ?
 
-              <Link to="/cart">
-                <img src={cartLogo} alt="cart-icon" />
-              </Link>
-              :
-              <Link to="/login">
-                <img src={cartLogo} alt="cart-icon" />
-              </Link>
-            }
+                <Link to="/cart">
+                  <img src={cartLogo} alt="cart-icon" />
+                </Link>
+                :
+                <Link to="/login">
+                  <img src={cartLogo} alt="cart-icon" />
+                </Link>
+              }
+            </div>
           </div>
         </div>
-      </div>
+      </Nav>
+        <div className="social-1024">
+            <Link to="/">
+              <img src={instaPeque} alt="logo" />
+            </Link>
 
+            <Link to="/">
+              <img src={twitchPeque} alt="logo" />
+            </Link>
 
-    </Nav>
+            <Link to="/">
+              <img src={tiktokPeque} alt="logo" />
+            </Link>
+
+            <Link to="/">
+              <img src={youtPeque} alt="logo" />
+            </Link>
+
+            <Link to="/">
+              <img src={xPeque} alt="logo" />
+            </Link>
+          </div>
       <div className="navbar">
         <div>
           <Burger />
@@ -108,7 +124,7 @@ const Navbar = () => {
       </div>
 
     </div>
-  
+
   );
 };
 

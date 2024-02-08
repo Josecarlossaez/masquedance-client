@@ -26,22 +26,23 @@ import MyAccount from './pages/MyAccount'
 // Context
 import { AuthContext } from "./context/auth.context";
 import { useContext } from "react"
+import Building from './pages/Building';
 
 function App() {
   const {isAdmin} = useContext(AuthContext)
 
   return (
     <div className="App">
-    <Navbar/>
+     <Navbar/>
     <Routes>
-      <Route path='/' element= {<Home/>}/>
-      <Route path='/signup' element= {<Signup/>}/>
       <Route path='/login' element= {<Login/>}/>
+     
+    
+         <Route path='/' element= {<Home/>}/> 
+      <Route path='/signup' element= {<Signup/>}/>
       <Route path='/create-product' element= {<CreateProduct/>}/>
       <Route path='/create-track' element= {<CreateTrack/>}/>
-      {isAdmin &&
       <Route path='/admin' element= {<Admin/>}/>
-      }
       <Route path='/create-dj' element= {<CreateDj/>}/>
       <Route path='/list-colections' element= {<Colections/>}/>
       <Route path='/colection/:colectionId/details' element= {<ColectionDetails/>}/>
@@ -57,6 +58,12 @@ function App() {
       <Route path='/dj/:djId/details' element= {<DjDetails/>}/>
       <Route path='/dj/:djId/update' element= {<UpdateDj/>}/>
       <Route path='/account' element= {<MyAccount/>}/>
+   
+        <Route path='/' element= {<Building/>}/>
+      
+
+      
+
 
 
 

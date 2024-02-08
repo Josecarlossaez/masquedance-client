@@ -17,10 +17,9 @@ function SocialMedia() {
   const [popUp, setPopUp] = useState("")
 
   const showPopup = (e) => {
-    e.preventDefault()
-    setPopUp(e.target.value);
+
     console.log("popup",popUp)
-    console.log("e.tr-val", e.target.value);
+  
   };
 
  
@@ -29,30 +28,21 @@ function SocialMedia() {
   return (
     <div className='socialMedia-container'>
       
-      {popUp !== "" &&
     <div className='socialMedia-text'>   
+      {popUp !== "" &&
        <p>{popUp}</p>
-    </div>
       }
+    </div>
     <div className='socialMedia-links-container'>
       <a href="">
-      <img src={instagramIcon} value="Compártenos en Instagram" onMouseEnter={showPopup} onMouseLeave={()=>setPopUp("")} alt="instagramIcon" />
+      <img src={instagramIcon} onMouseEnter={()=>setPopUp("Compartenos en instagram")} onMouseLeave={()=>setPopUp("")} alt="instagramIcon" />
     </a>
     <a href="">
-      <img src={twitterIcon} alt="twitterIcon" />
-    </a>
-    <a href="">
-      <img src={twitchIcon} alt="twitchIcon" />
+      <img src={twitterIcon} onMouseEnter={()=>setPopUp("Compartenos en X")} onMouseLeave={()=>setPopUp("")} alt="twitterIcon" />
     </a>
     
     <a href="">
-      <img src={youtubeIcon} alt="youtubeIcon" />
-    </a>
-    <a href="">
-      <img src={tiktokIcon} alt="tiktokIcon" />
-    </a>
-    <a href="">
-      <img src={telegramIcon} alt="telegramIcon" />
+      <img src={telegramIcon} onMouseEnter={()=>setPopUp("Compartenos en Telegram")} onMouseLeave={()=>setPopUp("")} alt="telegramIcon" />
     </a>
     </div>
     

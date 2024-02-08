@@ -22,8 +22,9 @@
     align-items: flex-end;
 }
 .socialMedia-text{
-    border: 2px solid yellow;
+    height: 30px;
     font-family: orbitron;
+    font-weight: bold;
     color: #4f4f4f;
 }
 .socialMedia-links-container {
@@ -57,5 +58,8 @@
     }
     .socialMedia-links-container img{
        width: 30px;
+    }
+    .socialMedia-text{
+        display: none;
     }
 }

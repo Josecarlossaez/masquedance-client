@@ -171,12 +171,7 @@ function Signup() {
   return (
     <section className="general-container">
       <div className="form-container">
-          <h3>Sign-Up</h3>
-      <div>
-      <GoogleButton type="dark" label="Regístrate con Google" onClick={singInWithGoogle}/>
-      </div>
-      <h4>O si prefieres ... </h4>
-        <form >
+       <form >
           <div className="input-container">
             <input value={email} onChange={handleEmailChange} />
             <label className={email && "filled"} htmlFor="email">
@@ -207,8 +202,11 @@ function Signup() {
           )}
 
         </form>
+        <br />
+      <div>
+      <GoogleButton type="dark" label="Regístrate con Google" onClick={singInWithGoogle}/>
       </div>
-
+      </div>
 
     </section>
   );
