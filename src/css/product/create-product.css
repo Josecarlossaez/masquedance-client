@@ -94,6 +94,13 @@
     }
   }
 
+  @media screen and (max-width:520px) {
+    .form-container form {
+      width:90%;
+      
+    }
+  }
+
   /* -------------  Select Size --------------*/
 .select-size{
   width: 100%;

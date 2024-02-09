@@ -258,7 +258,7 @@ function PaypalCheckoutButton(props) {
             <div className="credit-card-btn">
               <HashLink smooth to="#stripe-element">
                 <button onClick={() => setStripeButtonView(!stripeButtnView)}>
-                  Credit Card
+                  Payment Secure by Stripe
                 </button>
               </HashLink>
             </div>
@@ -275,7 +275,7 @@ function PaypalCheckoutButton(props) {
         )}
         <div className="volver-btn">
           <a href="/cart">
-            <button>Volver al carrito</button>
+            <button>VOLVER AL CARRITO</button>
           </a>
         </div>
       </div>

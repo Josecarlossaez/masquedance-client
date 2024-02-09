@@ -243,7 +243,7 @@ function Cart() {
             
             ) : (
  <div>
-    <div>
+    <div className="cart-container">
         <table className={divDisabled}>
           <thead>
             <tr>

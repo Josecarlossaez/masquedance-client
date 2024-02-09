@@ -60,6 +60,9 @@ function ConfirmOrder(props) {
    </div>
    <br />
    <div className='user-data'>
+   <tr>
+    
+   </tr>
     <h4>Enviar a: {newOrder.name}</h4>
     <h4>Teléfono: {newOrder.phone}</h4>
     <h4>Dirección {newOrder.address}</h4>

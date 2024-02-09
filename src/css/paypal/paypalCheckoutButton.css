@@ -17,14 +17,12 @@
 }
 .select-payment{
     cursor: pointer;
-    background-color: blue;
-    width:100%;
+    background-color: rgb(19, 97, 193);
+    width:300px;
     height: 48px;
-    font-weight: bold;
     color:white;
     font-size:30px;
-    font-family:Arial, Helvetica, sans-serif;
-    border-radius: 24px;
+    font-family: 'Arial', sans-serif;    
 }
 .paypalButtons{
   
@@ -35,13 +33,13 @@
 .credit-card-btn button{
     cursor: pointer;
     background-color: black;
-    width:100%;
+    width:300px;
     height: 48px;
     font-weight: bold;
     color:white;
-    font-size:30px;
+    font-size:16px;
     font-family:Arial, Helvetica, sans-serif;
-    border-radius: 24px;
+   
 
 }
 .credit-card-btn button:hover{
@@ -50,13 +48,30 @@
 .volver-btn button{
     cursor: pointer;
     background-color:#69bfbe ;
-    width:60%;
+    width:300px;
     height: 48px;
     color:rgb(65, 63, 66);
-    font-size:30px;
-    font-family:Arial, Helvetica, sans-serif;
-    border-radius: 24px;
+    font-size:16px;
+    font-family: 'Arial', sans-serif;
 }
 .volver-btn button:hover{
     opacity: 0.8;
+}
+
+@media screen and (max-width:1024px) {
+    .form-data-container{
+        width: 90%
+    }
+}
+@media screen and (max-width:520px) {
+    .volver-btn button{
+        width:60%;
+    }
+    .credit-card-btn button{
+        width:60%;   
+    }
+    .select-payment{
+        width:60%;
+        font-size: 16px;       
+    }
 }
