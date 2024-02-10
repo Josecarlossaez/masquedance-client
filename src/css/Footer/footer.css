@@ -1,0 +1,38 @@
+.footer-container{
+    width: 100vw;
+    height: 200px;
+    background-color: #d6dad9;
+    display: flex;
+}
+.footer-container div {
+    width: 33%;
+}
+.social-footer{
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.logo-center{
+    display: flex;
+justify-content: center;
+align-items: center;
+}
+.logo-center img{
+    width: 150px;
+}
+.contact{
+    display: flex;
+    flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+@media screen and (max-width: 768px) {
+    .footer-container{
+        flex-direction: column;
+        height: 300px;
+    }
+    .footer-container div{
+        margin: 5px;
+        width: 100%;
+    }
+}

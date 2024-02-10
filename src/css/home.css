@@ -1,5 +1,4 @@
 .home-container{
-    border: 2px solid blue;
     margin:0px;
  
     width: 100%;
@@ -13,7 +12,6 @@
 }
 
 .socialMedia-container {
-    border: 2px solid red;
     width: 70%;
     margin:auto;
     margin-top:10px;
@@ -28,7 +26,7 @@
     color: #4f4f4f;
 }
 .socialMedia-links-container {
-    border: 2px solid red;
+
     width: 100%;
     margin:auto;
     display: flex;
@@ -51,6 +49,19 @@
 
 
 @media screen and (max-width:1024px) {
+    .socialMedia-links-container {
+        width: 100%;
+        justify-content: center;
+       
+    }
+    .socialMedia-links-container img{
+       width: 30px;
+    }
+    .socialMedia-text{
+        display: none;
+    }
+}
+@media screen and (max-width:768px) {
     .socialMedia-links-container {
         width: 100%;
         justify-content: center;

@@ -74,7 +74,7 @@ function Signup() {
         cart: [],
         orders: [],
         youtubeReproductionList: [],
-        role: ""
+        role: "user"
       });
       setIsFetching(false)
       navigate("/");

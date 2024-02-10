@@ -121,10 +121,8 @@ function ColectionDetails() {
   }
 
   return (
-    <div>
-      <div>
-        <h1>Colection Details</h1>
-      </div>
+    <div className="main-colection-details">
+     
       {colectionDetails.length === 0 ? (
         <h1>Todavía no tienes productos que mostrar</h1>
       ) : (
@@ -134,13 +132,9 @@ function ColectionDetails() {
           </div>
           <div className="details-data">
             <h3>{colectionDetails.name}</h3>
-
             <div className="details-info">
-
-
-              <h3>Precio: {colectionDetails?.price}€</h3>
-              <h3>Descripción del artículo: {colectionDetails?.description}</h3>
-              
+              <h5>Descripción del artículo: {colectionDetails?.description}</h5>
+              <h4>Precio: {colectionDetails?.price}€</h4>
             </div>
             {colectionDetails.contieneTallas === true &&
               <div className="sizes-container">
@@ -170,10 +164,10 @@ function ColectionDetails() {
                     
 
                   ))}
+                </div>
                   {sizeSelected !== "" &&  
                 <p style={{ color: "blue" }}> Quedan {setsizeStockSelected} unidades</p>
                   }
-                </div>
               </div>
             }
             {/* ARRAY DE CANTIDAD */}
@@ -192,7 +186,7 @@ function ColectionDetails() {
               </select>
             </div> */}
             {/* FIN ARRAY DE CANTIDAD */}
-            <div>
+            <div className="añadir-button">
               <button onClick={handleAddProductToCart} className="general-btn">
                 Añadir al carrito
               </button>

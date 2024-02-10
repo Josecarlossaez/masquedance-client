@@ -11,6 +11,7 @@ import { AuthContext } from "../../context/auth.context";
 function ColectionEdit() {
   const { colectionId } = useParams();
   const navigate = useNavigate();
+  console.log("ENTRANDO EN COLECTION EDIT")
 
   
   // States
@@ -36,13 +37,15 @@ function ColectionEdit() {
     const colection = doc(db, 'colections', colectionId)
     const colectionById = await getDoc(colection)
     setDetails(colectionById.data());  
+    console.log("Detalles de la colección", colectionById.data());
    
-    const { name, price, picture } = colectionById.data();
-    setName(name);
-    setPrice(price);
-    setPictureUrl(picture);
+    // const { name, price, picture } = colectionById.data();
+    setName(colectionById.data().name);
+    setPrice(colectionById.data().price);
+    setPictureUrl(colectionById.data().picture);
     setIsFetching(false);
 } catch (error) {
+    console.log("Error dentro de la búsqueda de los detalles de la colección",error)
     navigate("/")
 }
 };

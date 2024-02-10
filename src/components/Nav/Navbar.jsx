@@ -19,11 +19,10 @@ import { AuthContext } from "../../context/auth.context.js";
 import { useContext } from "react";
 
 const Nav = styled.nav`
-   border: 4px solid blue;
   position: fixed
   ${"" /* margin-top: -140px; */}
   padding: 0px 0 10px 0;
-  background-color: white;
+  background-color:#f0f8f7;
   width: 100%;
   height: 100%;
   ${'' /* border: 2px solid black; */}

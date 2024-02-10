@@ -84,7 +84,7 @@ const {  user } = useContext(AuthContext);
                 </div>
                
             </div>
-            {user?.user.role === "admin" &&
+            {user?.role === "admin" &&
         <div className='button-admin-container'>
                <Link to={`/dj/${djId}/update`}>
             <button className="general-btn"> Actualizar Dj</button>

@@ -52,13 +52,13 @@ function Colections() {
 
   return (
     <div>
-      <div>
+      <div className="main-products-container">
         <h1>MERCHANDISING</h1>
       </div>
       <div className="products-container">
         {listColection.map((eachProduct) => {
           return (
-            <div  key={eachProduct._id}>
+            <div  key={eachProduct._id} className="product-container">
               <Link
                 to={`/colection/${eachProduct.id}/details`}
                 
@@ -75,11 +75,11 @@ function Colections() {
                   </div>
                 </div>
               </Link>
-              {isAdmin &&
+              {/* {isAdmin &&
               <Link className="link-box" to={`/colection/${eachProduct.id}/edit`}>
                 <button className="general-btn"> Editar Colección</button>
               </Link>
-              }
+              } */}
               
             </div>
           );

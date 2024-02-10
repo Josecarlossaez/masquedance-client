@@ -27,6 +27,7 @@ import MyAccount from './pages/MyAccount'
 import { AuthContext } from "./context/auth.context";
 import { useContext } from "react"
 import Building from './pages/Building';
+import Footer from './components/Footer/Footer';
 
 function App() {
   const {isAdmin} = useContext(AuthContext)
@@ -69,6 +70,7 @@ function App() {
 
 
     </Routes>
+    <Footer/>
     
     </div>
   );

@@ -129,9 +129,9 @@ function Admin() {
           <button onClick={handleCreateProduct} className="hash-button">Crear Producto</button>
         </HashLink>
 
-        <HashLink smooth to="#admin-components">
+        {/* <HashLink smooth to="#admin-components">
           <button onClick={handleCreateColection} className="hash-button">Crear Colección</button>
-        </HashLink>
+        </HashLink> */}
 
         <HashLink smooth to="#profile-components">
           <button className="hash-button">Crear Sesión</button>

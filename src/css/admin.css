@@ -2,6 +2,8 @@
 
 .admin{
     margin-top: 25px;
+    min-height: 90vh;
+
 }
 .button-container{
     border: solid 2px pink;

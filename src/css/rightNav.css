@@ -1,5 +1,4 @@
 .links{
-    border: 2px solid black;
 
     background-color: rgb(244, 250, 250);
     width: 100vw;
@@ -11,7 +10,6 @@
             rgba(14, 30, 37, 0.32) 0px 10px 10px 0px; */
 }
 .nav-list{
-    border: 2px solid green;
     display:flex;
 }
 .auth-list{

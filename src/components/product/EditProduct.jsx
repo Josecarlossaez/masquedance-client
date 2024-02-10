@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import "../../css/product/edit-product.css"
 // Utilities
 import Select from "react-select";
 // Services Firebase
@@ -127,45 +127,48 @@ const handlePictureChange = async (e) => {
     // };
 
     try {
-      const productToUpdate = doc(db, "products", productId);
-
-await updateDoc(productToUpdate, {
-  name: nameInput,
-  price: priceInput,
-  color: colorInput,
-  picture: pictureURL,
-  description: descriptionInput,
-  cantidad: 1,
-  stock: stockInput,
-  contieneTallas: contieneTallasInput,
-  size: [
-    {
-      name: "S",
-      stock: stockSInput
-    },
-   {
-      name: "M",
-      stock: stockMInput
-    },
-    {
-      name: "L",
-      stock: stockLInput
-    },
-    {
-      name: "XL",
-      stock: stockXLInput
-    },
-    {
-      name: "XXL",
-      stock: stockXXLInput
-    },
-  ],
-});
+      const productToUpdate =  doc(db, "products", productId);
+      const updatedProduct = {
+        name: nameInput,
+        price: priceInput,
+        color: colorInput,
+        picture: pictureURL,
+        description: descriptionInput,
+        cantidad: 1,
+        stock: stockInput,
+        contieneTallas: contieneTallasInput,
+        size: [
+          {
+            name: "S",
+            stock: stockSInput
+          },
+         {
+            name: "M",
+            stock: stockMInput
+          },
+          {
+            name: "L",
+            stock: stockLInput
+          },
+          {
+            name: "XL",
+            stock: stockXLInput
+          },
+          {
+            name: "XXL",
+            stock: stockXXLInput
+          },
+        ],
+      }
+    console.log("updated Product", updatedProduct);
+await updateDoc(productToUpdate, updatedProduct );
       
     
     
       navigate("/admin");
     } catch (error) {
+      console.log("error al actualizar el producto", error)
+
       if (
         (error.response && error.response.status === 406) ||
         (error.response && error.response.status === 400)
