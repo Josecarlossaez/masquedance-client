@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
 // CSS
 import "../../css/product/create-product.css"
-// Services
-import { createTrackService } from "../../services/track.services.js"
-import { uploadAudioService, uploadPictureService } from "../../services/upload.services"
-import { listDjService } from '../../services/dj.services'
+// Services FIREBASE
+import { collection, getDocs,setDoc, doc } from 'firebase/firestore'
+import { db, storage } from '../../firebase'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+
 // React
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -22,8 +23,10 @@ function CreateTrack() {
    const [audioURL, setAudioUrl] = useState();
   const [pictureURL, setPictureUrl] = useState("");
 
+  
 
   // Data
+  const [isFetching, setIsFetching] = useState(true);
   const [listDj, setListDj] = useState()
 
  
@@ -35,15 +38,14 @@ function CreateTrack() {
     }, [])
     
     const getData = async () => {
-      try {
-        const responseListDj = await listDjService()
-        console.log("responseListDj", responseListDj)
-          setListDj(responseListDj.data)
-          
-      } catch (error) {
-        navigate("/error")
-      }
-      
+      const docs = []
+      const querySnapshot = await getDocs(collection(db, "djs"));
+      console.log("querySnapshot", querySnapshot)
+      querySnapshot.forEach((doc) => {
+        docs.push({...doc.data(), id:doc.id})
+        setListDj(docs)
+      })
+      setIsFetching(false)
     }
     
   
@@ -56,44 +58,50 @@ function CreateTrack() {
    // CLOUDINARY IS LOADING
    const [isLoadingAudio, setIsLoadingAudio] = useState(false)
    const handleAudioChange =  async (e) => {
-    // Cloudinary audio is loading on
-     setIsLoadingAudio(true)
+    setIsLoadingAudio(true)
+    const audio = e.target.files[0]
+     // * upload image to firebaseStorage
+   try {
+  
+   // 1 - Location where the picture is gonna be saved
+   const storageRef = ref(storage, `audios/${audio.name}`) // 1- storage, 2-image-name-URL || 1 {the ref}, 2 {file it-self}
+   // 2 - uploading the picture to firebase storage
+   const snapShot = await uploadBytes(storageRef, audio)
+   // 3 - picture Url
+   const downloadUrl = await getDownloadURL(snapShot.ref)
+   setAudioUrl(downloadUrl)
+   setIsLoadingAudio(false)
 
-     // upload the audio to cloudinary and receive the string for show the pic in the Form
-     const sendObjAudio = new FormData()
-     sendObjAudio.append("audio", e.target.files[0]);
-
-     try {
-       const response = await uploadAudioService(sendObjAudio);
-       setAudioUrl(response.data.audio);
-       // cloudinary audio is loading off
-       setIsLoadingAudio(false)
-     } catch (error) {
-      navigate("/error")
-     }
+   // 4 - new doc
+ }catch(error){
+   navigate("/error");
+ } 
    }
 
-     // Cloudinary is Loading
+   // Save picture at the Firebase Storage
   const [isLoadingPicture, setIsLoadingPicture] = useState(false);
 
   const handlePictureChange = async (e) => {
-   // Cloudinary picture is Loading On
-   setIsLoadingPicture(true);
+    setIsLoadingPicture(true)
+     const image = e.target.files[0]
+      // * upload image to firebaseStorage
+    try {
+   
+    // 1 - Location where the picture is gonna be saved
+    const storageRef = ref(storage, `images/${image.name}`) // 1- storage, 2-image-name-URL || 1 {the ref}, 2 {file it-self}
+    // 2 - uploading the picture to firebase storage
+    const snapShot = await uploadBytes(storageRef, image)
+    // 3 - picture Url
+    const downloadUrl = await getDownloadURL(snapShot.ref)
+    setPictureUrl(downloadUrl)
+    setIsLoadingPicture(false)
 
-   // upload the picture to cloudinary and receive the string for show the pic in the form
-   const sendObj = new FormData();
-   sendObj.append("picture", e.target.files[0]);
-
-   try {
-     const response = await uploadPictureService(sendObj);
-
-     setPictureUrl(response.data.picture);
-     // Cloudinary picture is Loading Off
-     setIsLoadingPicture(false);
-   } catch (error) {
-     navigate("/error");
-   }
- };
+    // 4 - new doc
+  }catch(error){
+    navigate("/error");
+  }  
+     
+};
   
 
      console.log("audioUrl", audioURL)
@@ -105,19 +113,19 @@ function CreateTrack() {
    const handleCreateTrack = async (e) => {
      e.preventDefault();
  
-     const newTrack = {
-       title: titleInput,
-       audio: audioURL,
-       picture: pictureURL,
-       dj: djInput,
-     
-     
-     };
- 
      try {
-       await createTrackService(newTrack);
+       const trackRef = collection(db, 'tracks')
+       const newTrackRef = doc(trackRef)
+       await setDoc(newTrackRef,{
+        id: newTrackRef.id,
+        title: titleInput,
+        audio: audioURL,
+        picture: pictureURL,
+        dj: djInput,
+      })
        navigate("/");
      } catch (error) {
+      console.log(error)
        if (
          (error.response && error.response.status === 406) ||
          (error.response && error.response.status === 400)
@@ -128,7 +136,11 @@ function CreateTrack() {
        }
      }
    };
+   if (isFetching === true) {
+    return <p>...loading</p>;
+  }
 
+ 
    
   return (
     <section className="general-container">

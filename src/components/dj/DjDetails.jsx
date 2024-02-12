@@ -6,20 +6,24 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { collection, getDocs,doc,getDoc, deleteDoc } from 'firebase/firestore'
 import { db } from '../../firebase'
 import Player from '@madzadev/audio-player';
-import { AuthContext } from "../../context/auth.context.js";
 import { Link } from 'react-router-dom';
+
+// Context
+import { AuthContext } from "../../context/auth.context.js";
+
 
 
 function DjDetails() {
     // Admin Credentials
-const {  user } = useContext(AuthContext);
+const {  isAdmin } = useContext(AuthContext);
     const navigate = useNavigate()
     const { djId } = useParams();
 
 
     const [isFetching, setIsFetching] = useState(true);
     const [dj, setDj] = useState()
-    const [trackByDj, setTrackByDj] = useState([])
+    const [tracks, setTracks] = useState()
+    const [tracksByDj, setTracksByDj] = useState()
   const [okMessage, setOkMessage] = useState("");
 
 
@@ -27,7 +31,32 @@ const {  user } = useContext(AuthContext);
     useEffect(() => {
         getData()
     }, [])
-  console.log("dj -->",dj);
+
+    useEffect(() => {
+      console.log("datos del dj",dj)
+      getDjTracks()
+
+  }, [dj])
+
+  useEffect(() => {
+    console.log("Estado actualizado", tracks)
+    const transformedTracks = tracks?.map((item) => {
+      if (item.dj === dj.name) {
+        console.log("he encontrado un resultado en ",item.dj);
+        return {
+          url: item.audio,
+          title: item.title,
+          tags: [item.dj],
+          picture: item.picture  
+        };
+      }
+      return null
+    }).filter(Boolean)
+    console.log("transformedTracks", transformedTracks)
+    setTracksByDj(transformedTracks)
+}, [tracks])
+
+
     const getData = async () => {
       try {
         const dj = doc(db, 'djs', djId)
@@ -37,6 +66,22 @@ const {  user } = useContext(AuthContext);
       } catch (error) {
         navigate("/error");
       }
+    }
+    const getDjTracks = async () => {
+      setIsFetching(true)
+      try {
+        const docs = []
+        const querySnapshot = await getDocs(collection(db, "tracks"));
+        console.log("querySnapshot", querySnapshot)
+        querySnapshot.forEach((doc) => {
+          docs.push({...doc.data(), id:doc.id})
+          setTracks(docs)
+          setIsFetching(false)
+        })
+      } catch (error) {
+        console.log("este es el error  en trackBydjfunction",error)
+        navigate("/error");
+      } 
     }
 
     const handleDeleteDj = async (e) => {
@@ -84,7 +129,7 @@ const {  user } = useContext(AuthContext);
                 </div>
                
             </div>
-            {user?.role === "admin" &&
+            {isAdmin &&
         <div className='button-admin-container'>
                <Link to={`/dj/${djId}/update`}>
             <button className="general-btn"> Actualizar Dj</button>
@@ -99,23 +144,23 @@ const {  user } = useContext(AuthContext);
         </div>
         }
             <div className='dj-tracks'>
-                {trackByDj?.length === 0?
+                {tracksByDj?.length === 0?
                     (
                         <h1>Este dj no tiene canciones</h1>
                     ) : (
-                        trackByDj.map((item) => {
+                        tracksByDj?.map((item) => {
         const track = [
           {
-            url: item.audio,
+            url: item.url,
             title: item.title,
-            tags: [item.title],
+            tags: [item.dj],
+            picture: item.picture
           },
         ];
-        console.log("track", track);
         return (
           <div key={item._id} className="track-container">
-            <div className="track-img" style={{ backgroundImage: `url(${item.picture})` }}>
-              <img src="" alt="" />
+            <div className="track-img">
+              <img src={item.picture} alt="pic" />
             </div>
             <div className="track-player">
               <Player className='player'

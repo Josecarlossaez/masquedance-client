@@ -7,12 +7,13 @@ import "../../css/product/create-product.css";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // Context
+// Services Firebase
+import { collection,doc,getDoc, updateDoc } from 'firebase/firestore'
+import { db } from '../../firebase'
+import { auth, storage,} from '../../firebase.js'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 
 
-// Services
-
-import { uploadPictureService } from '../../services/upload.services';
-import { deleteDjService, detailsDjService, updateDjService } from '../../services/dj.services';
 
 function UpdateDj() {
   const { djId } = useParams()
@@ -20,6 +21,8 @@ function UpdateDj() {
 const navigate = useNavigate();
 // Loading
 const [isFetching, setIsFetching] = useState(true);
+
+const [details, setDetails] = useState([])
 
 // input values
 const [nameInput, setNameInput] = useState("")
@@ -39,14 +42,19 @@ useEffect(() => {
 
 const getData = async () => {
   try {
-      const response = await detailsDjService(djId)
-      const { name, description, picture } = response.data
+      const dj = doc(db, 'djs', djId)
+      const djById = await getDoc(dj)
+      setDetails(djById.data());
+
+      const { name, description, picture} = djById.data()
+
       setNameInput(name)
       setDescriptionInput(description)
       setPictureUrlInput(picture)
       setIsFetching(false);
 
   } catch (error) {
+      console.log(error)
       navigate("/error")
   }
 }
@@ -68,22 +76,28 @@ const handleDescriptionChange = (e) =>  setDescriptionInput(e.target.value)
 
 
 const handlePictureChange = async (e) => {
-  setIsLoadingPicture(true);
+  console.log("e.target picture", e.target.files[0])
+  setIsLoadingPicture(true)
+  const image = e.target.files[0]
+      // * upload image to firebaseStorage
+    try {
+   
+      console.log("image.name", image.name);
+    // 1 - Location where the picture is gonna be saved
+    const storageRef = ref(storage, `images/${image.name}`) // 1- storage, 2-image-name-URL || 1 {the ref}, 2 {file it-self}
+    // 2 - uploading the picture to firebase storage
+    const snapShot = await uploadBytes(storageRef, image)
+    // 3 - picture Url
+    const downloadUrl = await getDownloadURL(snapShot.ref)
+    console.log("downloadUrl", downloadUrl);
+    setPictureUrlInput(downloadUrl)
+  setIsLoadingPicture(false)
 
- // upload the picture to cloudinary and receive the string for show the pic in the form
-
-  const sendObj = new FormData();
-  sendObj.append("picture", e.target.files[0]);
-
-  try {
-    const response = await uploadPictureService(sendObj)
-    setPictureUrlInput(response.data.picture)
-    // Cloudinary picture is Loading Off
-    setIsLoadingPicture(false);
-    
-  } catch (error) {
-    navigate("/error")
-  }
+    // 4 - new doc
+  }catch(error){
+    navigate("/error");
+  }  
+     
 };
 
 // Send the input values to BE
@@ -99,7 +113,8 @@ const handlePictureChange = async (e) => {
    }
 
     try {
-      await updateDjService(djUpdate,djId);
+      const djToUpdate = doc(db,"djs",djId)
+      await updateDoc(djToUpdate, djUpdate);
       window.alert("Dj ACTUALIZADO CORRECTAMENTE");
       // setOkMessage("Producto añadido correctamente");
       // setTimeout(() => {

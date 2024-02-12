@@ -5,7 +5,9 @@ import "../../css/track/listTrack.css";
 import Player from "@madzadev/audio-player";
 
 import { useNavigate } from "react-router-dom";
-import { listTrackService } from "../../services/track.services";
+// Services FIREBASE
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '../../firebase'
 
 
 function ListTrack({curTrack}) {
@@ -27,12 +29,18 @@ function ListTrack({curTrack}) {
   
   const getData = async () => {
     try {
-      const response = await listTrackService();
+      const docs = []
+      const querySnapshot = await getDocs(collection(db, "tracks"));
+      console.log("querySnapshot", querySnapshot)
+      querySnapshot.forEach((doc) => {
+        docs.push({...doc.data(), id:doc.id})
+      })
+      console.log("docs de audio", docs)
       
-      const transformedTracks = response.data.map((item) => ({
+      const transformedTracks = docs.map((item) => ({
         url: item.audio,
         title: item.title,
-        tags: [item.title],
+        tags: [item.dj],
         picture: item.picture  
       }));
       console.log("transformedTracks",transformedTracks)
@@ -93,7 +101,7 @@ function ListTrack({curTrack}) {
             <div className="track-player"  >
               <Player className='player'
                 trackList={track}
-                includeTags={false}
+                includeTags={true}
                 includeSearch={false}
                 showPlaylist={true}
                 autoPlayNextTrack={true} 

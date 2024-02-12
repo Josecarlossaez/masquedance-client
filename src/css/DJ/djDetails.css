@@ -1,15 +1,15 @@
 .dj-page {
-
+    border: 2px solid red;
     width: 70vw;
     margin: auto;
-    margin-top: 40px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 .dj-data {
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
     rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
     /* border: 2px solid red; */
     width: 100%;
-    height: 50vh;
 
     display: flex;
     justify-content: flex-start;
@@ -17,7 +17,6 @@
 }
 .dj-picture {
     width: 30%;
-    height: 100%;
     padding: 20px 10px 20px 20px;
 
 }
@@ -89,7 +88,8 @@
 }
 .track-container {
    
-    border-bottom: 2px solid #a19e9e; /* Línea debajo de cada track */
+    border-bottom: 2px solid #a19e9e; 
+    
   }
   
 
@@ -104,7 +104,11 @@
     background-color: white;
     
 }
+.track-img img{
+    width: 300px;
+    height: 300px;
 
+}
 
 @media screen and (max-width:1024px) {
     .dj-page {
@@ -112,6 +116,7 @@
         width: 90%;
         margin: auto;
         margin-top: 20px;
+        margin-bottom: 30px;
     
     }
     .dj-data {
@@ -120,7 +125,7 @@
     }
     .dj-picture{
 
-        width: 60%;
+        width: 40%;
         margin: auto
         
     
@@ -171,4 +176,9 @@
 
 
 
+}
+@media screen and (max-width:768px) {
+    .dj-picture{
+        width: 60%;
+    }
 }
