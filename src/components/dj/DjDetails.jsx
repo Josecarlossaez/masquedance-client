@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 // Context
 import { AuthContext } from "../../context/auth.context.js";
 
+import plato from "../../images/technics-ortofon.jpeg"
 
 
 function DjDetails() {
@@ -146,7 +147,7 @@ const {  isAdmin } = useContext(AuthContext);
             <div className='dj-tracks'>
                 {tracksByDj?.length === 0?
                     (
-                        <h1>Este dj no tiene canciones</h1>
+                      <img className='plato-technics' src={plato} alt="technics" />
                     ) : (
                         tracksByDj?.map((item) => {
         const track = [
@@ -159,9 +160,6 @@ const {  isAdmin } = useContext(AuthContext);
         ];
         return (
           <div key={item._id} className="track-container">
-            <div className="track-img">
-              <img src={item.picture} alt="pic" />
-            </div>
             <div className="track-player">
               <Player className='player'
                 trackList={track}

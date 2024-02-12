@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 // Services FIREBASE
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../../firebase'
+import Carousel from "./Carousel"
 
 
 function ListTrack({curTrack}) {
@@ -37,7 +38,9 @@ function ListTrack({curTrack}) {
       })
       console.log("docs de audio", docs)
       
-      const transformedTracks = docs.map((item) => ({
+      const transformedTracks = docs.map((item) => (
+        
+        {
         url: item.audio,
         title: item.title,
         tags: [item.dj],
@@ -51,49 +54,16 @@ function ListTrack({curTrack}) {
       navigate("/error");
     }
   };
-  const handleChange = (currentTrackIndex) => {
-  console.log("entrando");
-    
-  }
-  
  
-
-   
-  
   if (isFetching === true) {
     return <p>...loading</p>;
   }
 
   return (
     <div className="trackList-container">
-      {/* {trackList.map((item) => {
-        const track = [
-          {
-            url: item.audio,
-            title: item.title,
-            tags: [item.title],
-          },
-        ];
-   
-        return (
-          <div key={item._id} className="track-container">
-            <div className="track-img" style={{ backgroundImage: `url(${item.picture})` }}>
-              <img src="" alt="" />
-            </div>
-            <div className="track-player">
-              <Player className='player'
-                trackList={track}
-                includeTags={true}
-                includeSearch={true}
-                showPlaylist={true}
-                autoPlayNextTrack={true}
-              />
-            </div>
-          </div>
-        );
-      })}
-
-      <h1>rodadnd</h1> */}
+       <div>
+        <Carousel track = {track}/>
+       </div>
       <div  className="track-container" >
             {/* <div className="track-img" style={{ backgroundImage: `url(${item.picture})` }}>
               <img src="" alt="" />
@@ -101,14 +71,10 @@ function ListTrack({curTrack}) {
             <div className="track-player"  >
               <Player className='player'
                 trackList={track}
-                includeTags={true}
+                includeTags={false}
                 includeSearch={false}
                 showPlaylist={true}
-                autoPlayNextTrack={true} 
-                currentTrackIndex={currentTrackIndex} 
-                setCurrentTrackIndex={setCurrentTrackIndex}
-                onClick={()=>{handleChange()}}
-                
+                autoPlayNextTrack={true}                 
               />
 
             </div>
