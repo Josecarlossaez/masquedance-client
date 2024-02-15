@@ -47,7 +47,11 @@ function Colections() {
    console.log("listColection", listColection);
  
   if (isFetching === true) {
-    return <p>...loading</p>;
+   return <div class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only"></span>
+    </div>
+  </div>
   }
 
   return (

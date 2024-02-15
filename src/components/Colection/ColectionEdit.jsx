@@ -112,7 +112,11 @@ function ColectionEdit() {
 
 
   if (isFetching === true) {
-    <h3>...Loading</h3>;
+    return <div class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only"></span>
+    </div>
+  </div>
   }
 
 

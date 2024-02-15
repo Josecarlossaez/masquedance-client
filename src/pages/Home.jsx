@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 import '../css/home.css'
 // Services
@@ -12,13 +12,17 @@ import SocialMedia from '../components/socialMedia/SocialMedia';
 
 // Services FIREBASE
 import { collection, getDocs } from 'firebase/firestore'
-import { db } from '../firebase'
+import { collTwitchLinks, db } from '../firebase'
+
+// Context
+import { AuthContext } from "../context/auth.context";
+import { useContext } from "react"
 
 
 
 function Home() {
   const navigate = useNavigate()
-
+  const {isAdmin} = useContext(AuthContext)
   // States
   const [isFetching, setIsFetching] = useState(true);
   const [listTwitchLink, setListTwitchLink] = useState(null)
@@ -37,8 +41,12 @@ function Home() {
       docs.push({...doc.data(), id:doc.id})
       setListProduct(docs)
     })
-      const responseTwitch = await listTwitchLinkService()
-      setListTwitchLink(responseTwitch.data)
+      const docsTL = []
+      const responseTwitch = await getDocs(collTwitchLinks)
+       responseTwitch.forEach((each)=> {
+        docsTL.push({...each.data(), id:each.id})
+        setListTwitchLink(docsTL)
+       })
       setIsFetching(false)
 
     } catch (error) {
@@ -48,13 +56,23 @@ function Home() {
 
 
   if (isFetching === true) {
-    return <p>...loading</p>
+    return <div class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only"></span>
+    </div>
+  </div>
   }
   return (
     <div className='home-container'>
       <div className='twitch-link-container'>
           <TwitchLink listTwitchLink={listTwitchLink} />
       </div>
+      {isAdmin &&
+      
+      <Link to="/edit-twitch-link">
+      <button>Editar TwitchLink</button>
+      </Link>
+      }
 
       <div>
       <SocialMedia/>

@@ -52,8 +52,9 @@ export const signInWithGoogle = () => signInWithPopup(auth, provider); // 1- aut
  */
 //Collection references
 export const collUsers = collection(db, "users");
+export const collTwitchLinks = collection(db, "twitchLinks");
 
 //Doc references
 //TODO: Tambien recuerda que la referencia es a un documento, no te importa si se va a crear, actualizar o borrar.
 //TODO: Lo digo porque en la pagina de Login llamabas a la referencia "newUserRef" y al final la referencia es al doc, da igual si es nuevo, existe o que. ;)
-export const refUser = (userId) => doc(collUsers, userId);
+export const refUser = (userId) => doc(collUsers, userId)

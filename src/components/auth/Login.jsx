@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth.context.js";
 // Axios Services Firebase
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, getAuth } from "firebase/auth";
-import { auth, collUsers, refUser } from "../../firebase";
+import { auth, collUsers, refUser, db } from "../../firebase";
+import { collection, getDocs } from 'firebase/firestore'
+
 // Firebase Database
 import { setDoc } from "firebase/firestore";
 // CSS
@@ -25,6 +27,8 @@ function Login() {
   // ErrorMessage from BE
   const [errorMessage, setErrorMessage] = useState("");
   const [isFetching, setIsFetching] = useState(false);
+
+  let emailExists = false
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -63,6 +67,9 @@ function Login() {
       const email = result.user.email;
       console.log(`email --> ${email}, id: ${userId}`);
 
+      // user exists??
+
+
       // Create user in the DB
       //TODO: Otras recomendaciones no relativas al problema
       /**
@@ -76,7 +83,32 @@ function Login() {
       //TODO: Te dejo esto comentado para mostrarte que lo que te digo del archivo funciona y como se usa. Tu si luego no quieres hacerlo lo descomentas y lo pones como estaba.
       // const userRef = collection(db, "users");
       // const newUserRef = doc(userRef, userId);
-      console.log("fer-userRef: ", collUsers);
+      const users = []
+      const querySnapshot = await getDocs(collUsers)
+      console.log("querySnapshot", querySnapshot)
+
+      querySnapshot.forEach((doc) => {
+        users.push({ ...doc.data(), id: doc.id })
+      })
+      console.log("users", users);
+      users.forEach((each) => {
+        if (each.email === email) {
+          emailExists = true
+        }
+
+      })
+      console.log("emailExists", emailExists);
+      if (!emailExists) {
+        const newUser = new User(userId, email, [], [], [], "user");
+        console.log("fer-newUser: ", newUser);
+        await setDoc(refUser(userId), newUser.toJson());
+
+        setIsFetching(false);
+
+        navigate("/");
+      }
+
+
 
       // TODO: Aqui deberias comprobar si el usuario existe. Si lo hace no guardas nada, sino lo creas.
       /**
@@ -117,8 +149,8 @@ function Login() {
        * Ademas asi es mucho mas facil crear objetos y no liarla en el nombre, el orden, etc.
        */
       //TODO: El error estaba aqui, al menos al cambiarlo se ha solucionado.
-      const newUser = new User(userId, email, [], [], [], "ERROR AQUI");
-      
+      // const newUser = new User(userId, email, [], [], [], "user");
+
       //! Tu codigo antiguo
       // const newUser = {
       //   id: userId,
@@ -129,7 +161,6 @@ function Login() {
       //   role: ""
       // };
 
-      console.log("fer-newUser: ", newUser);
 
       //TODO: Esto es usando el nuevo archivo de referencias mencionado arriba
       //TODO: Con la clase nueva que he creado del "User" no puedes meterlo directamente a firebase porque te dice que ese objeto no lo reconoce. Para ello
@@ -138,11 +169,7 @@ function Login() {
        * me gusta hacerlo asi para tener una vision mas clara y mayor control sobre los datos y como se guardan. Ademas el JSon.stringify te va a convertir todo,
        * incluidos los Timestamps que si te los acepta firebase.
        */
-      await setDoc(refUser(userId), newUser.toJson());
 
-      setIsFetching(false);
-
-      navigate("/");
     } catch (error) {
       console.log("fer-error:", error);
       // Handle Errors here.
@@ -221,7 +248,7 @@ class User {
       cart: this.cart,
       orders: this.orders,
       youtubeReproductionList: this.youtubeReproductionList,
-      role: this.role
+      role: this.role,
     };
   }
 }
