@@ -7,7 +7,6 @@ body {
 
 .cart-container{
   margin-top: 200px;
-  border: 6px solid red;
   width: 70%;
   margin:auto
 }
@@ -36,7 +35,6 @@ thead {
   background-color: #f5f5f5;
 }
 tr{
-  border:2px solid blue;
   width: 100%;
   margin: auto
 }
@@ -108,7 +106,6 @@ h2 {
 }
 
 #paypal-button-container {
-  border: 2px solid green;
   width: 80%;
   margin: auto;
   display: flex;

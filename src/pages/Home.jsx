@@ -69,7 +69,7 @@ function Home() {
       </div>
       {isAdmin &&
       
-      <Link to="/edit-twitch-link">
+      <Link to={`/twitch-link/${listTwitchLink[0].id}/edit`}>
       <button>Editar TwitchLink</button>
       </Link>
       }

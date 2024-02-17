@@ -6,9 +6,8 @@
 
 }
 .button-container{
-    border: solid 2px pink;
     margin-top: 300px;
-    width:90%;
+    width:70%;
     margin: auto;
     display:flex;
     justify-content: center;
@@ -17,6 +16,7 @@
 }
 @media screen and (max-width: 1024px) {
     .button-container{
+        
         flex-direction: column;
     }
 }

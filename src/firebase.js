@@ -53,6 +53,7 @@ export const signInWithGoogle = () => signInWithPopup(auth, provider); // 1- aut
 //Collection references
 export const collUsers = collection(db, "users");
 export const collTwitchLinks = collection(db, "twitchLinks");
+export const collOrders = collection(db, "orders")
 
 //Doc references
 //TODO: Tambien recuerda que la referencia es a un documento, no te importa si se va a crear, actualizar o borrar.

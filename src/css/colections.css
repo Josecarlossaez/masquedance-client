@@ -1,12 +1,9 @@
 
 
 .main-products-container{
-    border: 2px solid red;
     margin-top: 30px;
 }
 .products-container{
-    border: 2px solid green;
-
     width:70%;
     min-height: 70vh;
     margin: auto;

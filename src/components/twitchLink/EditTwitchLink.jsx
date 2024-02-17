@@ -3,15 +3,16 @@ import React, { useEffect } from 'react'
 import "../../css/product/create-product.css"
 // React
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 // Services FIREBASE
 import { setDoc, doc, getDocs } from 'firebase/firestore'
 import { storage } from '../../firebase'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { collTwitchLinks } from '../../firebase';
 
-function EditTwitchLink() {
+function EditTwitchLink(props) {
     const navigate = useNavigate();
+    const {twitchLinkId} = useParams()
     // input values
     const [linkInput, setLinkInput] = useState("")
     const [pictureURL, setPictureUrl] = useState("");
@@ -67,14 +68,13 @@ function EditTwitchLink() {
     };
 
     // Send the input values to BE
-    const handleCreateTwitchLink = async (e) => {
+    const handleEditTwitchLink = async (e) => {
         e.preventDefault();
 
         try {
 
-            const newTwitchLinkRef = doc(collTwitchLinks)
+            const newTwitchLinkRef = doc(collTwitchLinks,twitchLinkId)
             await setDoc(newTwitchLinkRef, {
-                id: newTwitchLinkRef.id,
                 link: linkInput,
                 picture: pictureURL,
 
@@ -124,10 +124,10 @@ function EditTwitchLink() {
 
                     <button
                         type="submit"
-                        onClick={handleCreateTwitchLink}
+                        onClick={handleEditTwitchLink}
                         className="general-btn"
                     >
-                        Crear TwitchLink
+                        Editar TwitchLink
                     </button>
                     {errorMessage !== "" && (
                         <p className="error-message"> * {errorMessage}</p>

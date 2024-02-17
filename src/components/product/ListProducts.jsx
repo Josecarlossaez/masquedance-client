@@ -28,7 +28,7 @@ function ListProducts() {
     const querySnapshot = await getDocs(collection(db, "products"));
     console.log("querySnapshot", querySnapshot)
     querySnapshot.forEach((doc) => {
-      docs.push({...doc.data(), id:doc.id})
+      docs.push({...doc.data()})
       setListProduct(docs)
     })
     setIsFetching(false)

@@ -179,17 +179,13 @@ function Cart() {
           newItem.subtotal = item.cantidad * item.price;
           return newItem;
         })
-        );
-        
-        
+        );  
         console.log("stockFail justo antes del return", stockFail);
         if (stockFail) {
           return;
-        }
-        
+        }    
         console.log("order dentro de continuarCompra", order);
-        
-        
+ 
       } catch (error) {
         // Manejar errores, si es necesario
       console.error("Error al procesar las cantidades", error);

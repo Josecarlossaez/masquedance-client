@@ -65,6 +65,8 @@
     .socialMedia-links-container {
         width: 100%;
         justify-content: center;
+        margin-top: 10px;
+        margin-bottom: -20px;
        
     }
     .socialMedia-links-container img{

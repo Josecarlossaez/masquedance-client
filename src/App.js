@@ -60,7 +60,7 @@ function App() {
       <Route path='/dj/:djId/details' element= {<DjDetails/>}/>
       <Route path='/dj/:djId/update' element= {<UpdateDj/>}/>
       <Route path='/account' element= {<MyAccount/>}/>
-      <Route path='/edit-twitch-link' element= {<EditTwitchLink/>}/>
+      <Route path="/twitch-link/:twitchLinkId/edit" element= {<EditTwitchLink/>}/>
    
         <Route path='/' element= {<Building/>}/>
       
