@@ -4,9 +4,9 @@ import "../../css/product/edit-product.css"
 // Utilities
 import Select from "react-select";
 // Services Firebase
-import { collection,doc,getDoc, updateDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase'
-import { auth, storage,} from '../../firebase.js'
+import { auth, storage, } from '../../firebase.js'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 
 const colorOptions = [
@@ -58,7 +58,7 @@ function EditProduct() {
   const handleStockLInput = (e) => setStockLInput(e.target.value);
   const handleStockXLInput = (e) => setStockXLInput(e.target.value);
   const handleStockXXLInput = (e) => setStockXXLInput(e.target.value);
- 
+
 
 
   useEffect(() => {
@@ -70,7 +70,7 @@ function EditProduct() {
       const product = doc(db, 'products', productId)
       const productById = await getDoc(product)
       setDetails(productById.data());
-      console.log("productByIdData",productById.data());
+      console.log("productByIdData", productById.data());
       setIsFetching(false);
       const { name, price, description, color, stock, picture, size, contieneTallas } =
         productById.data();
@@ -90,44 +90,44 @@ function EditProduct() {
       navigate("/error")
     }
   };
-  console.log("details del product-->" , details)
+  console.log("details del product-->", details)
 
-// Firebase storagePicture
-const handlePictureChange = async (e) => {
-  console.log("e.target picture", e.target.files[0])
-  setIsLoadingPicture(true)
-  const image = e.target.files[0]
-      // * upload image to firebaseStorage
+  // Firebase storagePicture
+  const handlePictureChange = async (e) => {
+    console.log("e.target picture", e.target.files[0])
+    setIsLoadingPicture(true)
+    const image = e.target.files[0]
+    // * upload image to firebaseStorage
     try {
-   
-      console.log("image.name", image.name);
-    // 1 - Location where the picture is gonna be saved
-    const storageRef = ref(storage, `images/${image.name}`) // 1- storage, 2-image-name-URL || 1 {the ref}, 2 {file it-self}
-    // 2 - uploading the picture to firebase storage
-    const snapShot = await uploadBytes(storageRef, image)
-    // 3 - picture Url
-    const downloadUrl = await getDownloadURL(snapShot.ref)
-    console.log("downloadUrl", downloadUrl);
-    setPictureUrl(downloadUrl)
-  setIsLoadingPicture(false)
 
-    // 4 - new doc
-  }catch(error){
-    navigate("/error");
-  }  
-     
-};
+      console.log("image.name", image.name);
+      // 1 - Location where the picture is gonna be saved
+      const storageRef = ref(storage, `images/${image.name}`) // 1- storage, 2-image-name-URL || 1 {the ref}, 2 {file it-self}
+      // 2 - uploading the picture to firebase storage
+      const snapShot = await uploadBytes(storageRef, image)
+      // 3 - picture Url
+      const downloadUrl = await getDownloadURL(snapShot.ref)
+      console.log("downloadUrl", downloadUrl);
+      setPictureUrl(downloadUrl)
+      setIsLoadingPicture(false)
+
+      // 4 - new doc
+    } catch (error) {
+      navigate("/error");
+    }
+
+  };
 
   // Send the input values to BE
   const handleUpdateProduct = async (e) => {
     e.preventDefault();
 
     // const productUpdate = {
-      
+
     // };
 
     try {
-      const productToUpdate =  doc(db, "products", productId);
+      const productToUpdate = doc(db, "products", productId);
       const updatedProduct = {
         name: nameInput,
         price: priceInput,
@@ -142,7 +142,7 @@ const handlePictureChange = async (e) => {
             name: "S",
             stock: stockSInput
           },
-         {
+          {
             name: "M",
             stock: stockMInput
           },
@@ -160,11 +160,11 @@ const handlePictureChange = async (e) => {
           },
         ],
       }
-    console.log("updated Product", updatedProduct);
-await updateDoc(productToUpdate, updatedProduct );
-      
-    
-    
+      console.log("updated Product", updatedProduct);
+      await updateDoc(productToUpdate, updatedProduct);
+
+
+
       navigate("/admin");
     } catch (error) {
       console.log("error al actualizar el producto", error)
@@ -233,71 +233,71 @@ await updateDoc(productToUpdate, updatedProduct );
 
           {!contieneTallasInput &&
             <div className="input-container">
-            <input value={stockInput} onChange={handleStockInput} />
+              <input value={stockInput} onChange={handleStockInput} />
 
-            <label className={stockInput && "filled"} htmlFor="stock">
-              Stock
-            </label>
-          </div>
-           }
+              <label className={stockInput && "filled"} htmlFor="stock">
+                Stock
+              </label>
+            </div>
+          }
           {contieneTallasInput &&
-          <div>
-          <div className="input-container">
-            <input value={stockSInput} onChange={handleStockSInput} />
-            <label className={stockSInput && "filled"} htmlFor="StockTallaS">
-              Talla S Stock
-            </label>
-          </div>
-
-          <div className="input-container">
-            <input value={stockMInput} onChange={handleStockMInput} />
-
-            <label className={stockMInput && "filled"} htmlFor="stocTallaM">
-              Stock talla M
-            </label>
-          </div>
-
-          <div className="input-container">
-            <input value={stockLInput} onChange={handleStockLInput} />
-
-            <label className={stockLInput && "filled"} htmlFor="stock">
-              Stock talla L
-            </label>
-          </div>
-
-          <div className="input-container">
-            <input value={stockXLInput} onChange={handleStockXLInput} />
-
-            <label className={stockXLInput && "filled"} htmlFor="stock">
-              Stock talla XL
-            </label>
-          </div>
-
-          <div className="input-container">
-            <input value={stockXXLInput} onChange={handleStockXXLInput} />
-
-            <label className={stockXXLInput && "filled"} htmlFor="stock">
-              Stock talla XXL
-            </label>
-          </div>
-
-          <div className="input-container">
-            <div className="select-size">
-              <div className="name-select">
-                <h4>Color</h4>
+            <div>
+              <div className="input-container">
+                <input value={stockSInput} onChange={handleStockSInput} />
+                <label className={stockSInput && "filled"} htmlFor="StockTallaS">
+                  Talla S Stock
+                </label>
               </div>
-              <div className="select-input">
-                <Select
-                  defaultValue={colorInput}
-                  onChange={handleColorChange}
-                  options={colorOptions}
-                />
+
+              <div className="input-container">
+                <input value={stockMInput} onChange={handleStockMInput} />
+
+                <label className={stockMInput && "filled"} htmlFor="stocTallaM">
+                  Stock talla M
+                </label>
+              </div>
+
+              <div className="input-container">
+                <input value={stockLInput} onChange={handleStockLInput} />
+
+                <label className={stockLInput && "filled"} htmlFor="stock">
+                  Stock talla L
+                </label>
+              </div>
+
+              <div className="input-container">
+                <input value={stockXLInput} onChange={handleStockXLInput} />
+
+                <label className={stockXLInput && "filled"} htmlFor="stock">
+                  Stock talla XL
+                </label>
+              </div>
+
+              <div className="input-container">
+                <input value={stockXXLInput} onChange={handleStockXXLInput} />
+
+                <label className={stockXXLInput && "filled"} htmlFor="stock">
+                  Stock talla XXL
+                </label>
+              </div>
+
+              <div className="input-container">
+                <div className="select-size">
+                  <div className="name-select">
+                    <h4>Color</h4>
+                  </div>
+                  <div className="select-input">
+                    <Select
+                      defaultValue={colorInput}
+                      onChange={handleColorChange}
+                      options={colorOptions}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          </div>
-           
-          
+
+
           }
 
           <div className="uploader-pic">

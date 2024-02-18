@@ -65,6 +65,8 @@ function Login() {
       console.log("user en al auth", result.user);
       const userId = result.user.uid;
       const email = result.user.email;
+      const picture = "https://firebasestorage.googleapis.com/v0/b/msqdance-87134.appspot.com/o/images%2Fuser-picture.png?alt=media&token=51a8ab7b-9b14-4e5b-be7b-52e319ed18c2"
+      const userName = ""
       console.log(`email --> ${email}, id: ${userId}`);
 
       // user exists??
@@ -99,7 +101,7 @@ function Login() {
       })
       console.log("emailExists", emailExists);
       if (!emailExists) {
-        const newUser = new User(userId, email, [], [], [], "user");
+        const newUser = new User(userName,picture,userId, email, [], [], [], "user");
         console.log("fer-newUser: ", newUser);
         await setDoc(refUser(userId), newUser.toJson());
 
@@ -232,7 +234,9 @@ function Login() {
 export default Login;
 
 class User {
-  constructor(id, email, cart, orders, youtubeReproductionList, role) {
+  constructor(userName,picture, id, email, cart, orders, youtubeReproductionList, role) {
+    this.userName = userName;
+    this.picture = picture;
     this.id = id;
     this.email = email;
     this.cart = cart;
@@ -243,6 +247,8 @@ class User {
 
   toJson() {
     return {
+      userName: this.userName,
+      picture: this.picture,
       id: this.id,
       email: this.email,
       cart: this.cart,

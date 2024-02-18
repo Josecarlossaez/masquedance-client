@@ -21,6 +21,8 @@ import CreateTwitchLink from "../components/twitchLink/CreateTwitchLink";
 import CreateVideo from "../components/videos/CreateVideo";
 import CreateBlog from "../components/blog/CreateBlog";
 import Orders from "../components/Orders/Orders";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 
 
 
@@ -39,6 +41,33 @@ function Admin() {
     const [createVideo, setCreateVideo] = useState(false)
     const [createBlog, setCreateBlog] = useState(false)
     const [listOrders, setListOrders] = useState(false)
+
+    // State to send props to Orders component
+    const [orders, setOrders] = useState()
+    const [isFetching, setIsFetching] = useState(true);
+
+    useEffect(() => {
+      getData()
+  }, [])
+
+  const getData = async () => {
+      const docs = []
+      const querySnapshot = await getDocs(collection(db, "orders"));
+      console.log("querySnapshot", querySnapshot)
+      querySnapshot.forEach((doc) => {
+          docs.push({ ...doc.data() })
+          setOrders(docs)
+         
+      })
+      setIsFetching(false)
+  }
+  if (isFetching === true) {
+    return <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+}
      
     // Toogle components
     const handleCreateProduct = () =>{
@@ -193,7 +222,7 @@ function Admin() {
       <div   id={activeHashlink &&'admin-components'}>
         {/* Create Product component */}
        {listProduct && <ListProducts/>}
-       {listOrders && <Orders/>}
+       {listOrders && <Orders orders={orders}/>}
        {createProduct && <CreateProduct/>}
        {createColection && <CreateColection/>}
        {createTrack && <CreateTrack/>}

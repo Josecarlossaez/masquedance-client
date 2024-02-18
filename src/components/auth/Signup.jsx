@@ -59,12 +59,14 @@ function Signup() {
       const newUserRef = doc(userRef, userId);
 
       await setDoc(newUserRef, {
+        userName:"",
         id: userId,
         email: email,
         cart: [],
         orders: [],
         youtubeReproductionList: [],
-        role: "user"
+        role: "user",
+        picture:"https://firebasestorage.googleapis.com/v0/b/msqdance-87134.appspot.com/o/images%2Fuser-picture.png?alt=media&token=51a8ab7b-9b14-4e5b-be7b-52e319ed18c2"
       });
       setIsFetching(false);
       navigate("/");

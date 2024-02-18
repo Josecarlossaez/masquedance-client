@@ -7,6 +7,7 @@ import "../../css/orders/orderDetails.css"
 import { AuthContext } from '../../context/auth.context';
 
 
+
 function OrderDetails() {
     const { orderId } = useParams();
     const { isAdmin } = useContext(AuthContext)
@@ -20,7 +21,7 @@ function OrderDetails() {
     useEffect(() => {
         getData();
     }, []);
-
+    console.log("Pleas, la fecha de hoy -->", date);
     const getData = async () => {
         try {
             console.log("orderId", orderId)
@@ -35,14 +36,18 @@ function OrderDetails() {
     const handleUpdateOrder = async () => {
         try {
             const orderToUpdate = doc(db, "orders", orderId)
-            await updateDoc(orderToUpdate,{sent:"enviado"})
+            await updateDoc(orderToUpdate, { 
+                sent: date,
+                state: "Enviado"
+             })
             alert("Pedido actualizado correctamente")
-            
+            Navigate("/admin")
+
         } catch (error) {
             console.log(error)
             Navigate("/error")
         }
-        
+
     }
 
     if (isFetching === true) {
@@ -56,12 +61,14 @@ function OrderDetails() {
         <div className='order-details-container'>
             <div className="cart-container">
                 <div className='order-header'>
-                    <h4>Número de Pedido: {OrderDetails.orderNumber}</h4>
-                    <h4>Pedido realizado el: {`${OrderDetails.orderNumber.toString().slice(6, 8)}-${OrderDetails.orderNumber.toString().slice(4, 6)}-${OrderDetails.orderNumber.toString().slice(0, 4)} `}</h4>
-                    <h4>Estado del pedido: {OrderDetails.state}</h4>
-                    {!OrderDetails.sent === "" &&
-                        <h4>Enviado el:{OrderDetails.sent} </h4>
+                    <h4>Número de Pedido: <span class="order-number">{OrderDetails.orderNumber}</span></h4>
+                    <h4>Pedido realizado el: <span class="order-date">{`${OrderDetails.orderNumber.toString().slice(6, 8)}-${OrderDetails.orderNumber.toString().slice(4, 6)}-${OrderDetails.orderNumber.toString().slice(0, 4)} `}</span></h4>
+                    <h4>Estado del pedido: <span class="order-status">{OrderDetails.state}</span></h4>
+                    {OrderDetails.sent !== "" &&
+                        <h4> Fecha de envío: <span class="shipped-date">{OrderDetails.sent}</span> </h4>
                     }
+                    <h2>Total: <span class="total-amount">{OrderDetails.total}€</span></h2> <p><span class="shipping-cost">( 7€ de gastos de envío)</span>.</p>
+
                     <h3>Detalles del pedido:</h3>
                 </div>
 
@@ -92,21 +99,25 @@ function OrderDetails() {
                     </tbody>
                 </table>
             </div>
-            <div>
-                <h2>Total: {OrderDetails.total}€</h2> <p>{`( 7€ de gastos de envío)`}.</p>
-            </div>
             <hr />
-            <div>
-               <label htmlFor="">Fecha</label>
-               <button
-            type="submit"
-            onClick={handleUpdateOrder}
-            className="general-btn"
-          >
-            Marcar como enviado
-          </button>
 
-            </div>
+            {
+                isAdmin && OrderDetails.sent ==="" &&
+                <div className='date-selection'>
+                    <label htmlFor="">Fecha</label>
+                    <input type="date" onChange={e => setDate(e.target.value)} />
+                    {/* <DatePicker selected={date} onChange={(date) => setDate(date)} /> */}
+                    <button
+                        type="submit"
+                        onClick={handleUpdateOrder}
+                        className="general-btn"
+                    >
+                        Marcar como enviado
+                    </button>
+
+                </div>
+            }
+
         </div>
     )
 }

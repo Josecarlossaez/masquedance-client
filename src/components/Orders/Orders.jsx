@@ -11,9 +11,10 @@ import { useNavigate, Link } from "react-router-dom";
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../../firebase'
 
-function Orders() {
+function Orders(props) {
+    const {orders} = props
     const navigate = useNavigate();
-
+     
     // States
     const [isFetching, setIsFetching] = useState(true);
     const [listOrders, setListOrders] = useState()
@@ -29,14 +30,11 @@ function Orders() {
     }, [])
 
     const getData = async () => {
-        const docs = []
-        const querySnapshot = await getDocs(collection(db, "orders"));
-        console.log("querySnapshot", querySnapshot)
-        querySnapshot.forEach((doc) => {
-            docs.push({ ...doc.data() })
-            setListOrders(docs)
-            setOrdersListSearch(docs)
-        })
+       
+    
+            setListOrders(orders)
+            setOrdersListSearch(orders)
+  
         setIsFetching(false)
     }
 
@@ -66,15 +64,15 @@ function Orders() {
     return (
         <div>
             <h1>Listado de Pedidos</h1>
-            <div className="input-container" style={{width:"350px", margin:"auto"}}>
-                <input
+            <div className="input-container" style={{width:"350px", margin:"auto", border:"solid 2px darkgrey"}}>
+                <input style={{backgroundColor:"transparent"}}
                     value={searchInput}
                     onChange={handleSearchChange}
                 />
 
-                <label
+                <label style={{backgroundColor:"transparent"}}
                     className={searchInput && "filled"}
-                    htmlFor="description"
+                    htmlFor="Buscar"
                 >
                     Buscar 
                 </label>

@@ -108,7 +108,7 @@ function StripeCheckoutForm(props) {
       setIsFetching(false) 
   
       newOrder.id = newOrderRef.id
-      newOrder.state = "pending"
+      newOrder.state = "pendiente"
       newOrder.orderNumber = orderNumber
       await setDoc(newOrderRef, newOrder)
       const userToUpdate = doc(db, "users", user.id)

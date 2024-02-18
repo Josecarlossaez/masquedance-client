@@ -1,28 +1,99 @@
-
-.order-details-container{
-    width: 70%;
-    margin: auto;
+/* Estilos generales */
+.order-details-container {
     margin-top: 40px;
-    min-height: 90vh;
-}
-.order-header{
-    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
 }
-@media screen and (max-width:768px) {
-    .order-details-container{
-        width: 90%;
-        margin: auto;
-        margin-top: 40px;
-        min-height: 90vh;
+
+.cart-container {
+    width: 70%;
+    margin-bottom: 20px;
+}
+
+.order-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f2f2f2;
+}
+
+.table img {
+    max-width: 100px;
+    height: auto;
+}
+
+.date-selection {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.date-selection label, .date-selection input {
+    margin-right: 10px;
+}
+
+/* Estilos para dispositivos de 1024px */
+@media screen and (max-width: 1024px) {
+    .order-details-container {
+        flex-direction: column;
     }
-    .table{
-        width: 100%;
-        margin: auto;
+}
+
+/* Estilos para dispositivos de 768px */
+@media screen and (max-width: 768px) {
+    .cart-container {
+        width: 95%;
     }
-    .order-header h4{
-        font-size: 14px;
+}
+
+/* Estilos para dispositivos de 480px */
+@media screen and (max-width: 480px) {
+    .table th, .table td {
+        padding: 6px;
     }
+}
+
+/* Estilos para spans */
+.order-number {
+    font-weight: bold;
+    color: blue;
+}
+
+.order-date {
+    font-style: italic;
+    color: green;
+}
+
+.order-status {
+    color: red;
+}
+
+.shipped-date {
+    font-weight: bold;
+    color: #f7941d; /* Naranja */
+}
+
+.total-amount {
+    font-weight: bold;
+    color: #5c3c92; /* Morado */
+}
+
+.shipping-cost {
+    font-style: italic;
+    color: #009688; /* Verde */
 }
