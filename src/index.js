@@ -10,14 +10,15 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { AuthWrapper } from "./context/auth.context";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+// Calendar to admin
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   //<React.StrictMode>
-  <PayPalScriptProvider options={{"client-id": process.env.REACT_APP_PAYPAL_CLIENT_ID}}>
+  <PayPalScriptProvider options={{ "client-id": process.env.REACT_APP_PAYPAL_CLIENT_ID }}>
     <BrowserRouter>
       <AuthWrapper>
-        <App />
+          <App />
       </AuthWrapper>
     </BrowserRouter>
   </PayPalScriptProvider>

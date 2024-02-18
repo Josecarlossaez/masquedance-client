@@ -29,6 +29,7 @@ import { useContext } from "react"
 import Building from './pages/Building';
 import Footer from './components/Footer/Footer';
 import EditTwitchLink from './components/twitchLink/EditTwitchLink';
+import OrderDetails from './components/Orders/OrderDetails';
 
 function App() {
   const {isAdmin} = useContext(AuthContext)
@@ -61,6 +62,7 @@ function App() {
       <Route path='/dj/:djId/update' element= {<UpdateDj/>}/>
       <Route path='/account' element= {<MyAccount/>}/>
       <Route path="/twitch-link/:twitchLinkId/edit" element= {<EditTwitchLink/>}/>
+      <Route path="/orders/:orderId/details" element= {<OrderDetails/>}/>
    
         <Route path='/' element= {<Building/>}/>
       

@@ -34,20 +34,6 @@ function DetailsProduct() {
     getData();
   }, []);
 
-  // useEffect(() => {
-  //   if (listColection) {
-  //     searchProductInColection();
-  //   }
-  // }, [listColection]);
-  // // Get the product Details data from API
-  // useEffect(() => {
-  //   if (shouldRefreshPage) {
-  //     getData();
-  //     setShouldRefreshPage(false);
-  //     searchProductInColection();
-  //   }
-  // }, [shouldRefreshPage]);
-
   const getData = async () => {
     try {
       console.log("productId", productId)
@@ -59,73 +45,6 @@ function DetailsProduct() {
       navigate("/error");
     }
   };
-  console.log("no hace esto",productDetails)
-  // const searchProductInColection = () => {
-  //   console.log("listColection", listColection);
-  //   setIsFetching(true);
-  //   listColection?.forEach((each) => {
-  //     each.products.forEach((p) => {
-  //       if (p === productId) {
-  //         console.log("p", p);
-  //         console.log("each.name", each._id);
-  //         setProductInColection(p);
-  //         setProductInColectionId(each._id);
-  //       }
-  //     });
-  //     setIsFetching(false);
-  //   });
-  // };
-
-  // Choose Colection
-  // const handleColectionChange = (e) => setColectionId(e.target.value);
-
-  // Call Service
-
-  // const handleAddToColection = async (e) => {
-  //   e.preventDefault();
-  //   const productId2 = { productId: productId };
-  //   if(colectionId === undefined){
-  //     setErrorMessage("Tienes que seleccionar una colección")
-  //     return setTimeout(()=> {
-  //      setErrorMessage("")
-  //     },4000)
-  //   }
-
-  //   try {
-  //     await addProductToColectionService(colectionId, productId2);
-  //     setOkMessage("Producto añadido correctamente");
-  //     setTimeout(() => {
-  //       setShouldRefreshPage(true);
-  //       setOkMessage("");
-  //     }, 2000);
-  //   } catch (error) {
-  //     if (
-  //       (error.response && error.response.status === 406) ||
-  //       (error.response && error.response.status === 400)
-  //     ) {
-  //       setErrorMessage(error.response.data.errorMessage);
-
-  //       console.log("error", error.response.data.errorMessage);
-  //     } else {
-  //       navigate("/error");
-  //     }
-  //   }
-  // };
-
-  // REMOVE PRODUCT TO COLECTION
-  // const handleRemoveToColection = async () => {
-  //   const colectionId = productInColectionId;
-  //   const productId2 = { productId: productId };
-  //   try {
-  //     await removeProductToColectionService(colectionId, productId2);
-  //     setOkMessage("Producto eliminado de la colección correctamente");
-  //     setTimeout(() => {
-  //       navigate("/list-products");
-  //     }, 2000);
-  //   } catch (error) {
-  //     navigate("/error");
-  //   }
-  // };
 
   // REMOVE PRODUCT 
   const handleRemoveProduct = async () => {

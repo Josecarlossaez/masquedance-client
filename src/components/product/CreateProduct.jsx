@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { storage, db } from '../../firebase.js'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 // import { doc} from 'firebase/firestore'
-import { collection, doc,setDoc } from 'firebase/firestore'
+import { collection, doc, setDoc } from 'firebase/firestore'
 
 
 
@@ -63,19 +63,19 @@ function CreateProduct() {
   const handleColorChange = (e) => setColorInput(e.value);
   const handleContieneTallasChange = (e) => setContieneTallasInput(e.value);
 
-useEffect(() => {
-  
-console.log("contieneTAllas", contieneTallasInput)
-  
-}, [contieneTallasInput])
+  useEffect(() => {
+
+    console.log("contieneTAllas", contieneTallasInput)
+
+  }, [contieneTallasInput])
 
 
   const handlePictureChange = async (e) => {
-      setIsLoadingPicture(true)
-       const image = e.target.files[0]
-        // * upload image to firebaseStorage
-      try {
-     
+    setIsLoadingPicture(true)
+    const image = e.target.files[0]
+    // * upload image to firebaseStorage
+    try {
+
       // 1 - Location where the picture is gonna be saved
       const storageRef = ref(storage, `images/${image.name}`) // 1- storage, 2-image-name-URL || 1 {the ref}, 2 {file it-self}
       // 2 - uploading the picture to firebase storage
@@ -86,10 +86,10 @@ console.log("contieneTAllas", contieneTallasInput)
       setIsLoadingPicture(false)
 
       // 4 - new doc
-    }catch(error){
+    } catch (error) {
       navigate("/error");
-    }  
-       
+    }
+
   };
 
   // Send the input values to BE
@@ -97,50 +97,50 @@ console.log("contieneTAllas", contieneTallasInput)
     e.preventDefault();
 
     try {
-      const  productRef = collection(db,'products');
+      const productRef = collection(db, 'products');
       const newProductDocRef = doc(productRef);
 
-     
-        await setDoc(newProductDocRef,{
-                  id: newProductDocRef.id,
-      name: nameInput,
-      price: priceInput,
-      color: colorInput,
-      picture: pictureURL,
-      description: descriptionInput,
-      cantidad: 1,
-      contieneTallas: contieneTallasInput,
-      size: [
-        {
-          name: "S",
-          stock: stockSInput
-        },
-       {
-          name: "M",
-          stock: stockMInput
-        },
-        {
-          name: "L",
-          stock: stockLInput
-        },
-        {
-          name: "XL",
-          stock: stockXLInput
-        },
-        {
-          name: "XXL",
-          stock: stockXXLInput
-        },
-      ]
-    
-      
-    })
-      
+
+      await setDoc(newProductDocRef, {
+        id: newProductDocRef.id,
+        name: nameInput,
+        price: priceInput,
+        color: colorInput,
+        picture: pictureURL,
+        description: descriptionInput,
+        cantidad: 1,
+        contieneTallas: contieneTallasInput,
+        size: [
+          {
+            name: "S",
+            stock: stockSInput
+          },
+          {
+            name: "M",
+            stock: stockMInput
+          },
+          {
+            name: "L",
+            stock: stockLInput
+          },
+          {
+            name: "XL",
+            stock: stockXLInput
+          },
+          {
+            name: "XXL",
+            stock: stockXXLInput
+          },
+        ]
+
+
+      })
+
 
       alert("Producto añadido correctamente")
       window.location.reload(false)
     } catch (error) {
-     console.log(error)
+      console.log(error)
     }
   };
 
@@ -191,77 +191,77 @@ console.log("contieneTAllas", contieneTallasInput)
             </div>
           </div>
 
-           {!contieneTallasInput &&
+          {!contieneTallasInput &&
             <div className="input-container">
-            <input value={stockInput} onChange={handleStockInput} />
+              <input value={stockInput} onChange={handleStockInput} />
 
-            <label className={stockInput && "filled"} htmlFor="stock">
-              Stock
-            </label>
-          </div>
-           }
+              <label className={stockInput && "filled"} htmlFor="stock">
+                Stock
+              </label>
+            </div>
+          }
           {contieneTallasInput &&
-          <div>
-          <div className="input-container">
-            <input value={stockSInput} onChange={handleStockSInput} />
-            <label className={stockSInput && "filled"} htmlFor="StockTallaS">
-              Talla S Stock
-            </label>
-          </div>
-
-          <div className="input-container">
-            <input value={stockMInput} onChange={handleStockMInput} />
-
-            <label className={stockMInput && "filled"} htmlFor="stocTallaM">
-              Stock talla M
-            </label>
-          </div>
-
-          <div className="input-container">
-            <input value={stockLInput} onChange={handleStockLInput} />
-
-            <label className={stockLInput && "filled"} htmlFor="stock">
-              Stock talla L
-            </label>
-          </div>
-
-          <div className="input-container">
-            <input value={stockXLInput} onChange={handleStockXLInput} />
-
-            <label className={stockXLInput && "filled"} htmlFor="stock">
-              Stock talla XL
-            </label>
-          </div>
-
-          <div className="input-container">
-            <input value={stockXXLInput} onChange={handleStockXXLInput} />
-
-            <label className={stockXXLInput && "filled"} htmlFor="stock">
-              Stock talla XXL
-            </label>
-          </div>
-
-          <div className="input-container">
-            <div className="select-size">
-              <div className="name-select">
-                <h4>Color</h4>
+            <div>
+              <div className="input-container">
+                <input value={stockSInput} onChange={handleStockSInput} />
+                <label className={stockSInput && "filled"} htmlFor="StockTallaS">
+                  Talla S Stock
+                </label>
               </div>
-              <div className="select-input">
-                <Select
-                  defaultValue={colorInput}
-                  onChange={handleColorChange}
-                  options={colorOptions}
-                />
+
+              <div className="input-container">
+                <input value={stockMInput} onChange={handleStockMInput} />
+
+                <label className={stockMInput && "filled"} htmlFor="stocTallaM">
+                  Stock talla M
+                </label>
+              </div>
+
+              <div className="input-container">
+                <input value={stockLInput} onChange={handleStockLInput} />
+
+                <label className={stockLInput && "filled"} htmlFor="stock">
+                  Stock talla L
+                </label>
+              </div>
+
+              <div className="input-container">
+                <input value={stockXLInput} onChange={handleStockXLInput} />
+
+                <label className={stockXLInput && "filled"} htmlFor="stock">
+                  Stock talla XL
+                </label>
+              </div>
+
+              <div className="input-container">
+                <input value={stockXXLInput} onChange={handleStockXXLInput} />
+
+                <label className={stockXXLInput && "filled"} htmlFor="stock">
+                  Stock talla XXL
+                </label>
+              </div>
+
+              <div className="input-container">
+                <div className="select-size">
+                  <div className="name-select">
+                    <h4>Color</h4>
+                  </div>
+                  <div className="select-input">
+                    <Select
+                      defaultValue={colorInput}
+                      onChange={handleColorChange}
+                      options={colorOptions}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          </div>
-           
-          
-          }
-          
 
-          
+
+          }
+
+
+
 
           <div className="uploader-pic">
             <input onChange={handlePictureChange} type="file" name="picture" />
