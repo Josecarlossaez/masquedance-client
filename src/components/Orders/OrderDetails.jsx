@@ -1,6 +1,6 @@
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useContext, useEffect, useState } from 'react'
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../firebase';
 // CSS
 import "../../css/orders/orderDetails.css"
@@ -11,6 +11,7 @@ import { AuthContext } from '../../context/auth.context';
 function OrderDetails() {
     const { orderId } = useParams();
     const { isAdmin } = useContext(AuthContext)
+    const navigate = useNavigate()
 
 
     const [OrderDetails, setOrderDetails] = useState()
@@ -30,7 +31,7 @@ function OrderDetails() {
             setOrderDetails(productById.data())
             setIsFetching(false);
         } catch (error) {
-            Navigate("/error");
+            navigate("/error");
         }
     };
     const handleUpdateOrder = async () => {
@@ -41,11 +42,11 @@ function OrderDetails() {
                 state: "Enviado"
              })
             alert("Pedido actualizado correctamente")
-            Navigate("/admin")
+            getData()
 
         } catch (error) {
             console.log(error)
-            Navigate("/error")
+            navigate("/error")
         }
 
     }

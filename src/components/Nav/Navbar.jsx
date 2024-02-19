@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 import styled from "styled-components";
 import Burger from "./Burger";
 import logo from "../../images/logo-en-texto.png";
@@ -33,7 +33,10 @@ const Nav = styled.nav`
 `;
 
 const Navbar = () => {
-  const { authenticateUser, isLoggedIn, user } = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext);
+
+
+
 
   return (
     <div className="main-nav-container">
@@ -79,7 +82,6 @@ const Navbar = () => {
                   <img src={userLogo} alt="userLogo" />
                 </Link>
               }
-
 
               {isLoggedIn ?
 

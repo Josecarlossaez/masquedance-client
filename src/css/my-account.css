@@ -5,118 +5,45 @@
     margin-top: 30px;
     margin-bottom: 30px;
 }
-.user-data {
+.user-profile {
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
     rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
     /* border: 2px solid red; */
-    width: 100%;
+    width: 60%;
+    margin: auto;
 
     display: flex;
-    justify-content: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+
 
 }
 .user-picture {
-    width: 30%;
-    padding: 20px 10px 20px 20px;
-
+    width: 300px;
+    margin: auto;
 }
 
-.user-data img {
 
-    width: 100%;
-    height: 100%;
-    box-shadow: 10px 5px 5px #525462;
-
-}
-.user-name-description {
-    width: 70%;
-    margin-left:3%;
-}
-.user-name-description h2 {
+.user-name h2 {
     font-family: orbitron;
-    padding-left: 20px;
-    width: 60%;
+    width: 100%;
     /* height: 100px; */
     background-color: rgb(181, 62, 62);
     color: white;
-  
-    margin-left: 20px;
     /* line-height: 100px; */
     transform: skewX(-20deg);
     transform-origin: left;
-    text-align: start;
+    font-size: 1.5em;
+    text-align: center;
+    margin-left: -6px;
    
 }
-.dj-name-description p {
-    font-size: larger;
-    text-align: start;
 
-}
-
-.dj-description {
-    margin-left: 20px;
-    width: 90%;
-  
-    text-align: start;
-    align-items: center;
-}
-.dj-description h4{
-    color: black;
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bold;
-   font-size: 20px;
-}
-.dj-texto h4 {
-    padding-left: 20px;
-    font-family: orbitron;
-
-    width: 100%;
-    background-color:  rgb(181, 62, 62);
-    transform: skewX(-20deg);
-    transform-origin: left;
-    color:  white;
-   font-size: 40px;
-
-}
-.dj-tracks {
-    margin: auto;
-    margin-top: 20px;
-    width: 90%;
-}
-.track-container {
-    width: 100%;
-}
-.track-container {
-
-   
-    border-bottom: 2px solid #a19e9e; 
-    
-  }
-  
-
-  
-  .track-player {
-    flex-grow: 1;
-  }
-  
-  /* Colores de fondo alternos */
-  .track-container:nth-child(odd) {
-   
-    background-color: white;
-    
-}
-.track-img img{
-    width: 300px;
-    height: 300px;
-
-}
-.plato-technics{
-    width: 600px;
-    height: 600px;
-}
 
 @media screen and (max-width:1024px) {
-    .dj-page {
+    .user-page {
 
         width: 90%;
         margin: auto;
@@ -124,93 +51,21 @@
         margin-bottom: 30px;
     
     }
-    .dj-data {
+    .user-profile {
         flex-direction: column;
         justify-content: center;
     }
-    .dj-picture{
-
-        width: 40%;
-        margin: auto
-        
-    
-    }
-    .dj-name-description {
-        width: 90%;
-        margin-left:3%;
-        margin-top: 20px;
-    }
-    .dj-name-description h2 {
-        width: 90%;
-        margin: auto;
-       
-    }
-    .dj-name-description p{
-        margin-top: 20px;
-
-    }
-   
-   
-    .dj-description {
-        width: 90%;
-        margin-left: 0px;
-    }
-    .dj-description h4{
-        color: black;
-        font-family: 'Courier New', Courier, monospace;
-        font-weight: bold;
-       font-size: 15px;
-    }
-    .dj-description h4 {
-       width: 100%;
-       font-size: 20px;
-    
-    }
-    .dj-tracks {
-        border:2px solid black;
-        margin: auto;
-        margin-top: 20px;
-        width: 90%;
-    }
-    .track-container {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap:10px;
-    }
-
-
 
 }
 @media screen and (max-width:768px) {
-    .dj-picture{
-        width: 60%;
-    }
-    .plato-technics{
-        width: 400px;
-        height: 400px;
-    }
-    .dj-description h4{
-        color: black;
-        font-family: 'Courier New', Courier, monospace;
-        font-weight: bold;
-       font-size: 17px;
-    }
+
+.user-profile{
+width: 90%;
+}
     
 }
 @media screen and (max-width:480px) {
-    .dj-picture{
-        width: 60%;
-    }
-    .plato-technics{
-        width: 300px;
-        height: 300px;
-    }
-    .dj-description h4{
-        color: black;
-        font-family: 'Courier New', Courier, monospace;
-        font-weight: bold;
-       font-size: 14px;
-    }
-    
+    .user-name h2 {
+        font-size: 1em;
+    }  
 }

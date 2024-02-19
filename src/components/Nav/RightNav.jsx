@@ -55,6 +55,7 @@ const RightNav = ( {open, changeStateBurger} ) => {
       authenticateUser();
       navigate("/");
       console.log("usuario deslogeado")
+      handleChangeBurger()
     }).catch((error) => {
       console.log(error);
     });
@@ -66,13 +67,13 @@ const RightNav = ( {open, changeStateBurger} ) => {
        {/* <div></div> */}
       <div className="nav-list">
         <Link to='/'  onClick={handleChangeBurger}>Home</Link>
-        <Link to='/about-us'>About Us</Link>
-        <Link to='/list-blogs'>Blog</Link>
-        <Link to='/list-tracks'>TRACKS</Link>
-        <Link to='/list-djs'>DJ´S</Link>
+        <Link to='/about-us'  onClick={handleChangeBurger}>About Us</Link>
+        <Link to='/list-blogs'  onClick={handleChangeBurger}>Blog</Link>
+        <Link to='/list-tracks'  onClick={handleChangeBurger}>TRACKS</Link>
+        <Link to='/list-djs'  onClick={handleChangeBurger}>DJ´S </Link>
         <Link to='/list-colections'  onClick={handleChangeBurger}>Merchandising</Link>
-        {isAdmin && <Link to='/admin'>Admin</Link>}
-        {isLoggedIn && <Link to='/'  onClick={handleLogout}>Salir</Link> }
+        {isAdmin && <Link to='/admin'  onClick={handleChangeBurger}>Admin</Link>}
+        {isLoggedIn && <Link to='/' onClick={handleLogout}>Cerrar Sesión</Link> }
       </div>
     
       

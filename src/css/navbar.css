@@ -24,7 +24,8 @@
     align-items: center;
     gap: 10px;
 }
-.user{
+.user {
+
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -61,8 +62,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-   
+   padding-top: 0px;
+   border-top: 0.1px solid darkgray;
 }
+
 
 .logo img{
     width:25rem;
@@ -74,6 +77,7 @@
 }
 
 @media screen and (max-width:1024px) {
+
     .main-nav{
         display: flex !important;
         justify-content: flex-start !important;

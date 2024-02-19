@@ -5,7 +5,6 @@ import Orders from '../components/Orders/Orders';
 import { HashLink } from 'react-router-hash-link';
 import { useMediaQuery } from 'react-responsive';
 import "../css/my-account.css"
-import EditUserProfile from '../components/user/EditUserProfile';
 
 function MyAccount() {
   const { user } = useContext(AuthContext);
@@ -17,7 +16,6 @@ function MyAccount() {
   const [isFetching, setIsFetching] = useState(true);
   const [orders, setOrders] = useState()
   const [activeOrders, setActiveOrders] = useState(false)
-  const [activeEditProfile, setActiveEditProfile] = useState(false)
 
 
   useEffect(() => {
@@ -31,8 +29,6 @@ function MyAccount() {
   }
   const handleListOrders = () => setActiveOrders(true)
 
-  const handleEditProfile = () => setActiveEditProfile(true)
-
   if (isFetching === true) {
     return <div class="d-flex justify-content-center">
       <div class="spinner-border" role="status">
@@ -43,27 +39,13 @@ function MyAccount() {
 
   return (
     <div className='user-page'>
-      <div className='user-data'>
+      <div className='user-profile'>
         <div className='user-picture'>
           <img src={userInfo?.picture} alt="" />
-
         </div>
-        <div className='user-name-description'>
-          <div className='user-name'>
-            <h2>{userInfo?.email}</h2>
-          </div>
-          <HashLink smooth to="#admin-components">
-            <button
-              type="submit"
-              onClick={handleEditProfile}
-              className="general-btn"
-            >
-              Editar Perfil
-            </button>
-          </HashLink>
-
+        <div className='user-name'>
+          <h2>{userInfo?.email}</h2>
         </div>
-
       </div>
       {
         orders.length !== 0 &&
@@ -74,7 +56,6 @@ function MyAccount() {
             </HashLink>
           </div>
           {activeOrders && <Orders orders={orders} />}
-          {activeEditProfile && < EditUserProfile />}
         </div>
       }
     </div>
