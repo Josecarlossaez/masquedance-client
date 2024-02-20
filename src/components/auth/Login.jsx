@@ -101,7 +101,7 @@ function Login() {
       })
       console.log("emailExists", emailExists);
       if (!emailExists) {
-        const newUser = new User(userName,picture,userId, email, [], [], [], "user");
+        const newUser = new User(userName, picture, userId, email, [], [], [], "user");
         console.log("fer-newUser: ", newUser);
         await setDoc(refUser(userId), newUser.toJson());
 
@@ -110,6 +110,7 @@ function Login() {
         navigate("/");
       }
 
+      navigate("/");
 
 
       // TODO: Aqui deberias comprobar si el usuario existe. Si lo hace no guardas nada, sino lo creas.
@@ -234,7 +235,7 @@ function Login() {
 export default Login;
 
 class User {
-  constructor(userName,picture, id, email, cart, orders, youtubeReproductionList, role) {
+  constructor(userName, picture, id, email, cart, orders, youtubeReproductionList, role) {
     this.userName = userName;
     this.picture = picture;
     this.id = id;

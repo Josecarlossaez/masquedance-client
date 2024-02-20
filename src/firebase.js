@@ -19,13 +19,13 @@ import { getFirestore, collection, doc } from "firebase/firestore";
 //   measurementId: process.env.MEASUREMENT_ID
 // };
 const firebaseConfig = {
-  apiKey: "AIzaSyAyueKIRjjyQG0ZFe_BqD66o6Uv13K-Geo",
-  authDomain: "msqdance-87134.firebaseapp.com",
-  projectId: "msqdance-87134",
-  storageBucket: "msqdance-87134.appspot.com",
-  messagingSenderId: "1017788573080",
-  appId: "1:1017788573080:web:2619ca1384f2abee4c77ed",
-  measurementId: "G-LT19DNMNKB"
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTHDOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
 // Initialize Firebase
