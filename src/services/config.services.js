@@ -10,6 +10,7 @@ service.interceptors.request.use((config) => {
   
     // 1. buscar el token en localStorage
     const authToken = localStorage.getItem("authToken")
+    console.log("authToken")
   
     const tokenFull = `Bearer ${authToken}`
   
